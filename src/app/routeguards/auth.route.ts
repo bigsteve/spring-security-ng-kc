@@ -35,7 +35,9 @@ export class AuthKeyClockGuard extends KeycloakAuthGuard {
         this.user.authStatus = 'AUTH';
         this.user.name = this.userProfile.firstName;
         this.user.email = this.userProfile.email;
+        this.user.role = this.keycloak.getUserRoles()[this.keycloak.getUserRoles().length-1];
         window.sessionStorage.setItem("userdetails",JSON.stringify(this.user));
+        console.log(this.keycloak.getUserRoles())
     }
 
     // Get the roles required from the route.
