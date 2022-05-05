@@ -1,6 +1,6 @@
 <div data-navigation="container" class="i-top-header">
   <div class="wrapper top-section">
-    <div class="hleft"><a class="logo selfLogo" routerLink="/dashboard"><img alt="logo"
+    <div class="hleft"><a class="logo selfLogo" routerLink="/home"><img alt="logo"
           src="../assets/images/logo.png"></a></div>
     <div class="mnav_hb hide">
       <div class="hamburger"><span class="line"></span><span class="line"></span><span class="line"></span></div>
@@ -10,8 +10,9 @@
         <li *ngIf="user.authStatus!='AUTH'" routerLinkActive="active"><a routerLink="/home">Home</a></li>
         <li *ngIf="user.authStatus!='AUTH'" routerLinkActive="active"><a (click)="login()">Login</a></li>
         <li *ngIf="user.authStatus!='AUTH'" routerLinkActive="active"><a routerLink="/contact">Contact US</a></li>
-        <li *ngIf="user.authStatus!='AUTH'" routerLinkActive="active"><a routerLink="/notices">Notices</a></li>
+        <li  routerLinkActive="active"><a routerLink="/notices">Notices</a></li>
         <li *ngIf="user.authStatus=='AUTH'" routerLinkActive="active"><a routerLink="/dashboard">Dashboard</a></li>
+        <li *ngIf="user.authStatus=='AUTH'" routerLinkActive="active"><a routerLink="/myaccount/details">My Account</a></li>
         <li *ngIf="user.authStatus=='AUTH'" routerLinkActive="active"><a (click)="logout()">Logout</a></li>
 
       </ul>

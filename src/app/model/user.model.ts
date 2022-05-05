@@ -23,6 +23,8 @@ export class User{
         this.statusCd = statusCd;
         this.statusMsg = statusMsg;
         this.authStatus = authStatus;
+
+        console.log(this)
   }
 
 }
