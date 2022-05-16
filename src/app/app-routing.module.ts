@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'myaccount/details', component: AccountComponent, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER']
   }},
-  { path: 'myaccount/mybalance', component: BalanceComponent, canActivate: [AuthKeyClockGuard],data: {
+  { path: 'myaccount/mybalance/page/:page', component: BalanceComponent, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER']
   }},
   { path: 'myaccount/myloans', component: LoansComponent, canActivate: [AuthKeyClockGuard],data: {
