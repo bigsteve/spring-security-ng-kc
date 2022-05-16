@@ -1,9 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
 body {
-  background:rgb(235, 234, 233);;
-  background-size: cover;
-  text-align: center;
-  font-family: Georgia, serif;
+    margin: 0;
+    font-family: Arial, Sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+
+a {
+    cursor: pointer;
 }
 
 .container{
@@ -37,7 +44,7 @@ body {
   background: #fff;
   color: #000;
   font-size: 1em;
-  font-weight: 600;
+  font-weight: 100;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -60,7 +67,7 @@ body {
   -moz-transition: 0.5s all;
   -o-transition: 0.5s all;
   -ms-transition: 0.5s all;
-  font-family: Georgia, serif;
+  
 }
 .w3l-main-2 input[type="reset"]:hover, .w3l-main-2 input[type="submit"]:hover {
   background: #000;
@@ -81,11 +88,11 @@ transition: 0.5s all;
   outline: none;
   font-size: 1em;
   color: #000;
-  font-family: Georgia, serif;
+  
 }
 .w3l-main-2 input[type="submit"]{
 margin:7% 0em 1.4%;
-font-family: Georgia, serif;
+
 }
 
 .btn-eazybank{

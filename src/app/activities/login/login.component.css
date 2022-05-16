@@ -1,5 +1,4 @@
 @import "../../../assets/css/font-awesome.css";
-@import "../../../assets/css/bootstrap.css";
 
 /*[ FONT SIZE ]
 ///////////////////////////////////////////////////////////
@@ -2995,12 +2994,12 @@
 
 body, html {
 	height: 100%;
-	font-family: Poppins-Bold, sans-serif;
+	
 }
 
 /*---------------------------------------------*/
 a {
-  font-family: Poppins-Bold;
+  
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -3026,7 +3025,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 p {
-	font-family: Poppins-Bold;
+	
 	font-size: 14px;
 	line-height: 1.7;
 	color: #666666;
@@ -3094,21 +3093,21 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-  font-family: Poppins-Bold;
+  
   font-size: 15px;
   color: #999999;
   line-height: 1.4;
 }
 
 .txt2 {
-  font-family: Poppins-Bold;
+  
   font-size: 15px;
   color: #57b846;
   line-height: 1.4;
 }
 
 .txt3 {
-  font-family: Georgia, serif;
+  
   font-size: 15px;
   color: #57b846;
   line-height: 1.4;
@@ -3161,7 +3160,7 @@ iframe {
 }
 
 .login100-form-title {
-  font-family: Georgia, serif;
+  
   font-size: 30px;
   color: #fff;
   line-height: 1.2;
@@ -3188,7 +3187,7 @@ iframe {
 }
 
 .input100 {
-  font-family: Georgia, serif;
+  
   font-size: 15px;
   color: #1b3815;
   line-height: 1.2;
@@ -3259,7 +3258,7 @@ iframe {
   background-color: #57b846;
   border-radius: 25px;
 
-  font-family: Georgia, serif;
+  
   font-size: 15px;
   color: #fff;
   line-height: 1.2;
@@ -3301,7 +3300,7 @@ iframe {
   right: 10px;
   pointer-events: none;
 
-  font-family: Georgia, serif;
+  
   color: #c80000;
   font-size: 13px;
   line-height: 1.4;
@@ -3367,7 +3366,7 @@ body {
     font-size: 100%;
     background: #fff;
     scroll-behavior: smooth;
-    font-family: 'Catamaran', sans-serif;
+    
 }
 
 body a {
@@ -3394,7 +3393,7 @@ input[type="search"] {
     -moz-transition: 0.5s all;
     -o-transition: 0.5s all;
     -ms-transition: 0.5s all;
-    font-family: 'Catamaran', sans-serif;
+    
 
 }
 
@@ -3407,7 +3406,7 @@ h6 {
     margin: 0;
     letter-spacing: 1px;
     font-weight: 600;
-    font-family: 'Catamaran', sans-serif;
+    
 }
 
 p {

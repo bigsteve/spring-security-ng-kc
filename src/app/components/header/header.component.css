@@ -117,6 +117,7 @@ ul, ul li {
   line-height: 22px;
   color: #fff;
   padding-bottom: 8px;
+  text-decoration: none;
 }
 
 a, a:link:hover, a:visited:hover {
