@@ -14,6 +14,8 @@ import { BalancePage } from './pages/balance/balance.page';
 import { LoansPage } from './pages/loans/loans.page';
 import { CardsPage } from './pages/cards/cards.page';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { GridComponent } from './components/grid/grid.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
@@ -41,7 +43,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
         AccountPage,
         BalancePage,
         LoansPage,
-        CardsPage
+        CardsPage,
+        GridComponent,
+        PaginationComponent
     ],
     imports: [
         BrowserModule,
