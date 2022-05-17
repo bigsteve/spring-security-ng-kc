@@ -1,0 +1,21 @@
+
+.site-section {
+  padding: 3rem 0;
+}
+
+label {
+  font-size: 1rem;
+  text-align: left;
+  display: flex;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 0px;
+  margin-left:  0px;
+}
+
+.table-responsive-md {
+  margin: 50px;
+}

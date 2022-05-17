@@ -5,14 +5,14 @@ import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { ContactComponent } from './activities/contact/contact.component';
-import { LoginComponent } from './activities/login/login.component';
-import { DashboardComponent } from './activities/dashboard/dashboard.component';
-import { NoticesComponent } from './activities/notices/notices.component';
-import { AccountComponent } from './activities/account/account.component';
-import { BalanceComponent } from './activities/balance/balance.component';
-import { LoansComponent } from './activities/loans/loans.component';
-import { CardsComponent } from './components/cards/cards.component';
+import { ContactPage } from './pages/contact/contact.page';
+import { LoginPage } from './pages/login/login.page';
+import { DashboardPage } from './pages/dashboard/dashboard.page';
+import { NoticesPage } from './pages/notices/notices.page';
+import { AccountPage } from './pages/account/account.page';
+import { BalancePage } from './pages/balance/balance.page';
+import { LoansPage } from './pages/loans/loans.page';
+import { CardsPage } from './pages/cards/cards.page';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -34,14 +34,14 @@ function initializeKeycloak(keycloak: KeycloakService) {
     declarations: [
         AppComponent,
         HeaderComponent,
-        ContactComponent,
-        LoginComponent,
-        DashboardComponent,
-        NoticesComponent,
-        AccountComponent,
-        BalanceComponent,
-        LoansComponent,
-        CardsComponent
+        ContactPage,
+        LoginPage,
+        DashboardPage,
+        NoticesPage,
+        AccountPage,
+        BalancePage,
+        LoansPage,
+        CardsPage
     ],
     imports: [
         BrowserModule,

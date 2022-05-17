@@ -6,10 +6,10 @@ import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-contact',
-  templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  templateUrl: './contact.page.html',
+  styleUrls: ['./contact.page.css']
 })
-export class ContactComponent implements OnInit {
+export class ContactPage implements OnInit {
   model = new Contact();
 
   constructor(private dashboardService: DashboardService) {

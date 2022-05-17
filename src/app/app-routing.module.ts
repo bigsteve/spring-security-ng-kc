@@ -1,35 +1,35 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ContactComponent } from './activities/contact/contact.component';
-import { LoginComponent } from './activities/login/login.component';
-import { DashboardComponent } from './activities/dashboard/dashboard.component';
-import { AccountComponent } from './activities/account/account.component';
-import { BalanceComponent } from './activities/balance/balance.component';
-import { NoticesComponent } from './activities/notices/notices.component';
-import { LoansComponent } from './activities/loans/loans.component';
-import { CardsComponent } from './components/cards/cards.component';
+import { ContactPage } from './pages/contact/contact.page';
+import { LoginPage } from './pages/login/login.page';
+import { DashboardPage } from './pages/dashboard/dashboard.page';
+import { AccountPage } from './pages/account/account.page';
+import { BalancePage } from './pages/balance/balance.page';
+import { NoticesPage } from './pages/notices/notices.page';
+import { LoansPage } from './pages/loans/loans.page';
+import { CardsPage } from './pages/cards/cards.page';
 import { AuthKeyClockGuard } from './routeguards/auth.route';
 import { AppConstants } from './constants/app.constants';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
-  { path: 'home', component: LoginComponent},
-  { path: 'login', component: LoginComponent},
-  { path: 'contact', component: ContactComponent},
-  { path: 'notices', component: NoticesComponent},
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthKeyClockGuard],data: {
+  { path: 'home', component: LoginPage},
+  { path: 'login', component: LoginPage},
+  { path: 'contact', component: ContactPage},
+  { path: 'notices', component: NoticesPage},
+  { path: 'dashboard', component: DashboardPage, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER','ADMIN']
   }},
-  { path: 'myaccount/details', component: AccountComponent, canActivate: [AuthKeyClockGuard],data: {
+  { path: AppConstants.ACCOUNT_API_URL, component: AccountPage, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER']
   }},
-  { path: 'myaccount/mybalance/page/:page', component: BalanceComponent, canActivate: [AuthKeyClockGuard],data: {
+  { path: AppConstants.BALANCE_API_URL+'/:page', component: BalancePage, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER']
   }},
-  { path: 'myaccount/myloans', component: LoansComponent, canActivate: [AuthKeyClockGuard],data: {
+  { path: AppConstants.LOANS_API_URL, component: LoansPage, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER','ADMIN']
   }},
-  { path: 'myaccount/mycards', component: CardsComponent, canActivate: [AuthKeyClockGuard],data: {
+  { path: AppConstants.CARDS_API_URL, component: CardsPage, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER','ADMIN']
   }}
 ];

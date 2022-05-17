@@ -5,10 +5,11 @@ import { ActivatedRoute } from '@angular/router'
 
 @Component({
     selector: 'app-balance',
-    templateUrl: './balance.component.html',
-    styleUrls: ['./balance.component.css']
+    templateUrl: './balance.page.html',
+    styleUrls: ['./balance.page.css']
 })
-export class BalanceComponent implements OnInit {
+
+export class BalancePage implements OnInit {
 
     user = new User()
     page: number
@@ -28,7 +29,7 @@ export class BalanceComponent implements OnInit {
         this.navigateTo(this.page)
     }
 
-    navigateTo(toPage : number): void {
+    navigateTo(toPage: number): void {
         this.user = JSON.parse(sessionStorage.getItem('userdetails'))
 
         if (this.user) {

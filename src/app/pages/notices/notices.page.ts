@@ -3,10 +3,10 @@ import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-notices',
-  templateUrl: './notices.component.html',
-  styleUrls: ['./notices.component.css']
+  templateUrl: './notices.page.html',
+  styleUrls: ['./notices.page.css']
 })
-export class NoticesComponent implements OnInit {
+export class NoticesPage implements OnInit {
 
   notices = new Array();
 

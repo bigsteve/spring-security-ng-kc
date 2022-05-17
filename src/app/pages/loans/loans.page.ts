@@ -4,10 +4,10 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-loans',
-  templateUrl: './loans.component.html',
-  styleUrls: ['./loans.component.css']
+  templateUrl: './loans.page.html',
+  styleUrls: ['./loans.page.css']
 })
-export class LoansComponent implements OnInit {
+export class LoansPage implements OnInit {
 
   user = new User();
   loans = new Array();
