@@ -16,6 +16,9 @@ import { CardsPage } from './pages/cards/cards.page';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { GridComponent } from './components/grid/grid.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
@@ -47,7 +50,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
         GridComponent,
         PaginationComponent
     ],
+    exports: [AppComponent],
     imports: [
+        CommonModule, 
+        MatGridListModule,
         BrowserModule,
         AppRoutingModule,
         FormsModule,
@@ -57,6 +63,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
             cookieName: 'XSRF-TOKEN',
             headerName: 'X-XSRF-TOKEN',
         }),
+        BrowserAnimationsModule,
     ],
     providers: [
         {

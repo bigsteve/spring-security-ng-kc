@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { User } from 'src/app/model/user.model'
 import { DashboardService } from '../../services/dashboard/dashboard.service'
 import { ActivatedRoute } from '@angular/router'
+import { formatCurrency } from '@angular/common'
 
 @Component({
     selector: 'app-balance',
@@ -47,5 +48,12 @@ export class BalancePage implements OnInit {
         this.next = this.page + 1
     }
 
+    // changed from:
+    // {{transaction.transactionType=='Withdrawal' ? (transaction.transactionAmt | currency) : ' '}}
+    getTransactionType(v: any, t: string): any {
+        let o = ''
+        if(v.transactionType==t) o = formatCurrency(v.transactionAmt, 'en-US', '$')
+        return o
+    }
 
 }

@@ -8,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 
 export class GridComponent implements OnInit {
 
-    constructor() { }
+    page: number
+    prev: number
+    next: number
+    heading = new Array()
+    data = new Array()
+
+    constructor() {
+    }
 
     ngOnInit(): void {
+        this.navigateTo(this.page)
+    }
+
+    navigateTo(toPage: number): void {
     }
 
 }

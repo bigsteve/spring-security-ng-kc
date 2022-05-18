@@ -110,3 +110,6 @@ margin:7% 0em 1.4%;
   background-color: #57b846;
   color: #ff0000;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
