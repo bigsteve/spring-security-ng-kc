@@ -20,7 +20,7 @@ export class BalancePage implements OnInit {
 
     constructor(private dashboardService: DashboardService, private route: ActivatedRoute) {
         this.route.params.subscribe(params => {
-            this.page = parseInt(params.page)
+            this.page = parseInt(params.page) ? params.page : 1
             this.navigateTo(this.page)
             this.pagination()
         })
@@ -44,8 +44,8 @@ export class BalancePage implements OnInit {
     }
 
     pagination(): void {
-        this.prev = (this.page > 0) ? this.page - 1 : 0
-        this.next = this.page + 1
+        this.prev = (this.page > 1) ? this.page - 1 : 1
+        this.next = +this.page + 1
     }
 
     // changed from:
