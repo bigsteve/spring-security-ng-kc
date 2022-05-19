@@ -19,6 +19,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { TableModule } from 'ngx-easy-table';
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
@@ -55,6 +56,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         CommonModule, 
         MatGridListModule,
         BrowserModule,
+        TableModule,
         AppRoutingModule,
         FormsModule,
         KeycloakAngularModule,

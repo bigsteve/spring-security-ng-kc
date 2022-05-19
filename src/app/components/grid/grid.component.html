@@ -1,23 +1,4 @@
-<!-- <table class="table table-striped table-hover">
-    <thead class="table-dark">
-        <tr>
-          <th *ngFor="let col of heading">{{col}}</th>
-        </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of data">
-        <td *ngFor="let col of row">{{col}}</td>
-      </tr>
-    </tbody>
-  </table> -->
-
-  <mat-grid-list cols="3" rowHeight="2:1">
-    
-    <mat-grid-tile>First Grid</mat-grid-tile>
-    <mat-grid-tile>Second Grid</mat-grid-tile>
-    <mat-grid-tile>Third Grid</mat-grid-tile>
-    <mat-grid-tile>Fourth Grid</mat-grid-tile>
-    <mat-grid-tile>Fifth Grid</mat-grid-tile>
-    <mat-grid-tile>Sixth Frid</mat-grid-tile>
-    
-  </mat-grid-list>
+<ngx-table [configuration]="configuration"
+           [data]="data"
+           [columns]="columns">
+</ngx-table>

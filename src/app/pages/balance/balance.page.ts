@@ -37,6 +37,7 @@ export class BalancePage implements OnInit {
             this.dashboardService.getAccountTransactions(this.user, toPage).subscribe(
                 responseData => {
                     this.transactions = <any>responseData.body
+                    console.log(this.transactions)
                 }, error => {
                     console.log(error)
                 })
