@@ -15,6 +15,7 @@ import { LoansPage } from './pages/loans/loans.page';
 import { CardsPage } from './pages/cards/cards.page';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { GridComponent } from './components/grid/grid.component';
+import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -61,6 +62,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         FormsModule,
         KeycloakAngularModule,
         HttpClientModule,
+        NgxPaginationModule,
         HttpClientXsrfModule.withOptions({
             cookieName: 'XSRF-TOKEN',
             headerName: 'X-XSRF-TOKEN',

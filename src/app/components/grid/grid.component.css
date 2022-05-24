@@ -1,0 +1,28 @@
+.grid-cell input {
+    display: inline;
+    max-width: 100px;
+}
+.grid-table {
+    display: table;
+}
+li {
+    list-style: none;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.grid-row {
+    display:table-row;
+    width:100%;
+    border-bottom: 1px solid #ccc;
+}
+
+.grid-cell {
+    display: table-cell;
+    padding:3px;
+}
+
+pagination#paginationtable {
+    color:red;
+    float:left;
+}

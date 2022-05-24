@@ -3,6 +3,7 @@ import { User } from 'src/app/model/user.model'
 import { DashboardService } from '../../services/dashboard/dashboard.service'
 import { ActivatedRoute } from '@angular/router'
 import { formatCurrency } from '@angular/common'
+import { GridComponent } from 'src/app/components/grid/grid.component'
 
 @Component({
     selector: 'app-balance',
@@ -13,6 +14,7 @@ import { formatCurrency } from '@angular/common'
 export class BalancePage implements OnInit {
 
     user = new User()
+    grid : GridComponent
     page: number
     prev: number
     next: number
@@ -21,28 +23,28 @@ export class BalancePage implements OnInit {
     constructor(private dashboardService: DashboardService, private route: ActivatedRoute) {
         this.route.params.subscribe(params => {
             this.page = parseInt(params.page) ? params.page : 1
-            this.navigateTo(this.page)
+            // this.navigateTo(this.page)
             this.pagination()
         })
     }
 
     ngOnInit(): void {
-        this.navigateTo(this.page)
+        // this.navigateTo(this.page)
     }
 
-    navigateTo(toPage: number): void {
-        this.user = JSON.parse(sessionStorage.getItem('userdetails'))
+    // navigateTo(toPage: number): void {
+    //     this.user = JSON.parse(sessionStorage.getItem('userdetails'))
 
-        if (this.user) {
-            this.dashboardService.getAccountTransactions(this.user, toPage).subscribe(
-                responseData => {
-                    this.transactions = <any>responseData.body
-                    console.log(this.transactions)
-                }, error => {
-                    console.log(error)
-                })
-        }
-    }
+    //     if (this.user) {
+    //         this.dashboardService.getAccountTransactions('',this.user, toPage).subscribe(
+    //             responseData => {
+    //                 this.transactions = <any>responseData.body
+    //                 // console.log(this.transactions)
+    //             }, error => {
+    //                 console.log(error)
+    //             })
+    //     }
+    // }
 
     pagination(): void {
         this.prev = (this.page > 1) ? this.page - 1 : 1

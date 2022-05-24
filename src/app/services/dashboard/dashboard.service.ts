@@ -4,6 +4,8 @@ import { AppConstants } from "../../constants/app.constants";
 import { environment } from '../../../environments/environment';
 import { User } from '../../model/user.model';
 import { Contact } from '../../model/contact.model';
+import { Page } from 'ngx-pagination/dist/pagination-controls.directive';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +18,8 @@ export class DashboardService {
     return this.http.post(environment.rooturl + AppConstants.ACCOUNT_API_URL,user,{ observe: 'response',withCredentials: true });
   }
 
-  getAccountTransactions(user : User, page : number){
-    return this.http.post(environment.rooturl + AppConstants.BALANCE_API_URL+"/"+(page - 1),user,{ observe: 'response',withCredentials: true });
+  getAccountTransactions(params : string, user : User){
+    return this.http.post<Page>(environment.rooturl + AppConstants.BALANCE_API_URL+params,user,{ observe: 'response',withCredentials: true });
   }
 
   getLoansDetails(user : User){

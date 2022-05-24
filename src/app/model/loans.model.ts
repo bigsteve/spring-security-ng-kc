@@ -19,5 +19,4 @@ export class Loans {
         this.amountPaid = amountPaid;
         this.outstandingAmount = outstandingAmount;
   }
-
 }

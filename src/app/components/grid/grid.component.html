@@ -1,4 +1,48 @@
-<ngx-table [configuration]="configuration"
+<!-- <ngx-table [configuration]="configuration"
            [data]="data"
            [columns]="columns">
-</ngx-table>
+</ngx-table> -->
+
+
+<!-- <div class="list"> -->
+
+    <!-- <ngx-table [configuration]=""
+           [data]="data"
+           [columns]="columns">
+</ngx-table> -->
+
+    <!-- <ul class="grid-table">
+
+        <li class="grid-row">
+            <span  class="grid-cell" *ngFor="let c of columns">{{ c.title }}</span>
+        </li>
+
+        <li class="grid-row">
+            <span  class="grid-cell"><input *ngFor="let c of columns" placeholder="{{ c.title }}" /></span>
+        </li>
+
+        <li  class="grid-row" *ngFor="let item of data | paginate: { itemsPerPage: 10, currentPage: page }">
+            <span  class="grid-cell" *ngFor="let c of columns">{{ item[c.key] }}</span>
+        </li>
+
+    </ul>
+
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+</div> -->
+
+<!-- <ngx-tables></ngx-tables> -->
+
+<div class="columns">
+    <div class="column col-12">
+      <ngx-table
+        #table
+        [configuration]="configuration"
+        [data]="data"
+        [pagination]="pagination"
+        [columns]="columns"
+        [pagination]="pagination"
+        (event)="eventEmitted($event)"
+      >
+      </ngx-table>
+    </div>
+  </div>
