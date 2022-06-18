@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: AppConstants.ACCOUNT_API_URL, component: AccountPage, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER']
   }},
-  { path: AppConstants.BALANCE_API_URL+'/:page', component: BalancePage, canActivate: [AuthKeyClockGuard],data: {
+  { path: AppConstants.BALANCE_API_URL, component: BalancePage, canActivate: [AuthKeyClockGuard],data: {
     roles: ['USER']
   }},
   { path: AppConstants.LOANS_API_URL, component: LoansPage, canActivate: [AuthKeyClockGuard],data: {

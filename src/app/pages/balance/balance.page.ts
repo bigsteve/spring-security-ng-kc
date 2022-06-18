@@ -20,35 +20,12 @@ export class BalancePage implements OnInit {
     next: number
     transactions = new Array()
 
-    constructor(private dashboardService: DashboardService, private route: ActivatedRoute) {
-        this.route.params.subscribe(params => {
-            this.page = parseInt(params.page) ? params.page : 1
-            // this.navigateTo(this.page)
-            this.pagination()
-        })
-    }
-
-    ngOnInit(): void {
-        // this.navigateTo(this.page)
-    }
-
-    // navigateTo(toPage: number): void {
-    //     this.user = JSON.parse(sessionStorage.getItem('userdetails'))
-
-    //     if (this.user) {
-    //         this.dashboardService.getAccountTransactions('',this.user, toPage).subscribe(
-    //             responseData => {
-    //                 this.transactions = <any>responseData.body
-    //                 // console.log(this.transactions)
-    //             }, error => {
-    //                 console.log(error)
-    //             })
-    //     }
+    // constructor(private dashboardService: DashboardService, private route: ActivatedRoute) {
+    //     this.route.params.subscribe(params => {
+    //     })
     // }
 
-    pagination(): void {
-        this.prev = (this.page > 1) ? this.page - 1 : 1
-        this.next = +this.page + 1
+    ngOnInit(): void {
     }
 
     // changed from:

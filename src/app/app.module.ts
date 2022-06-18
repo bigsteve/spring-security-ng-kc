@@ -15,18 +15,25 @@ import { LoansPage } from './pages/loans/loans.page';
 import { CardsPage } from './pages/cards/cards.page';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { GridComponent } from './components/grid/grid.component';
-import {NgxPaginationModule} from 'ngx-pagination'; // <-- import the module
+import { NgxPaginationModule } from 'ngx-pagination';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonModule } from '@angular/material/button';
 import { TableModule } from 'ngx-easy-table';
+import { ButtonOverviewExampleComponent } from './components/buttons/button-overview-example/button-overview-example.component';
+import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
         keycloak.init({
             config: {
-                url: 'http://localhost:8085/auth',
+                url: 'http://192.168.80.128:8085/auth',
                 realm: 'samplebankdev',
                 clientId: 'samplebankpub_ui',
             },
@@ -50,12 +57,19 @@ function initializeKeycloak(keycloak: KeycloakService) {
         LoansPage,
         CardsPage,
         GridComponent,
-        PaginationComponent
+        PaginationComponent,
+        ButtonOverviewExampleComponent,
+        ExportButtonsComponent,
+        PaginatorComponent
     ],
     exports: [AppComponent],
     imports: [
-        CommonModule, 
+        CommonModule,
         MatGridListModule,
+        MatButtonModule,
+        MatDividerModule,
+        MatIconModule,
+        MatPaginatorModule,
         BrowserModule,
         TableModule,
         AppRoutingModule,

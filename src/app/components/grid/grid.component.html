@@ -1,47 +1,31 @@
-<!-- <ngx-table [configuration]="configuration"
-           [data]="data"
-           [columns]="columns">
-</ngx-table> -->
+<div class="grid-vio">
+    <div id="grid-page-head row" class="page-head">
+        <div class="grid-title column col-9">
+            <h1>Transactions History</h1>
 
-
-<!-- <div class="list"> -->
-
-    <!-- <ngx-table [configuration]=""
-           [data]="data"
-           [columns]="columns">
-</ngx-table> -->
-
-    <!-- <ul class="grid-table">
-
-        <li class="grid-row">
-            <span  class="grid-cell" *ngFor="let c of columns">{{ c.title }}</span>
-        </li>
-
-        <li class="grid-row">
-            <span  class="grid-cell"><input *ngFor="let c of columns" placeholder="{{ c.title }}" /></span>
-        </li>
-
-        <li  class="grid-row" *ngFor="let item of data | paginate: { itemsPerPage: 10, currentPage: page }">
-            <span  class="grid-cell" *ngFor="let c of columns">{{ item[c.key] }}</span>
-        </li>
-
-    </ul>
-
-    <pagination-controls (pageChange)="page = $event"></pagination-controls>
-</div> -->
-
-<!-- <ngx-tables></ngx-tables> -->
-
-<div class="columns">
-    <div class="column col-12">
-      <ngx-table
-        #table
-        [configuration]="configuration"
-        [data]="data"
-        [columns]="columns"
-        [pagination]="pagination"
-        (event)="eventEmitted($event)"
-      >
-      </ngx-table>
+            <app-paginator [length]="this.pagination.count" [pageSize]="this.pagination.limit" [pageSizeOptions]="[50, 100, 250, 500]" aria-label="Select page">
+            </app-paginator>
+        </div>
+        <div class="grid-export column col-3">
+            <export-buttons *ngIf="this.configuration.exportEnabled" [columns]="columns" [observable]="exportData()">
+            </export-buttons>
+        </div>
     </div>
-  </div>
+    <div class="column col-12">
+        <ngx-table #table [configuration]="configuration" [data]="page.content" [columns]="columns"
+            [pagination]="pagination" (event)="eventEmitted($event)">
+        </ngx-table>
+    </div>
+</div>
+
+<ng-template #cellPipingBalance let-row>
+    <div class="currency currency-cell">{{row.closingBalance | currency}}</div>
+</ng-template>
+
+<ng-template #cellPipingTranzaction let-row>
+    <div class="currency currency-cell">{{row.transactionAmt | currency}}</div>
+</ng-template>
+
+<ng-template #cellPipingDate let-row>
+    <div class="date date-cell">{{row.createDt | date: 'short'}}</div>
+</ng-template>
