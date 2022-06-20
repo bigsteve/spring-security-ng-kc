@@ -1,12 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { MatPaginatorIntl } from '@angular/material/paginator'
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator'
 @Component({
     selector: 'app-paginator',
     templateUrl: './paginator.component.html',
     styleUrls: ['./paginator.component.css']
 })
-export class PaginatorComponent implements OnInit {
-    // TODO: update currentpage after filtering
+export class PaginatorComponent implements OnInit, OnChanges {
+    
+    @ViewChild('paginator') paginator: MatPaginator;
     @Input() length: number
     @Input() pageSize: number
     @Input() pageSizeOptions: number[] = [50, 100, 150, 250, 500]
@@ -20,8 +21,14 @@ export class PaginatorComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.matPaginatorIntl.getRangeLabel(3,4,500)
     }
 
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log(changes)
+        if(changes.length.currentValue < changes.length.previousValue) {
+            this.paginator.firstPage()
+        }
+    }
 }
 

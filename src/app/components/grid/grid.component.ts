@@ -37,7 +37,7 @@ interface EventObject {
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild('table', { static: true }) table: APIDefinition
-    @ViewChild('cellPipingTranzaction', { static: true }) cellPipingTranzaction: TemplateRef<any>;
+    @ViewChild('cellPipingTransaction', { static: true }) cellPipingTransaction: TemplateRef<any>;
     @ViewChild('cellPipingBalance', { static: true }) cellPipingBalance: TemplateRef<any>;
     @ViewChild('cellPipingDate', { static: true }) cellPipingDate: TemplateRef<any>;
 
@@ -71,8 +71,6 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.configuration = { ...DefaultConfig }
         this.getData(this.params)
 
-        // this.cellPiping.createEmbeddedView(this)
-
         this.columns = [
             { key: 'accountNumber', title: 'Account Number', searchEnabled: false },
             { key: 'transactionId', title: 'Transaction Id', placeholder: 'Transaction Id' },
@@ -80,16 +78,10 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             { key: 'closingBalance', title: 'Closing Balance', placeholder: 'Balance Bigger', cellTemplate: this.cellPipingBalance },
             { key: 'createDt', title: 'Date', placeholder: 'Date', cellTemplate: this.cellPipingDate },
             { key: 'status', title: 'Status', placeholder: 'Status' },
-            { key: 'transactionAmt', title: 'Amount', placeholder: 'Amount Bigger', cellTemplate: this.cellPipingTranzaction },
+            { key: 'transactionAmt', title: 'Amount', placeholder: 'Amount Bigger', cellTemplate: this.cellPipingTransaction },
             { key: 'transactionSummary', title: 'Summary' }
         ]
 
-        // move pagination
-        // let componentRef = oldParentViewContainerRef.createComponent(MyChildComponentType);
-        // let viewRef = componentRef.hostView;
-
-
-        
     }
 
     ngOnDestroy(): void {
