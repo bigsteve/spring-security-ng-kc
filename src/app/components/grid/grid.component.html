@@ -2,19 +2,24 @@
     <div id="grid-page-head row" class="page-head">
         <div class="grid-title column col-9">
             <h1>Transactions History</h1>
-
-            <app-paginator [length]="this.pagination.count" [pageSize]="this.pagination.limit" [pageSizeOptions]="[50, 100, 250, 500]" aria-label="Select page">
-            </app-paginator>
         </div>
         <div class="grid-export column col-3">
             <export-buttons *ngIf="this.configuration.exportEnabled" [columns]="columns" [observable]="exportData()">
             </export-buttons>
+        </div>
+        <div class="grid-paginator column col-12">
+            <ng-container *ngTemplateOutlet="matPaginator"></ng-container>
         </div>
     </div>
     <div class="column col-12">
         <ngx-table #table [configuration]="configuration" [data]="page.content" [columns]="columns"
             [pagination]="pagination" (event)="eventEmitted($event)">
         </ngx-table>
+    </div>
+
+    <div class="grid-paginator column col-12">
+        <ng-container *ngTemplateOutlet="matPaginator"></ng-container>
+
     </div>
 </div>
 
@@ -28,4 +33,11 @@
 
 <ng-template #cellPipingDate let-row>
     <div class="date date-cell">{{row.createDt | date: 'short'}}</div>
+</ng-template>
+
+<ng-template #matPaginator>
+    <mat-paginator #paginator [length]="this.page.totalElements" [pageSize]="this.page.pageable.pageSize"
+        [pageIndex]="this.page.pageable.pageNumber" [pageSizeOptions]="this.pageable.getPageSizeOptions()"
+        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="eventEmitted($event)">
+    </mat-paginator>
 </ng-template>

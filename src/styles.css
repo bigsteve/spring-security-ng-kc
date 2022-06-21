@@ -113,16 +113,3 @@ margin:7% 0em 1.4%;
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-div.ngx-pagination-wrapper {
-    position: absolute;
-    top: 0;
-    margin-top:-40px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    border:none;
-}
-
-table {
-   margin-top: 70px;
-}

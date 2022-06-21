@@ -14,6 +14,8 @@ import { Subject } from 'rxjs'
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service'
 import { User } from 'src/app/model/user.model'
 import { Page } from 'src/app/model/page.model'
+import { Pageable } from 'src/app/model/pageable/pageable.model'
+import { MatPaginator } from '@angular/material/paginator'
 
 interface EventObject {
     event: string
@@ -36,11 +38,14 @@ interface EventObject {
 
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
+
     @ViewChild('table', { static: true }) table: APIDefinition
+    @ViewChild('paginator', { static: true }) paginator: MatPaginator
     @ViewChild('cellPipingTransaction', { static: true }) cellPipingTransaction: TemplateRef<any>;
     @ViewChild('cellPipingBalance', { static: true }) cellPipingBalance: TemplateRef<any>;
     @ViewChild('cellPipingDate', { static: true }) cellPipingDate: TemplateRef<any>;
 
+    public pageable: Pageable = new Pageable()
     public page: Page = new Page()
     private params: string = '?limit=50&offset=0'
     private user: User
@@ -68,6 +73,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
+
         this.configuration = { ...DefaultConfig }
         this.getData(this.params)
 
@@ -93,8 +99,8 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
-    exportData () {
-        let paramsExport = "?limit="+this.pagination.count+"&" + Object.keys(this.pagination)
+    exportData() {
+        let paramsExport = "?limit=" + this.pagination.count + "&" + Object.keys(this.pagination)
             .filter(k => (k != "limit" && k != "offset" && k != "count"))
             .map(key => `${key}=${this.pagination[key]}`).join('&')
 
@@ -105,7 +111,9 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     eventEmitted($event: { event: string, value: any }): void {
-        
+
+        $event = this.convertPaginatorEvent($event)
+
         if ($event.event !== 'onClick' && $event.event !== 'onSearch') {
             this.parseEvent($event)
         }
@@ -120,7 +128,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         if ($event.event == 'onSearch') {
-            
+
             if (!this.timeouts.hasOwnProperty($event.event)) this.timeouts[$event.event] = []
             this.timeouts[$event.event].push(setTimeout(timeoutParseEvent, 600))
 
@@ -148,6 +156,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             this.pagination.searchby = obj.value[0].key
             this.pagination.search = obj.value[0].value
             this.pagination.offset = 0
+            this.paginator.firstPage()
         }
 
         this.pagination.offset -= (this.pagination.offset > 0) ? 1 : 0
@@ -163,6 +172,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.configuration.searchEnabled = true
         this.configuration.exportEnabled = true
         this.configuration.serverPagination = true
+        this.configuration.paginationEnabled = false
         this.configuration.rows = 50
         this.service
             .getAccountTransactions(params, this.user)
@@ -173,7 +183,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                     console.log(this.page)
 
                     this.pagination.limit = this.page.pageable.pageSize
-                    this.pagination.offset = this.page.pageable.pageNumber + 1
+                    this.pagination.offset = this.page.pageable.pageNumber
                     this.pagination.count = response ? this.page.totalElements : 0
 
                     this.pagination = { ...this.pagination }
@@ -198,6 +208,20 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                 value: { row: 1, attr: 'background', value: '#fd5e5ed4' }
             })
         }
+    }
+
+    convertPaginatorEvent($event: any): any {
+        if (!$event.hasOwnProperty("event") && $event.hasOwnProperty("pageSize") && $event.hasOwnProperty("pageIndex")) {
+            const ev = {
+                event: "onMatPagination",
+                value: {
+                    limit: $event.pageSize,
+                    page: $event.pageIndex + 1
+                }
+            }
+            $event = ev
+        }
+        return $event
     }
 
 }

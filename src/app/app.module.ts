@@ -16,7 +16,6 @@ import { CardsPage } from './pages/cards/cards.page';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { GridComponent } from './components/grid/grid.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { PaginationComponent } from './components/pagination/pagination.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -26,7 +25,6 @@ import { ButtonOverviewExampleComponent } from './components/buttons/button-over
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { PaginatorComponent } from './components/paginator/paginator.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 function initializeKeycloak(keycloak: KeycloakService) {
@@ -57,10 +55,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         LoansPage,
         CardsPage,
         GridComponent,
-        PaginationComponent,
         ButtonOverviewExampleComponent,
-        ExportButtonsComponent,
-        PaginatorComponent
+        ExportButtonsComponent
     ],
     exports: [AppComponent],
     imports: [
