@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "^14.0.2",
     "@angular/router": "^14.0.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
-    "@ngrx/store": "^10.0.0",
+    "@ngrx/store": "^14.0.0",
     "angular-oauth2-oidc": "^12.0.2",
     "bootstrap": "^4.5.2",
     "export-to-csv": "^0.2.1",
