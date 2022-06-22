@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Columns, Config, DefaultConfig } from 'ngx-easy-table';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Config, DefaultConfig } from 'ngx-easy-table';
 import { ExportToCsv } from 'export-to-csv';
 import { HttpResponse } from '@angular/common/http';
 import { Page } from 'ngx-pagination/dist/pagination-controls.directive';
