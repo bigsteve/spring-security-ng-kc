@@ -10,8 +10,8 @@ section {
   }
   
   .block-button-row {
-    display: table-cell;
-    width: 490px;
+    display: block;
+    justify-content: right;
   }
   
   .block-button-row .mat-button-base {
@@ -20,13 +20,13 @@ section {
   
   .block-flex-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     flex-wrap: wrap;
   }
   
   .block-button-container {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     width: 120px;
   }
   

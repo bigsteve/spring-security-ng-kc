@@ -1,13 +1,17 @@
-<div class="grid-vio">
-    <div id="grid-page-head row" class="page-head">
-        <div class="grid-title column col-9">
-            <h1>Transactions History</h1>
+<div class="crud-grid container">
+    <div id="grid-page-head" class="page-head row">
+        <div class="grid-title col-sm-6">
+            <h1>{{ seo.title }}</h1>
         </div>
-        <div class="grid-export column col-3">
-            <export-buttons *ngIf="this.configuration.exportEnabled" [columns]="columns" [observable]="exportData()">
+        <div class="grid-export col-sm-6">
+            <export-buttons *ngIf="this.configuration.exportEnabled" [filename]="exportFileName" [columns]="columns"
+                [observable]="exportData()">
             </export-buttons>
         </div>
-        <div class="grid-paginator column col-12">
+    </div>
+
+    <div class="row">
+        <div class="grid-paginator column col-sm-12">
             <ng-container *ngTemplateOutlet="matPaginator"></ng-container>
         </div>
     </div>

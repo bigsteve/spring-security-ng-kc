@@ -3,6 +3,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    Input,
     OnDestroy,
     OnInit,
     TemplateRef,
@@ -16,6 +17,7 @@ import { User } from 'src/app/model/user.model'
 import { Page } from 'src/app/model/page.model'
 import { Pageable } from 'src/app/model/pageable/pageable.model'
 import { MatPaginator } from '@angular/material/paginator'
+import { Seo } from 'src/app/model/seo/seo.model'
 
 interface EventObject {
     event: string
@@ -38,19 +40,19 @@ interface EventObject {
 
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
-
     @ViewChild('table', { static: true }) table: APIDefinition
     @ViewChild('paginator', { static: true }) paginator: MatPaginator
     @ViewChild('cellPipingTransaction', { static: true }) cellPipingTransaction: TemplateRef<any>;
     @ViewChild('cellPipingBalance', { static: true }) cellPipingBalance: TemplateRef<any>;
     @ViewChild('cellPipingDate', { static: true }) cellPipingDate: TemplateRef<any>;
+    @Input() seo: Seo = new Seo()
 
     public pageable: Pageable = new Pageable()
     public page: Page = new Page()
     private params: string = '?limit=50&offset=0'
     private user: User
     public configuration: Config
-
+    public exportFileName: string
     public pagination = {
         limit: 50,
         offset: 0,
@@ -72,8 +74,14 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.user = JSON.parse(sessionStorage.getItem('userdetails'))
     }
 
+    zeroPrefix(n: number): string {
+        return (n < 10) ? "0" + n : n.toString()
+    }
+
     ngOnInit(): void {
 
+        const d = new Date()
+        this.exportFileName = this.seo.title.replace(" ", "-").toLowerCase() + "-" + d.getFullYear() + "-" + this.zeroPrefix(d.getMonth()) + "-" + this.zeroPrefix(d.getDate()) + "-" + this.zeroPrefix(d.getHours())
         this.configuration = { ...DefaultConfig }
         this.getData(this.params)
 
@@ -156,7 +164,6 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             this.pagination.searchby = obj.value[0].key
             this.pagination.search = obj.value[0].value
             this.pagination.offset = 0
-            this.paginator.firstPage()
         }
 
         this.pagination.offset -= (this.pagination.offset > 0) ? 1 : 0

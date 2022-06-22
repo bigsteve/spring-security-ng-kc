@@ -5,6 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Page } from 'ngx-pagination/dist/pagination-controls.directive';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -14,9 +15,8 @@ import { takeUntil } from 'rxjs/operators';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExportButtonsComponent implements OnInit {
-    @Input()  columns: Columns[]
-    @Input()  observable: Observable<HttpResponse<Page>>
-    @Output() exportEmitter = new EventEmitter()
+    @Input() observable: Observable<HttpResponse<Page>>
+    @Input() filename: string
     public configuration: Config;
     private ngUnsubscribe: Subject<void> = new Subject<void>()
 
@@ -25,20 +25,24 @@ export class ExportButtonsComponent implements OnInit {
     }
 
     exportToExcel(): void {
-        // Here is simple example how to export to excel by https://www.npmjs.com/package/xlsx
-        // try {
-        //   /* generate worksheet */
-        //   const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
-        //
-        //   /* generate workbook and add the worksheet */
-        //   const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        //   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        //
-        //   /* save to file */
-        //   XLSX.writeFile(wb, 'file.xlsx');
-        // } catch (err) {
-        //   console.error('export error', err);
-        // }
+        
+        try {
+            this.observable.pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe(
+                    (response) => {
+                        
+                        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(<any>response.body["content"]);
+                        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+                        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                        XLSX.writeFile(wb, this.filename+'.xlsx');
+                    },
+                    (error: any) => {
+                        console.error('ERROR: ', error.message)
+                    }
+                )
+        } catch (err) {
+            console.error('Xlsx export error', err);
+        }
     }
 
     exportToCSV(): void {
@@ -52,9 +56,11 @@ export class ExportButtonsComponent implements OnInit {
             useTextFile: false,
             useBom: true,
             useKeysAsHeaders: true,
+            filename: this.filename
         };
+        try {
         const csvExporter = new ExportToCsv(options);
-            this.observable.pipe(takeUntil(this.ngUnsubscribe))
+        this.observable.pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(
                 (response) => {
                     csvExporter.generateCsv(<any>response.body["content"])
@@ -63,5 +69,9 @@ export class ExportButtonsComponent implements OnInit {
                     console.error('ERROR: ', error.message)
                 }
             )
+            
+        } catch (err) {
+            console.error('Csv export error', err);
+        }
     }
 }

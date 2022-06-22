@@ -1,9 +1,9 @@
 
-.grid-vio h1 {
+.crud-grid h1 {
     padding:20px;
 }
 
-.grid-vio .currency {
+.crud-grid .currency {
     text-align: right;
     padding-right: 20px;
 }

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { User } from 'src/app/model/user.model'
-import { DashboardService } from '../../services/dashboard/dashboard.service'
-import { ActivatedRoute } from '@angular/router'
 import { formatCurrency } from '@angular/common'
 import { GridComponent } from 'src/app/components/grid/grid.component'
+import { Seo } from 'src/app/model/seo/seo.model'
 
 @Component({
     selector: 'app-balance',
@@ -14,16 +13,14 @@ import { GridComponent } from 'src/app/components/grid/grid.component'
 export class BalancePage implements OnInit {
 
     user = new User()
-    grid : GridComponent
-    page: number
-    prev: number
-    next: number
-    transactions = new Array()
+    grid: GridComponent
 
-    // constructor(private dashboardService: DashboardService, private route: ActivatedRoute) {
-    //     this.route.params.subscribe(params => {
-    //     })
-    // }
+    public seo = new Seo()
+
+    constructor() {
+
+        this.seo.title = "Transactions History"
+    }
 
     ngOnInit(): void {
     }
@@ -32,7 +29,7 @@ export class BalancePage implements OnInit {
     // {{transaction.transactionType=='Withdrawal' ? (transaction.transactionAmt | currency) : ' '}}
     getTransactionType(v: any, t: string): any {
         let o = ''
-        if(v.transactionType==t) o = formatCurrency(v.transactionAmt, 'en-US', '$')
+        if (v.transactionType == t) o = formatCurrency(v.transactionAmt, 'en-US', '$')
         return o
     }
 

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from 'src/app/model/user.model';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
+import { Seo } from 'src/app/model/seo/seo.model';
 
 @Component({
   selector: 'app-header',
@@ -9,8 +10,8 @@ import { KeycloakProfile } from 'keycloak-js';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  
-  user = new User();
+  @Input() seo: Seo
+  user = new User()
   public isLoggedIn = false;
   public userProfile: KeycloakProfile | null = null;
 
