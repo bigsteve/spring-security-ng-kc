@@ -26,7 +26,6 @@ import { ExportButtonsComponent } from './components/export-buttons/export-butto
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
         keycloak.init({
