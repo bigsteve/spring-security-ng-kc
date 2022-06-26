@@ -18,8 +18,8 @@ export class DashboardService {
     return this.http.post(environment.rooturl + AppConstants.ACCOUNT_API_URL,user,{ observe: 'response',withCredentials: true });
   }
 
-  getAccountTransactions(params : string, user : User){
-    return this.http.post<Page>(environment.rooturl + AppConstants.BALANCE_API_URL+params,user,{ observe: 'response',withCredentials: true });
+  getAccountTransactions(params : string){
+    return this.http.post<Page>(environment.rooturl + AppConstants.BALANCE_API_URL+params,null,{ observe: 'response',withCredentials: true });
   }
 
   getLoansDetails(user : User){

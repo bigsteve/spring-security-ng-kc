@@ -113,7 +113,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             .map(key => `${key}=${this.pagination[key]}`).join('&')
 
         return this.service
-            .getAccountTransactions(paramsExport, this.user)
+            .getAccountTransactions(paramsExport)
             .pipe(takeUntil(this.ngUnsubscribe))
     }
 
@@ -182,7 +182,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.configuration.paginationEnabled = false
         this.configuration.rows = 50
         this.service
-            .getAccountTransactions(params, this.user)
+            .getAccountTransactions(params)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(
                 (response) => {
