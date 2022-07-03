@@ -17,7 +17,7 @@
     </div>
     <div class="column col-12">
         <ngx-table #table [configuration]="configuration" [data]="page.content" [columns]="columns"
-            [pagination]="pagination" (event)="eventEmitted($event)">
+             (event)="eventEmitted($event)">
         </ngx-table>
     </div>
 
@@ -27,16 +27,16 @@
     </div>
 </div>
 
-<ng-template #cellPipingBalance let-row>
-    <div class="currency currency-cell">{{row.closingBalance | currency}}</div>
+<ng-template #pipeCurrency let-row let-column="column">
+    <div class="currency currency-cell">{{row[column.key] | currency}}</div>
 </ng-template>
 
-<ng-template #cellPipingTransaction let-row>
-    <div class="currency currency-cell">{{row.transactionAmt | currency}}</div>
+<ng-template #pipeDateShort let-row let-column="column" let-rowIndex="rowIndex">
+    <div class="date date-cell">{{row[column.key] | date: 'yyyy-MM-dd'}}</div>
 </ng-template>
 
-<ng-template #cellPipingDate let-row>
-    <div class="date date-cell">{{row.createDt | date: 'short'}}</div>
+<ng-template #rowActions let-row let-column="column" let-rowIndex="rowIndex">
+    <div class="action action-cell">{{'bla'}}</div>
 </ng-template>
 
 <ng-template #matPaginator>

@@ -9,11 +9,9 @@ import {
     TemplateRef,
     ViewChild,
 } from '@angular/core'
-import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table'
+import { API, APIDefinition, Config, DefaultConfig } from 'ngx-easy-table'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
-import { DashboardService } from 'src/app/services/dashboard/dashboard.service'
-import { User } from 'src/app/model/user.model'
 import { Page } from 'src/app/model/page.model'
 import { Pageable } from 'src/app/model/pageable/pageable.model'
 import { MatPaginator } from '@angular/material/paginator'
@@ -34,23 +32,30 @@ interface EventObject {
     selector: 'app-grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.css'],
-    providers: [DashboardService],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
+/*
+    TODO:
+    remove ngx-table completly (add list, filters and ordering)
+    actions template
+    refine parameters to include columns and use multiple filters
+    FIX:
+    date pipe/filering doesn't work correclty for month february (02) becuse it is substracting 1 day from dd group when day is < 05
+*/
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChild('table', { static: true }) table: APIDefinition
     @ViewChild('paginator', { static: true }) paginator: MatPaginator
-    @ViewChild('cellPipingTransaction', { static: true }) cellPipingTransaction: TemplateRef<any>;
-    @ViewChild('cellPipingBalance', { static: true }) cellPipingBalance: TemplateRef<any>;
-    @ViewChild('cellPipingDate', { static: true }) cellPipingDate: TemplateRef<any>;
+    @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>;
+    @ViewChild('pipeDateShort', { static: true }) public pipeDateShort: TemplateRef<any>;
+    @ViewChild('rowActions', { static: true }) public rowActions: TemplateRef<any>;
     @Input() seo: Seo = new Seo()
+    @Input() service: any
+    @Input() columns: any
 
     public pageable: Pageable = new Pageable()
     public page: Page = new Page()
     private params: string = '?limit=50&offset=0'
-    private user: User
     public configuration: Config
     public exportFileName: string
     public pagination = {
@@ -62,40 +67,32 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         searchby: "",
         search: ""
     }
+
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
-    public columns: Columns[]
-    public test = "closingBalance"
-    constructor(
-        private readonly service: DashboardService,
-        private readonly cdr: ChangeDetectorRef
-    ) {
 
-        this.user = JSON.parse(sessionStorage.getItem('userdetails'))
-    }
+    constructor(
+        private readonly cdr: ChangeDetectorRef
+    ) {}
 
     zeroPrefix(n: number): string {
         return (n < 10) ? "0" + n : n.toString()
     }
 
     ngOnInit(): void {
+        this.columns = this.columns
+
+        this.columns.forEach(el => {
+            if (el.hasOwnProperty("cellTemplate")) {
+                el.cellTemplate = this[el.cellTemplate]
+            }
+        })
+
 
         const d = new Date()
         this.exportFileName = this.seo.title.replace(" ", "-").toLowerCase() + "-" + d.getFullYear() + "-" + this.zeroPrefix(d.getMonth()) + "-" + this.zeroPrefix(d.getDate()) + "-" + this.zeroPrefix(d.getHours())
         this.configuration = { ...DefaultConfig }
         this.getData(this.params)
-
-        this.columns = [
-            { key: 'accountNumber', title: 'Account Number', searchEnabled: false },
-            { key: 'transactionId', title: 'Transaction Id', placeholder: 'Transaction Id' },
-            { key: 'transactionType', title: 'Transaction Type', placeholder: 'Transaction Type' },
-            { key: 'closingBalance', title: 'Closing Balance', placeholder: 'Balance Bigger', cellTemplate: this.cellPipingBalance },
-            { key: 'createDt', title: 'Date', placeholder: 'Date', cellTemplate: this.cellPipingDate },
-            { key: 'status', title: 'Status', placeholder: 'Status' },
-            { key: 'transactionAmt', title: 'Amount', placeholder: 'Amount Bigger', cellTemplate: this.cellPipingTransaction },
-            { key: 'transactionSummary', title: 'Summary' }
-        ]
-
     }
 
     ngOnDestroy(): void {
@@ -113,7 +110,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             .map(key => `${key}=${this.pagination[key]}`).join('&')
 
         return this.service
-            .getAccountTransactions(paramsExport)
+            .getData(paramsExport)
             .pipe(takeUntil(this.ngUnsubscribe))
     }
 
@@ -122,7 +119,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
         $event = this.convertPaginatorEvent($event)
 
-        if ($event.event !== 'onClick' && $event.event !== 'onSearch') {
+        if ($event.event !== 'onClick' && $event.event !== 'onSearch' && $event.event !== 'onDoubleClick') {
             this.parseEvent($event)
         }
 
@@ -160,13 +157,16 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             this.pagination.orderby = obj.value.key ? obj.value.key : this.pagination.orderby
             this.pagination.orderdir = obj.value.order ? obj.value.order : this.pagination.orderdir
         }
+
         if (obj.event === 'onSearch') {
             this.pagination.searchby = obj.value[0].key
             this.pagination.search = obj.value[0].value
             this.pagination.offset = 0
         }
+        if (obj.event === 'onMatPagination') {
+            this.pagination.offset = obj.value.page
+        }
 
-        this.pagination.offset -= (this.pagination.offset > 0) ? 1 : 0
         this.params = "?" + Object.keys(this.pagination).map(key => `${key}=${this.pagination[key]}`).join('&');
 
         this.getData(this.params)
@@ -179,13 +179,13 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.configuration.searchEnabled = true
         this.configuration.exportEnabled = true
         this.configuration.serverPagination = true
-        this.configuration.paginationEnabled = false
+        this.configuration.paginationEnabled = true
         this.configuration.rows = 50
         this.service
-            .getAccountTransactions(params)
+            .getData(params)
             .pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(
-                (response) => {
+            .subscribe({
+                next: (response: any) => {
                     this.page = <any>response.body
                     console.log(this.page)
 
@@ -198,10 +198,11 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.cdr.detectChanges()
                     this.customizeGrid()
                 },
-                (error: any) => {
-                    console.error('ERROR: ', error.message)
-                }
-            )
+                error: (error: any) => {
+                    console.error('Error: ', error.message)
+                },
+                complete: () => console.info('rxjs subscribe complete')
+            })
     }
 
     private customizeGrid(): void {
@@ -209,12 +210,18 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             type: API.setPaginationRange,
             value: [50, 100, 250, 500]
         })
+
         if (false) {
             this.table.apiEvent({
                 type: API.setRowStyle,
                 value: { row: 1, attr: 'background', value: '#fd5e5ed4' }
             })
         }
+        
+    }
+
+    debugVal(v: any): void {
+        console.log(v)
     }
 
     convertPaginatorEvent($event: any): any {
@@ -223,10 +230,11 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                 event: "onMatPagination",
                 value: {
                     limit: $event.pageSize,
-                    page: $event.pageIndex + 1
+                    page: $event.pageIndex
                 }
             }
             $event = ev
+            console.log($event)
         }
         return $event
     }

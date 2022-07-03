@@ -3,33 +3,36 @@ import { User } from 'src/app/model/user.model';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 
 @Component({
-  selector: 'app-loans',
-  templateUrl: './loans.page.html',
-  styleUrls: ['./loans.page.css']
+    selector: 'app-loans',
+    templateUrl: './loans.page.html',
+    styleUrls: ['./loans.page.css']
 })
 export class LoansPage implements OnInit {
 
-  user = new User();
-  loans = new Array();
-  currOutstandingBalance:Number = 0;
+    user = new User();
+    loans = new Array();
+    currOutstandingBalance: Number = 0;
 
-  constructor(private dashboardService: DashboardService) { }
+    constructor(private dashboardService: DashboardService) { }
 
-  ngOnInit(): void {
-    this.user = JSON.parse(sessionStorage.getItem('userdetails'));
-    if(this.user){
-      this.dashboardService.getLoansDetails(this.user).subscribe(
-        responseData => {
-        this.loans = <any> responseData.body;
-        this.loans.forEach(function (loan) {
-          this.currOutstandingBalance = this.currOutstandingBalance+loan.outstandingAmount;
-        }.bind(this)); 
-        }, error => {
-          console.log(error);
-        });
+    ngOnInit(): void {
+        this.user = JSON.parse(sessionStorage.getItem('userdetails'));
+        if (this.user) {
+            this.dashboardService.getLoansDetails(this.user).subscribe({
+                next: responseData => {
+                    this.loans = <any>responseData.body;
+                    this.loans.forEach(function (loan) {
+                        this.currOutstandingBalance = this.currOutstandingBalance + loan.outstandingAmount;
+                    }.bind(this));
+                },
+                error: error => {
+                    console.error(error);
+                },
+                complete: () => console.info('complete')
+            });
+        }
     }
-  }
 
-  
+
 
 }
