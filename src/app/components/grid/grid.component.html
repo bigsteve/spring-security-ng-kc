@@ -23,7 +23,6 @@
 
     <div class="grid-paginator column col-12">
         <ng-container *ngTemplateOutlet="matPaginator"></ng-container>
-
     </div>
 </div>
 
@@ -32,7 +31,7 @@
 </ng-template>
 
 <ng-template #pipeDateShort let-row let-column="column" let-rowIndex="rowIndex">
-    <div class="date date-cell">{{row[column.key] | date: 'yyyy-MM-dd'}}</div>
+    <div class="date date-cell">{{row[column.key] | date: 'yyyy-MM-dd': row[column.key].substring(row[column.key].length-6)}}</div>
 </ng-template>
 
 <ng-template #rowActions let-row let-column="column" let-rowIndex="rowIndex">
@@ -41,7 +40,7 @@
 
 <ng-template #matPaginator>
     <mat-paginator #paginator [length]="this.page.totalElements" [pageSize]="this.page.pageable.pageSize"
-        [pageIndex]="this.page.pageable.pageNumber" [pageSizeOptions]="this.pageable.getPageSizeOptions()"
+        [pageIndex]="this.page.pageable.pageNumber" [pageSizeOptions]="this.page.pageable.getPageSizeOptions()"
         aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="eventEmitted($event)">
     </mat-paginator>
 </ng-template>

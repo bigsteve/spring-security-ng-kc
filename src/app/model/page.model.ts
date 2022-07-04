@@ -6,11 +6,19 @@ export class Page {
     empty: false
     first: false
     last: false
-    number: 0
+    public number: number = 0
     numberOfElements: 0
-    pageable: Pageable = new Pageable()
+    public pageable: Pageable = new Pageable()
     size: 50
     sort: { sorted: true, unsorted: false, empty: false }
     totalElements: 0
     totalPages: 0
+    
+    public setPageable(v: Pageable) {
+        this.pageable = v
+    }
+    
+    public getPageable(): Pageable {
+        return this.pageable
+    }
 }

@@ -8,6 +8,7 @@ import {
     OnInit,
     TemplateRef,
     ViewChild,
+    isDevMode
 } from '@angular/core'
 import { API, APIDefinition, Config, DefaultConfig } from 'ngx-easy-table'
 import { takeUntil } from 'rxjs/operators'
@@ -16,6 +17,7 @@ import { Page } from 'src/app/model/page.model'
 import { Pageable } from 'src/app/model/pageable/pageable.model'
 import { MatPaginator } from '@angular/material/paginator'
 import { Seo } from 'src/app/model/seo/seo.model'
+import { Search } from 'src/app/model/pageable/search.model'
 
 interface EventObject {
     event: string
@@ -36,11 +38,8 @@ interface EventObject {
 })
 /*
     TODO:
+    clear previous search fields
     remove ngx-table completly (add list, filters and ordering)
-    actions template
-    refine parameters to include columns and use multiple filters
-    FIX:
-    date pipe/filering doesn't work correclty for month february (02) becuse it is substracting 1 day from dd group when day is < 05
 */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -53,27 +52,17 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() service: any
     @Input() columns: any
 
-    public pageable: Pageable = new Pageable()
     public page: Page = new Page()
+    public search: Search = new Search()
     private params: string = '?limit=50&offset=0'
     public configuration: Config
     public exportFileName: string
-    public pagination = {
-        limit: 50,
-        offset: 0,
-        count: -1,
-        orderby: "",
-        orderdir: "",
-        searchby: "",
-        search: ""
-    }
-
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
 
     constructor(
         private readonly cdr: ChangeDetectorRef
-    ) {}
+    ) { }
 
     zeroPrefix(n: number): string {
         return (n < 10) ? "0" + n : n.toString()
@@ -105,9 +94,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     exportData() {
-        let paramsExport = "?limit=" + this.pagination.count + "&" + Object.keys(this.pagination)
-            .filter(k => (k != "limit" && k != "offset" && k != "count"))
-            .map(key => `${key}=${this.pagination[key]}`).join('&')
+        let paramsExport = "?limit=" + this.page.totalElements + "&" + this.search.getRequestParameters()
 
         return this.service
             .getData(paramsExport)
@@ -122,7 +109,6 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         if ($event.event !== 'onClick' && $event.event !== 'onSearch' && $event.event !== 'onDoubleClick') {
             this.parseEvent($event)
         }
-
 
 
         const timeoutParseEvent = () => {
@@ -142,58 +128,56 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                 clearTimeout(this.timeouts[$event.event][0])
                 this.timeouts[$event.event].shift()
             }
-
         }
-        console.log($event)
     }
 
 
     private parseEvent(obj: EventObject): void {
 
-        this.pagination.limit = obj.value.limit ? obj.value.limit : this.pagination.limit
-        this.pagination.offset = obj.value.page ? obj.value.page : this.pagination.offset
+        this.page.pageable.setPageSize(obj.value.limit)
+        this.page.pageable.setOffset(obj.value.page)
 
         if (obj.event === 'onOrder') {
-            this.pagination.orderby = obj.value.key ? obj.value.key : this.pagination.orderby
-            this.pagination.orderdir = obj.value.order ? obj.value.order : this.pagination.orderdir
+
+            this.search.setOrderDir(obj.value.order)
+            this.search.setOrderBy(obj.value.key)
         }
 
         if (obj.event === 'onSearch') {
-            this.pagination.searchby = obj.value[0].key
-            this.pagination.search = obj.value[0].value
-            this.pagination.offset = 0
-        }
-        if (obj.event === 'onMatPagination') {
-            this.pagination.offset = obj.value.page
+            this.search.setSearch(obj.value[0].value)
+            this.search.setSearchBy(obj.value[0].key)
+            this.page.pageable.pageNumber = 0
         }
 
-        this.params = "?" + Object.keys(this.pagination).map(key => `${key}=${this.pagination[key]}`).join('&');
+        if (obj.event === 'onMatPagination') {
+            this.page.pageable.pageNumber = obj.value.page
+
+        }
+
+        this.params = "?" + this.page.pageable.getRequestParameters() + "&" + this.search.getRequestParameters()
 
         this.getData(this.params)
     }
 
     private getData(params: string): void {
 
-        console.log(params)
         this.configuration.isLoading = true
         this.configuration.searchEnabled = true
         this.configuration.exportEnabled = true
         this.configuration.serverPagination = true
-        this.configuration.paginationEnabled = true
+        this.configuration.paginationEnabled = false
         this.configuration.rows = 50
+        
         this.service
             .getData(params)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe({
                 next: (response: any) => {
                     this.page = <any>response.body
-                    console.log(this.page)
+                    if (isDevMode()) console.log(this.page)
 
-                    this.pagination.limit = this.page.pageable.pageSize
-                    this.pagination.offset = this.page.pageable.pageNumber
-                    this.pagination.count = response ? this.page.totalElements : 0
+                    this.page.pageable = new Pageable(this.page.pageable)
 
-                    this.pagination = { ...this.pagination }
                     this.configuration.isLoading = false
                     this.cdr.detectChanges()
                     this.customizeGrid()
@@ -201,7 +185,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                 error: (error: any) => {
                     console.error('Error: ', error.message)
                 },
-                complete: () => console.info('rxjs subscribe complete')
+                complete: null
             })
     }
 
@@ -217,11 +201,12 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                 value: { row: 1, attr: 'background', value: '#fd5e5ed4' }
             })
         }
-        
+
     }
 
-    debugVal(v: any): void {
-        console.log(v)
+    debugVal(v: any): any {
+        if (isDevMode()) console.log(v)
+        return v
     }
 
     convertPaginatorEvent($event: any): any {
@@ -234,10 +219,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             }
             $event = ev
-            console.log($event)
         }
         return $event
     }
-
 }
-
