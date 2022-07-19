@@ -17,7 +17,8 @@ export class BalancePage implements OnInit {
     public seo = new Seo()
     public crudConfig = {
         exportEnabled: true,
-        globalSearchEnabled: false
+        globalSearchEnabled: false,
+        uid: "transactionId"
     }
     public exportFileName: string
 

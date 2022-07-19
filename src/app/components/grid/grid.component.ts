@@ -85,14 +85,21 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         private readonly cdr: ChangeDetectorRef
     ) { }
 
-    applyFilter(event: Event) {
-        console.log(event)
-        // const filterValue = (event.target as HTMLInputElement).value;
-        // this.dataSource.filter = filterValue.trim().toLowerCase();
+    translateEventRowClick(event: any) {
+        const ev = event
+        console.log(ev)
+    }
 
-        // if (this.dataSource.paginator) {
-        //     this.dataSource.paginator.firstPage();
-        // }
+    translateEventFilter(event: any) {
+
+        const ev = event
+        console.log(ev)
+        // this.eventEmitted(ev)
+    }
+
+    translateEventSort(event: any) {
+        const ev = {event: 'onOrder', value: { key: event.active, order: event.direction}}
+        this.eventEmitted(ev)
     }
 
     zeroPrefix(n: number): string {

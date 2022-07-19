@@ -106,3 +106,7 @@ td.mat-cell,
 td.mat-footer-cell {
     border-bottom-width: 0.1px;
 }
+
+.fab-btn-horiz {
+    margin-right: 4px;
+}
