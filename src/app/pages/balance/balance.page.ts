@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { User } from 'src/app/model/user.model'
 import { Seo } from 'src/app/model/seo/seo.model'
 import { DashboardService } from 'src/app/services/dashboard/dashboard.service'
+import { Column } from 'src/app/model/crud/column.model'
 
 @Component({
     selector: 'app-balance',
@@ -12,8 +13,13 @@ import { DashboardService } from 'src/app/services/dashboard/dashboard.service'
 export class BalancePage implements OnInit {
 
     user = new User()
-    columns: {}[]
+    columns: Column[]
     public seo = new Seo()
+    public crudConfig = {
+        exportEnabled: true,
+        globalSearchEnabled: false
+    }
+    public exportFileName: string
 
     constructor(private readonly balanceService: DashboardService) {
         this.balanceService = balanceService
@@ -27,15 +33,15 @@ export class BalancePage implements OnInit {
     ngOnInit(): void {
 
         this.columns = [
-            { key: 'accountNumber', title: 'Account Number' },
-            { key: 'transactionId', title: 'Transaction Id', placeholder: 'Transaction Id' },
-            { key: 'transactionType', title: 'Transaction Type', placeholder: 'Transaction Type' },
-            { key: 'closingBalance', title: 'Closing Balance', placeholder: 'Balance Bigger', cellTemplate: "pipeCurrency" },
-            { key: 'createDt', title: 'Date', placeholder: 'Date', cellTemplate: "pipeDateShort" },
-            { key: 'status', title: 'Status', placeholder: 'Status' },
-            { key: 'transactionAmt', title: 'Amount', placeholder: 'Amount Bigger', cellTemplate: "pipeCurrency" },
-            { key: 'transactionSummary', title: 'Summary' },
-            { key: 'gridActionsCell', title: 'Actions', searchEnabled: false, orderEnabled: false, cellTemplate: "rowActions" }
+            new Column({ key: 'accountNumber', title: 'Account Number'}),
+            new Column({ key: 'transactionId', title: 'Transaction Id', placeholder: 'Transaction Id' }),
+            new Column({ key: 'transactionType', title: 'Transaction Type', placeholder: 'Transaction Type' }),
+            new Column({ key: 'closingBalance', title: 'Closing Balance', placeholder: 'Balance Bigger', cellTemplate: "pipeCurrency" }),
+            new Column({ key: 'createDt', title: 'Date', placeholder: 'Date', cellTemplate: "pipeDateShort" }),
+            new Column({ key: 'status', title: 'Status', placeholder: 'Status' }),
+            new Column({ key: 'transactionAmt', title: 'Amount', placeholder: 'Amount Bigger', cellTemplate: "pipeCurrency" }),
+            new Column({ key: 'transactionSummary', title: 'Summary' }),
+            new Column({ key: 'gridActionsCell', title: 'Actions', searchEnabled: false, orderEnabled: false, cellTemplate: "rowActions" })
         ]
     }
 

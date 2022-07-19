@@ -4,7 +4,7 @@ import { AppConstants } from "../../constants/app.constants";
 import { environment } from '../../../environments/environment';
 import { User } from '../../model/user.model';
 import { Contact } from '../../model/contact.model';
-import { Page } from 'ngx-pagination/dist/pagination-controls.directive';
+import { Page } from '../../model/page.model'
 import { Observable } from 'rxjs';
 
 @Injectable({

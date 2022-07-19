@@ -15,17 +15,23 @@ import { LoansPage } from './pages/loans/loans.page';
 import { CardsPage } from './pages/cards/cards.page';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { GridComponent } from './components/grid/grid.component';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
-import { TableModule } from 'ngx-easy-table';
 import { ButtonOverviewExampleComponent } from './components/buttons/button-overview-example/button-overview-example.component';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field'; 
+import { MatSelectModule } from "@angular/material/select";
+import { MatInputModule } from "@angular/material/input";
+import { MatSortModule } from "@angular/material/sort";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
         keycloak.init({
@@ -65,13 +71,18 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MatDividerModule,
         MatIconModule,
         MatPaginatorModule,
+        MatListModule,
+        MatTableModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatSortModule,
+        MatProgressSpinnerModule,
         BrowserModule,
-        TableModule,
         AppRoutingModule,
         FormsModule,
         KeycloakAngularModule,
         HttpClientModule,
-        NgxPaginationModule,
         HttpClientXsrfModule.withOptions({
             cookieName: 'XSRF-TOKEN',
             headerName: 'X-XSRF-TOKEN',

@@ -8,10 +8,9 @@ import {
     OnInit,
     TemplateRef,
     ViewChild,
-    isDevMode,
-    HostListener,
-    EventEmitter
+    isDevMode
 } from '@angular/core'
+import { API, APIDefinition, Config, DefaultConfig } from 'ngx-easy-table'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
 import { Page } from 'src/app/model/page.model'
@@ -19,8 +18,6 @@ import { Pageable } from 'src/app/model/pageable/pageable.model'
 import { MatPaginator } from '@angular/material/paginator'
 import { Seo } from 'src/app/model/seo/seo.model'
 import { Search } from 'src/app/model/pageable/search.model'
-import { MatSort } from '@angular/material/sort';
-import { UniformEvent } from 'src/app/interfaces/uniform.event'
 
 interface EventObject {
     event: string
@@ -39,70 +36,41 @@ interface EventObject {
     styleUrls: ['./grid.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 /*
     TODO:
-    refine events for sort, filter, row-click and apply them
+    clear previous search fields
+    remove ngx-table completly (add list, filters and ordering)
 */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
-    @HostListener('matSortChange', ['$event'])
-    sortChange(e) {
-      // save cookie with table sort data here
-      let ev: UniformEvent = {
-          event: '',
-          params: {
-              name: '',
-              value: ''
-          }
-      }
-      ev.event = "matSortChange"
-      ev.params.name = e.active
-      ev.params.value = e.direction
-      new EventEmitter().emit(ev)
-    }
-    
+
+    @ViewChild('table', { static: true }) table: APIDefinition
     @ViewChild('paginator', { static: true }) paginator: MatPaginator
     @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>;
     @ViewChild('pipeDateShort', { static: true }) public pipeDateShort: TemplateRef<any>;
     @ViewChild('rowActions', { static: true }) public rowActions: TemplateRef<any>;
-    @ViewChild(MatSort) sort: MatSort;
-
-    @Input() crudConfig: any
     @Input() seo: Seo = new Seo()
     @Input() service: any
     @Input() columns: any
-    public displayedColumns: []
+
     public page: Page = new Page()
     public search: Search = new Search()
     private params: string = '?limit=50&offset=0'
-    public isLoading: boolean = false
+    public configuration: Config
     public exportFileName: string
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
 
-
     constructor(
         private readonly cdr: ChangeDetectorRef
     ) { }
-
-    applyFilter(event: Event) {
-        console.log(event)
-        // const filterValue = (event.target as HTMLInputElement).value;
-        // this.dataSource.filter = filterValue.trim().toLowerCase();
-
-        // if (this.dataSource.paginator) {
-        //     this.dataSource.paginator.firstPage();
-        // }
-    }
 
     zeroPrefix(n: number): string {
         return (n < 10) ? "0" + n : n.toString()
     }
 
     ngOnInit(): void {
+        this.columns = this.columns
 
-        this.displayedColumns = this.columns.map(el => el.key)
-        console.log(this.columns.map(el => el.key))
         this.columns.forEach(el => {
             if (el.hasOwnProperty("cellTemplate")) {
                 el.cellTemplate = this[el.cellTemplate]
@@ -112,6 +80,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const d = new Date()
         this.exportFileName = this.seo.title.replace(" ", "-").toLowerCase() + "-" + d.getFullYear() + "-" + this.zeroPrefix(d.getMonth()) + "-" + this.zeroPrefix(d.getDate()) + "-" + this.zeroPrefix(d.getHours())
+        this.configuration = { ...DefaultConfig }
         this.getData(this.params)
     }
 
@@ -182,6 +151,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (obj.event === 'onMatPagination') {
             this.page.pageable.pageNumber = obj.value.page
+
         }
 
         this.params = "?" + this.page.pageable.getRequestParameters() + "&" + this.search.getRequestParameters()
@@ -191,8 +161,13 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private getData(params: string): void {
 
-        this.isLoading = true
-
+        this.configuration.isLoading = true
+        this.configuration.searchEnabled = true
+        this.configuration.exportEnabled = true
+        this.configuration.serverPagination = true
+        this.configuration.paginationEnabled = false
+        this.configuration.rows = 50
+        
         this.service
             .getData(params)
             .pipe(takeUntil(this.ngUnsubscribe))
@@ -202,8 +177,10 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (isDevMode()) console.log(this.page)
 
                     this.page.pageable = new Pageable(this.page.pageable)
-                    this.isLoading = false
+
+                    this.configuration.isLoading = false
                     this.cdr.detectChanges()
+                    this.customizeGrid()
                 },
                 error: (error: any) => {
                     console.error('Error: ', error.message)
@@ -212,8 +189,23 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             })
     }
 
+    private customizeGrid(): void {
+        this.table.apiEvent({
+            type: API.setPaginationRange,
+            value: [50, 100, 250, 500]
+        })
+
+        if (false) {
+            this.table.apiEvent({
+                type: API.setRowStyle,
+                value: { row: 1, attr: 'background', value: '#fd5e5ed4' }
+            })
+        }
+
+    }
+
     debugVal(v: any): any {
-        if (isDevMode()) console.log('Debug val: ', v)
+        if (isDevMode()) console.log(v)
         return v
     }
 

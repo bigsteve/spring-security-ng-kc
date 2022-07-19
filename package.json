@@ -30,8 +30,6 @@
     "install": "^0.13.0",
     "keycloak-angular": "^10.0.1",
     "keycloak-js": "^18.0.1",
-    "ngx-easy-table": "^15.3.0",
-    "ngx-pagination": "^5.0.0",
     "npm": "^8.12.2",
     "rxjs": "^7.5.5",
     "tslib": "^2.4.0",
