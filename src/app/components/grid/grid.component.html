@@ -61,8 +61,8 @@
                 </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="columns"></tr>
-            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             <!-- Row shown if dataset is empty -->
             <tr class="mat-row" *matNoDataRow>
