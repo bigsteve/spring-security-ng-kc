@@ -12,10 +12,18 @@
 
     <div class="row grid-control-bar-top">
         <div class="grid-control-buttons column col-lg-6 col-md-12">
-            <button mat-mini-fab color="primary" aria-label="Menu" class="fab-btn-horiz">
+            <mat-form-field appearance="fill" *ngIf="this.crudConfig.massActionsEnabled"  class="fab-btn-horiz">
+                <mat-label>Mass Actions</mat-label>
+                <mat-select>
+                  <mat-option *ngFor="let actions of ['Enable','Disable','Delete']" [value]="actions">
+                    {{actions}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            <button *ngIf="this.crudConfig.configEnabled" mat-mini-fab color="primary" aria-label="Config" matTooltip="Configuration"  [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>menu</mat-icon>
             </button>
-            <button mat-mini-fab color="primary" aria-label="Add" class="fab-btn-horiz">
+            <button mat-mini-fab color="primary" aria-label="Add" matTooltip="Add" [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
@@ -42,7 +50,7 @@
                     <div class="search-field-holder">
                         <mat-form-field *ngIf="column.searchEnabled" class="table-column-search-field"
                             appearance="standard">
-                            <input matInput (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})" placeholder="Search {{column.title}}" #input>
+                            <input matInput (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})" placeholder="Src {{column.title}}" #input>
                         </mat-form-field>
                     </div>
                 </th>
@@ -53,8 +61,8 @@
                 </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
 
             <!-- Row shown if dataset is empty -->
             <tr class="mat-row" *matNoDataRow>
@@ -68,10 +76,6 @@
     </div>
 </div>
 
-<div class="mat-spinner-overlay" *ngIf="this.isLoading">
-    <mat-progress-spinner color="primary" mode="indeterminate" diameter="50">
-    </mat-progress-spinner>
-</div>
 
 <ng-template #defaultCellTemplate let-row , let-column="column" , let-colIndex="colIndex" , let-rowIndex="rowIndex">
     {{row[column.key]}}
@@ -93,6 +97,6 @@
 <ng-template #matPaginator>
     <mat-paginator #paginator [length]="this.page.totalElements" [pageSize]="this.page.pageable.pageSize"
         [pageIndex]="this.page.pageable.pageNumber" [pageSizeOptions]="this.page.pageable.getPageSizeOptions()"
-        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="eventEmitted($event)">
+        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="translateEventPagination($event)">
     </mat-paginator>
 </ng-template>

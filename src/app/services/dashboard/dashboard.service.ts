@@ -4,7 +4,7 @@ import { AppConstants } from "../../constants/app.constants";
 import { environment } from '../../../environments/environment';
 import { User } from '../../model/user.model';
 import { Contact } from '../../model/contact.model';
-import { Page } from '../../model/page.model'
+import { DataPage } from '../../model/data.page.model'
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class DashboardService {
   }
 
   getData(params : string){
-    return this.http.post<Page>(environment.rooturl + AppConstants.BALANCE_API_URL+params,null,{ observe: 'response',withCredentials: true });
+    return this.http.post<DataPage>(environment.rooturl + AppConstants.BALANCE_API_URL+params,null,{ observe: 'response',withCredentials: true });
   }
 
   getLoansDetails(user : User){

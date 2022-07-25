@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import { HttpResponse } from '@angular/common/http';
-import { Page } from '../../model/page.model';
+import { DataPage } from '../../model/data.page.model';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as XLSX from 'xlsx';
@@ -14,7 +14,7 @@ import * as XLSX from 'xlsx';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExportButtonsComponent implements OnInit {
-    @Input() observable: Observable<HttpResponse<Page>>
+    @Input() observable: Observable<HttpResponse<DataPage>>
     @Input() filename: string
     private ngUnsubscribe: Subject<void> = new Subject<void>()
 

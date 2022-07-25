@@ -1,6 +1,6 @@
 import { Pageable } from './pageable/pageable.model'
 
-export class Page {
+export class DataPage {
 
     content: []
     empty: false

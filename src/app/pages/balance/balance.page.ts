@@ -18,6 +18,8 @@ export class BalancePage implements OnInit {
     public crudConfig = {
         exportEnabled: true,
         globalSearchEnabled: false,
+        configEnabled: true,
+        massActionsEnabled: false,
         uid: "transactionId"
     }
     public exportFileName: string

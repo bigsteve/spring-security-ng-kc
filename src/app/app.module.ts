@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -31,7 +31,10 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
 import { MatSortModule } from "@angular/material/sort";
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { LoaderComponent } from './components/loader/loader.component';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
+  
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
         keycloak.init({
@@ -61,7 +64,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         CardsPage,
         GridComponent,
         ButtonOverviewExampleComponent,
-        ExportButtonsComponent
+        ExportButtonsComponent,
+        LoaderComponent
     ],
     exports: [AppComponent],
     imports: [
@@ -78,6 +82,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MatInputModule,
         MatSortModule,
         MatProgressSpinnerModule,
+        MatTooltipModule,
         BrowserModule,
         AppRoutingModule,
         FormsModule,
@@ -95,7 +100,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
             useFactory: initializeKeycloak,
             multi: true,
             deps: [KeycloakService],
-        }
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoaderInterceptor,
+            multi: true,
+         }
     ],
     bootstrap: [AppComponent]
 })
