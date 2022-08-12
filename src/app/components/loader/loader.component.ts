@@ -2,7 +2,7 @@
 
 import { Component } from '@angular/core';
 import { LoaderService } from '../../services/loader.service';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-loader',
@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
   styleUrls: [ './loader.component.css' ],
 })
 export class LoaderComponent {
-  isLoading: Subject<boolean> = this.loaderService.isLoading;
+  isLoading: BehaviorSubject<boolean> = this.loaderService.isLoading;
 
   constructor(private loaderService: LoaderService) {
   }

@@ -12,18 +12,20 @@
 
     <div class="row grid-control-bar-top">
         <div class="grid-control-buttons column col-lg-6 col-md-12">
-            <mat-form-field appearance="fill" *ngIf="this.crudConfig.massActionsEnabled"  class="fab-btn-horiz">
+            <mat-form-field appearance="fill" *ngIf="this.crudConfig.massActionsEnabled" class="fab-btn-horiz">
                 <mat-label>Mass Actions</mat-label>
                 <mat-select>
-                  <mat-option *ngFor="let actions of ['Enable','Disable','Delete']" [value]="actions">
-                    {{actions}}
-                  </mat-option>
+                    <mat-option *ngFor="let actions of ['Enable','Disable','Delete']" [value]="actions">
+                        {{actions}}
+                    </mat-option>
                 </mat-select>
-              </mat-form-field>
-            <button *ngIf="this.crudConfig.configEnabled" mat-mini-fab color="primary" aria-label="Config" matTooltip="Configuration"  [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
+            </mat-form-field>
+            <button *ngIf="this.crudConfig.configEnabled" mat-mini-fab color="primary" aria-label="Config"
+                matTooltip="Configuration" [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>menu</mat-icon>
             </button>
-            <button mat-mini-fab color="primary" aria-label="Add" matTooltip="Add" [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
+            <button  *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Add"
+                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
@@ -38,8 +40,7 @@
 
     <div class="mat-elevation-z8 column col-12" style="position: relative;">
 
-        <table mat-table #table [dataSource]="page.content" matSort
-            (matSortChange)="translateEventSort($event)"
+        <table mat-table #table [dataSource]="page.content" matSort (matSortChange)="translateEventSort($event)"
             matSortActive="name" matSortDirection="asc" matSortDisableClear>
 
             <!--  Column -->
@@ -50,11 +51,15 @@
                     <div class="search-field-holder">
                         <mat-form-field *ngIf="column.searchEnabled" class="table-column-search-field"
                             appearance="standard">
-                            <input matInput (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})" placeholder="Src {{column.title}}" #input>
+                            <input matInput
+                                (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})"
+                                placeholder="Src {{column.title}}" #input>
                         </mat-form-field>
                     </div>
                 </th>
-                <td mat-cell *matCellDef="let row, index as rowIndex"  (click)="translateEventRowClick({event: 'rowClick', params: {row: rowIndex, col: colIndex}})" rowIndex=rowIndex>
+                <td mat-cell *matCellDef="let row, index as rowIndex"
+                    (click)="translateEventRowClick({event: 'rowClick', params: {row: rowIndex, col: colIndex}})"
+                    rowIndex=rowIndex>
                     <ng-container
                         *ngTemplateOutlet="column.cellTemplate || defaultCellTemplate, context:{ $implicit: row, column: column, colIndex: colIndex, rowIndex: rowIndex }">
                     </ng-container>

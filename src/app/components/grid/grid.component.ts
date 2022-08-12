@@ -46,6 +46,8 @@ interface EventObject {
 /*
     TODO:
     refine events for sort, filter, row-click and apply them
+    appliction might need modHeader (or similar) module for fixing keycloak headers definition for firefox
+    do redirect to login when calls to servers return 401
 */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @HostListener('matSortChange', ['$event'])
@@ -77,14 +79,12 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     public displayedColumns: []
     public page: DataPage = new DataPage()
     public search: Search = new Search()
-    private params: string = '?limit=50&offset=0'
-    public isLoading: boolean = false
+    private params: string = '?uirequest=true&limit=50&offset=0'
     public exportFileName: string
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
     private positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public toolTipPosition = new FormControl(this.positionOptions[1])
-        // this.isLoading = new BehaviorSubject<boolean>(false)
 
     constructor(
         private readonly cdr: ChangeDetectorRef
@@ -118,9 +118,13 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit() {
     }
 
+    ngAfterViewChecked() {
+        
+    }
+
 
     exportData() {
-        let paramsExport = "?limit=" + this.page.totalElements + "&" + this.search.getRequestParameters()
+        let paramsExport = "?uirequest=true&limit=" + this.page.totalElements + "&" + this.search.getRequestParameters()
 
         return this.service
             .getData(paramsExport)
@@ -133,7 +137,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private parseEvent(): void {
 
-        this.params = "?" + this.page.pageable.getRequestParameters() + "&" + this.search.getRequestParameters()
+        this.params = "?uirequest=true&" + this.page.pageable.getRequestParameters() + "&" + this.search.getRequestParameters()
         this.getData(this.params)
     }
 
@@ -141,7 +145,6 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private getData(params: string): void {
 
-        this.isLoading = true
 
         this.service
             .getData(params)
@@ -150,12 +153,10 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                 next: (response: any) => {
                     this.page = <any>response.body
                     if (isDevMode()) console.log(this.page)
-
                     this.page.pageable = new Pageable(this.page.pageable)
-                    this.isLoading = false
+                    
                 },
                 error: (error: any) => {
-                    this.isLoading = false
                     console.error('Error: ', error.message)
                 },
                 complete: () => {

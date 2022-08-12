@@ -26,20 +26,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field'; 
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
 import { MatSortModule } from "@angular/material/sort";
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
-  
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
         keycloak.init({
             config: {
-                url: 'http://192.168.80.128:8085/auth',
+                url: 'http://192.168.31.128:8085/auth',
                 realm: 'samplebankdev',
                 clientId: 'samplebankpub_ui',
             },
@@ -105,7 +106,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
             provide: HTTP_INTERCEPTORS,
             useClass: LoaderInterceptor,
             multi: true,
-         }
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        }
     ],
     bootstrap: [AppComponent]
 })

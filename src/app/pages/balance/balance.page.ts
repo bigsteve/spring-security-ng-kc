@@ -16,6 +16,7 @@ export class BalancePage implements OnInit {
     columns: Column[]
     public seo = new Seo()
     public crudConfig = {
+        crudEnabled: true,
         exportEnabled: true,
         globalSearchEnabled: false,
         configEnabled: true,

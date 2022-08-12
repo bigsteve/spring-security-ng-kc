@@ -8,34 +8,34 @@ import { DataPage } from '../../model/data.page.model'
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class DashboardService {
 
-  constructor(private http:HttpClient) { }
+    constructor(private http: HttpClient) { }
 
-  getAccountDetails(user : User){
-    return this.http.post(environment.rooturl + AppConstants.ACCOUNT_API_URL,user,{ observe: 'response',withCredentials: true });
-  }
+    getAccountDetails(user: User) {
+        return this.http.post(environment.rooturl + AppConstants.ACCOUNT_API_URL, user, { observe: 'response', withCredentials: true });
+    }
 
-  getData(params : string){
-    return this.http.post<DataPage>(environment.rooturl + AppConstants.BALANCE_API_URL+params,null,{ observe: 'response',withCredentials: true });
-  }
+    getData(params: string) {
+        return this.http.post<DataPage>(environment.rooturl + AppConstants.BALANCE_API_URL + params, null, { observe: 'response', withCredentials: true });
+    }
 
-  getLoansDetails(user : User){
-    return this.http.post(environment.rooturl + AppConstants.LOANS_API_URL,user,{ observe: 'response',withCredentials: true });
-  }
+    getLoansDetails(user: User) {
+        return this.http.post(environment.rooturl + AppConstants.LOANS_API_URL, user, { observe: 'response', withCredentials: true });
+    }
 
-  getCardsDetails(user : User){
-    return this.http.post(environment.rooturl + AppConstants.CARDS_API_URL,user,{ observe: 'response',withCredentials: true });
-  }
+    getCardsDetails(user: User) {
+        return this.http.post(environment.rooturl + AppConstants.CARDS_API_URL, user, { observe: 'response', withCredentials: true });
+    }
 
-  getNoticeDetails(){
-    return this.http.get(environment.rooturl + AppConstants.NOTICES_API_URL,{ observe: 'response' });
-  }
+    getNoticeDetails() {
+        return this.http.get(environment.rooturl + AppConstants.NOTICES_API_URL, { observe: 'response' });
+    }
 
-  saveMessage(contact : Contact){
-    return this.http.post(environment.rooturl + AppConstants.CONTACT_API_URL,contact,{ observe: 'response'});
-  }
+    saveMessage(contact: Contact) {
+        return this.http.post(environment.rooturl + AppConstants.CONTACT_API_URL, contact, { observe: 'response' });
+    }
 
 }

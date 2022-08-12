@@ -22,20 +22,24 @@ export class ExportButtonsComponent implements OnInit {
     }
 
     exportToExcel(): void {
-        
+
         try {
             this.observable.pipe(takeUntil(this.ngUnsubscribe))
-                .subscribe(
-                    (response) => {
-                        
+                .subscribe({
+                    next: (response) => {
+
                         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(<any>response.body["content"]);
                         const wb: XLSX.WorkBook = XLSX.utils.book_new();
                         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-                        XLSX.writeFile(wb, this.filename+'.xlsx');
+                        XLSX.writeFile(wb, this.filename + '.xlsx');
                     },
-                    (error: any) => {
+                    error: (error: any) => {
                         console.error('ERROR: ', error.message)
+                    },
+                    complete: () => {
+
                     }
+                }
                 )
         } catch (err) {
             console.error('Xlsx export error', err);
@@ -56,17 +60,22 @@ export class ExportButtonsComponent implements OnInit {
             filename: this.filename
         };
         try {
-        const csvExporter = new ExportToCsv(options);
-        this.observable.pipe(takeUntil(this.ngUnsubscribe))
-            .subscribe(
-                (response) => {
-                    csvExporter.generateCsv(<any>response.body["content"])
-                },
-                (error: any) => {
-                    console.error('ERROR: ', error.message)
+            const csvExporter = new ExportToCsv(options);
+            this.observable.pipe(takeUntil(this.ngUnsubscribe))
+                .subscribe({
+                    next: (response) => {
+                        csvExporter.generateCsv(<any>response.body["content"])
+                    },
+                    error: (error: any) => {
+                        console.error('ERROR: ', error.message)
+                    },
+
+                    complete: () => {
+
+                    }
                 }
-            )
-            
+                )
+
         } catch (err) {
             console.error('Csv export error', err);
         }
