@@ -16,7 +16,7 @@ exports.config = {
     browserName: 'chrome'
   },
   directConnect: true,
-  baseUrl: 'http://samplebank.com:4200/',
+  baseUrl: 'https://samplebank.com/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,

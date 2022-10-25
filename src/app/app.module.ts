@@ -40,7 +40,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 function initializeKeycloak(keycloak: KeycloakService) {
 
 
-    
+
     return () =>
         keycloak.init({
             config: {
@@ -48,11 +48,21 @@ function initializeKeycloak(keycloak: KeycloakService) {
                 realm: 'samplebankdev',
                 clientId: 'samplebankpub_ui',
             },
+            bearerPrefix: 'Bearer',
             initOptions: {
                 pkceMethod: 'S256',
-                redirectUri: 'https://samplebank.com:4200/myaccount/details',
-            }, loadUserProfileAtStartUp: false
+                redirectUri: 'https://samplebank.com/myaccount/details',
+                onLoad: 'check-sso',
+                silentCheckSsoRedirectUri:
+                    window.location.origin + '/assets/silent-check-sso.html',
+                checkLoginIframe: true,
+                checkLoginIframeInterval: 1000
+            }, loadUserProfileAtStartUp: false,
         });
+
+        
+
+
 }
 
 @NgModule({
