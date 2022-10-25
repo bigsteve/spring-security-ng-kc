@@ -53,7 +53,7 @@
                             appearance="standard">
                             <input matInput
                                 (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})"
-                                placeholder="Src {{column.title}}" #input>
+                                placeholder="Src {{column.title}}" #input [(ngModel)]="rowmodel[column.key]">
                         </mat-form-field>
                     </div>
                 </th>

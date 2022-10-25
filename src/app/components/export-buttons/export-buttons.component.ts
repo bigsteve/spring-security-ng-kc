@@ -34,15 +34,14 @@ export class ExportButtonsComponent implements OnInit {
                         XLSX.writeFile(wb, this.filename + '.xlsx');
                     },
                     error: (error: any) => {
-                        console.error('ERROR: ', error.message)
+                        console.error('Error: ', error.message)
                     },
                     complete: () => {
-
                     }
                 }
                 )
         } catch (err) {
-            console.error('Xlsx export error', err);
+            console.error('Xlsx export error: ', err);
         }
     }
 
@@ -67,17 +66,15 @@ export class ExportButtonsComponent implements OnInit {
                         csvExporter.generateCsv(<any>response.body["content"])
                     },
                     error: (error: any) => {
-                        console.error('ERROR: ', error.message)
+                        console.error('Error: ', error.message)
                     },
-
                     complete: () => {
-
                     }
                 }
                 )
 
         } catch (err) {
-            console.error('Csv export error', err);
+            console.error('Csv export error: ', err);
         }
     }
 }

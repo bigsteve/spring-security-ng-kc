@@ -20,21 +20,10 @@ import { MatPaginator } from '@angular/material/paginator'
 import { Seo } from 'src/app/model/seo/seo.model'
 import { Search } from 'src/app/model/pageable/search.model'
 import { MatSort } from '@angular/material/sort';
-import { UniformEvent } from 'src/app/interfaces/uniform.event'
-import {FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip'
 import { Utils } from 'src/app/utils/utils.model'
-
-interface EventObject {
-    event: string
-    value: {
-        limit: number
-        page: number
-        key: string
-        order: string
-        value: string
-    }
-}
+import { ParametersString } from 'src/app/model/parameters.string.model'
 
 @Component({
     selector: 'app-grid',
@@ -43,28 +32,23 @@ interface EventObject {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-/*
-    TODO:
-    refine events for sort, filter, row-click and apply them
-    appliction might need modHeader (or similar) module for fixing keycloak headers definition for firefox
-    do redirect to login when calls to servers return 401
-*/
+/**
+ * @desc GridComponent class
+ * TODO:
+ * appliction might need modHeader (or similar) module for fixing keycloak headers definition for firefox
+ * refine parameters storage
+ * bugs:
+ * when land after browser launch, the resource url is
+ * http://localhost:8080/myaccount/balance?uirequest=true&orderby=&orderdir=&searchby=&search=&limit=250&offset=27
+ * and the stored url is
+ * ?uirequest=true&orderby=&orderdir=&searchby=&search=&limit=250&offset=27
+ * the grid is empty, apparently the server request 
+ * 
+ *  
+ */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
+
     @HostListener('matSortChange', ['$event'])
-    sortChange(e) {
-        // save cookie with table sort data here
-        let ev: UniformEvent = {
-            event: '',
-            params: {
-                name: '',
-                value: ''
-            }
-        }
-        ev.event = "matSortChange"
-        ev.params.name = e.active
-        ev.params.value = e.direction
-        new EventEmitter().emit(ev)
-    }
 
     @ViewChild('paginator', { static: true }) paginator: MatPaginator
     @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>;
@@ -76,15 +60,18 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() seo: Seo = new Seo()
     @Input() service: any
     @Input() columns: any
+
     public displayedColumns: []
     public page: DataPage = new DataPage()
     public search: Search = new Search()
-    private params: string = '?uirequest=true&limit=50&offset=0'
     public exportFileName: string
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
     private positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public toolTipPosition = new FormControl(this.positionOptions[1])
+    private p: ParametersString
+    public rowmodel = { transactionSummary: new URLSearchParams(localStorage.getItem('_myaccount_balance_balance_crud')).get("search")}
+
 
     constructor(
         private readonly cdr: ChangeDetectorRef
@@ -102,30 +89,31 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         })
 
-        // this.params += "&cols[]="+cols.join("&cols[]=")
-
         const d = new Date()
         this.exportFileName = this.seo.title.replace(" ", "-").toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
-        this.getData(this.params)
+        this.p = new ParametersString(this.crudConfig.crudName)
+        this.getData(this.p.getParametersString())
 
     }
+
 
     ngOnDestroy(): void {
         this.ngUnsubscribe.next()
         this.ngUnsubscribe.complete()
     }
 
+
     ngAfterViewInit() {
     }
 
+
     ngAfterViewChecked() {
-        
+
     }
 
 
     exportData() {
         let paramsExport = "?uirequest=true&limit=" + this.page.totalElements + "&" + this.search.getRequestParameters()
-
         return this.service
             .getData(paramsExport)
             .pipe(takeUntil(this.ngUnsubscribe))
@@ -136,9 +124,9 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     private parseEvent(): void {
-
-        this.params = "?uirequest=true&" + this.page.pageable.getRequestParameters() + "&" + this.search.getRequestParameters()
-        this.getData(this.params)
+        this.setParameters()
+        this.p.saveParametersString()
+        this.getData(this.p.getParametersString())
     }
 
 
@@ -154,7 +142,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.page = <any>response.body
                     if (isDevMode()) console.log(this.page)
                     this.page.pageable = new Pageable(this.page.pageable)
-                    
+
                 },
                 error: (error: any) => {
                     console.error('Error: ', error.message)
@@ -218,5 +206,16 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             this.page.pageable.pageNumber = $event.pageIndex
             this.parseEvent()
         }
+    }
+
+    private setParameters = () => {
+
+        this.p.setParam('orderby', this.search.getOrderBy())
+        this.p.setParam('orderdir', this.search.getOrderDir())
+        this.p.setParam('searchby', this.search.getSearchBy())
+        this.p.setParam('search', this.search.getSearch())
+        this.p.setParam('limit', this.page.pageable.getPageSize().toString())
+        this.p.setParam('offset', this.page.pageable.getPageNumber().toString())
+        this.p.saveParametersString()
     }
 }

@@ -71,7 +71,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "elec-app-ui:build"
+            "browserTarget": "elec-app-ui:build",
+            "sslKey": "../../../k8s/k8s-u18-home/dev/kc/.certs/samplebank.com.key",
+            "sslCert": "../../../k8s/k8s-u18-home/dev/kc/.certs/samplebank.com.crt"
           },
           "configurations": {
             "production": {

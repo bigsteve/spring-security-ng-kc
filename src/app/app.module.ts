@@ -35,18 +35,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 function initializeKeycloak(keycloak: KeycloakService) {
+
+
+    
     return () =>
         keycloak.init({
             config: {
-                url: 'http://192.168.31.128:8085/auth',
+                url: 'https://auth.samplebank.com/auth',
                 realm: 'samplebankdev',
                 clientId: 'samplebankpub_ui',
             },
             initOptions: {
                 pkceMethod: 'S256',
-                redirectUri: 'http://localhost:4200/dashboard'
+                redirectUri: 'https://samplebank.com:4200/myaccount/details',
             }, loadUserProfileAtStartUp: false
         });
 }
@@ -84,8 +88,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MatSortModule,
         MatProgressSpinnerModule,
         MatTooltipModule,
-        BrowserModule,
         AppRoutingModule,
+        BrowserModule,
         FormsModule,
         KeycloakAngularModule,
         HttpClientModule,
@@ -118,3 +122,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
 export class AppModule {
 
 }
+
+/*
+
+ ng serve --host samplebank.com --disable-host-check
+
+*/

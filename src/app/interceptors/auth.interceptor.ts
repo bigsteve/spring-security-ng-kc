@@ -22,7 +22,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-
         if (!this.kcs._instance.authenticated) {
             this.kcs.login({ redirectUri: window.location.href })
         }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConstants } from "../../constants/app.constants";
 import { environment } from '../../../environments/environment';
 import { User } from '../../model/user.model';
@@ -11,8 +11,14 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class DashboardService {
+    headers: HttpHeaders = new HttpHeaders()
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+        this.headers.set('Content-Type', 'application/json; charset=utf-8')
+        .set('Access-Control-Allow-Origin', 'http://samplebank.com:4200')
+        .set('Access-Control-Allow-Origin', 'https://samplebank.com:8443')
+
+     }
 
     getAccountDetails(user: User) {
         return this.http.post(environment.rooturl + AppConstants.ACCOUNT_API_URL, user, { observe: 'response', withCredentials: true });

@@ -6,9 +6,9 @@ export class DataPage {
     empty: false
     first: false
     last: false
-    public number: number = 0
+    number: number = 0
     numberOfElements: 0
-    public pageable: Pageable = new Pageable()
+    pageable: Pageable = new Pageable()
     size: 50
     sort: { sorted: true, unsorted: false, empty: false }
     totalElements: 0

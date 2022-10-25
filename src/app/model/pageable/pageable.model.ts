@@ -1,3 +1,6 @@
+import { utils } from "protractor"
+import { Utils } from "src/app/utils/utils.model"
+
 export class Pageable {
 
     public sort: {
@@ -63,8 +66,12 @@ export class Pageable {
         return this.offset
     }
 
+    public getPageNumber(): number {
+        return this.pageNumber
+    }
+
     public getRequestParameters(): string {
-        return "limit=" + this.pageSize + "&offset=" + this.pageNumber
+        return Utils.objToUriParameters({limit: this.pageSize, offset: this.pageNumber})
     }
 
 }

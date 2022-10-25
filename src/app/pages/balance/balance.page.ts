@@ -16,6 +16,7 @@ export class BalancePage implements OnInit {
     columns: Column[]
     public seo = new Seo()
     public crudConfig = {
+        crudName: 'balance_crud',
         crudEnabled: true,
         exportEnabled: true,
         globalSearchEnabled: false,
@@ -28,6 +29,7 @@ export class BalancePage implements OnInit {
     constructor(private readonly balanceService: DashboardService) {
         this.balanceService = balanceService
         this.seo.title = "Transactions History"
+        this.seo.subtitle = "Transactions History"
     }
 
     public getBalanceService(): DashboardService {

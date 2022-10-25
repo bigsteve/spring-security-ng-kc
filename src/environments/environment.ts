@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  rooturl : 'http://localhost:8080/'
+  rooturl : 'https://samplebank.com:8443/'
 };
 
 /*
