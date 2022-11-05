@@ -10,7 +10,7 @@ import * as XLSX from 'xlsx';
 @Component({
     selector: 'export-buttons',
     templateUrl: './export-buttons.component.html',
-    styleUrls: ['./export-buttons.component.css'],
+    styleUrls: ['./export-buttons.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExportButtonsComponent implements OnInit {

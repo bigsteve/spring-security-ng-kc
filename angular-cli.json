@@ -1,0 +1,15 @@
+{
+    "styles": [
+        "styles.css",
+        "../node_modules/normalize.css/normalize.css"
+    ],
+    "stylePreprocessorOptions": {
+        "includePaths": [
+            "app"
+        ]
+    },
+    "defaults": {
+        "styleExt": "scss",
+        "component": {}
+    }
+}

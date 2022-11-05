@@ -7,7 +7,7 @@ import { Column } from 'src/app/model/crud/column.model'
 @Component({
     selector: 'app-balance',
     templateUrl: './balance.page.html',
-    styleUrls: ['./balance.page.css']
+    styleUrls: ['./balance.page.scss']
 })
 
 export class BalancePage implements OnInit {

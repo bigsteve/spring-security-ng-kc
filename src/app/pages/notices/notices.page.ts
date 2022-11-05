@@ -4,7 +4,7 @@ import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 @Component({
     selector: 'app-notices',
     templateUrl: './notices.page.html',
-    styleUrls: ['./notices.page.css']
+    styleUrls: ['./notices.page.scss']
 })
 export class NoticesPage implements OnInit {
 

@@ -6,7 +6,7 @@ import { Account } from 'src/app/model/account.model';
 @Component({
     selector: 'app-account',
     templateUrl: './account.page.html',
-    styleUrls: ['./account.page.css']
+    styleUrls: ['./account.page.scss']
 })
 export class AccountPage implements OnInit {
     user = new User();

@@ -24,7 +24,7 @@
                 matTooltip="Configuration" [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>menu</mat-icon>
             </button>
-            <button  *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Add"
+            <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Add"
                 [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>add</mat-icon>
             </button>
@@ -49,19 +49,36 @@
                     <div *ngIf="column.orderEnabled" mat-sort-header> {{column.title}}</div>
                     <div *ngIf="!column.orderEnabled"> {{column.title}}</div>
                     <div class="search-field-holder">
-                        <mat-form-field *ngIf="column.searchEnabled" class="table-column-search-field"
-                            appearance="standard">
-                            <input matInput
-                                (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})"
-                                placeholder="Src {{column.title}}" #input [(ngModel)]="rowmodel[column.key]">
-                        </mat-form-field>
+
+                        <div *ngIf="column.searchEnabled">
+
+                            <!-- <div *ngIf="column.key != 'createDt'"> -->
+                            <!-- <div *ngIf="column.cellTemplate+ThTemplate">
+                                <ng-tempate
+                                    *ngTemplateOutlet="defaultThTemplate, context:{ $implicit: row, column: column, colIndex: colIndex, rowIndex: rowIndex }">
+                                </ng-tempate>
+                            </div>
+                            <div *ngIf="column.key == 'createDt'">
+                                <ng-tempate
+                                    *ngTemplateOutlet="pipeDateShortThTemplate, context:{ $implicit: row, column: column, colIndex: colIndex, rowIndex: rowIndex }">
+                                </ng-tempate>
+                            </div> -->
+                            
+                            
+                            <ng-tempate
+                            *ngTemplateOutlet="this[column.cellTemplate+'ThTemplate'] || defaultThTemplate, context:{ $implicit: row, column: column, colIndex: colIndex, rowIndex: rowIndex }">
+                        </ng-tempate>
+
+                        </div>
+
+
                     </div>
                 </th>
                 <td mat-cell *matCellDef="let row, index as rowIndex"
                     (click)="translateEventRowClick({event: 'rowClick', params: {row: rowIndex, col: colIndex}})"
                     rowIndex=rowIndex>
                     <ng-container
-                        *ngTemplateOutlet="column.cellTemplate || defaultCellTemplate, context:{ $implicit: row, column: column, colIndex: colIndex, rowIndex: rowIndex }">
+                        *ngTemplateOutlet="this[column.cellTemplate] || defaultCellTemplate, context:{ $implicit: row, column: column, colIndex: colIndex, rowIndex: rowIndex }">
                     </ng-container>
                 </td>
             </ng-container>
@@ -104,4 +121,17 @@
         [pageIndex]="this.page.pageable.pageNumber" [pageSizeOptions]="this.page.pageable.getPageSizeOptions()"
         aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="translateEventPagination($event)">
     </mat-paginator>
+</ng-template>
+
+
+<ng-template #defaultThTemplate let-row let-column="column" let-rowIndex="rowIndex">
+    <mat-form-field *ngIf="column.searchEnabled" class="table-column-search-field" appearance="standard">
+        <input matInput
+            (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})"
+            placeholder="Src {{column.title}}" #input [(ngModel)]="rowmodel[column.key]">
+    </mat-form-field>
+</ng-template>
+
+<ng-template #pipeDateShortThTemplate let-row let-column="column" let-rowIndex="rowIndex">
+    <app-date-range-picker></app-date-range-picker>
 </ng-template>

@@ -28,23 +28,15 @@ import { ParametersString } from 'src/app/model/parameters.string.model'
 @Component({
     selector: 'app-grid',
     templateUrl: './grid.component.html',
-    styleUrls: ['./grid.component.css'],
+    styleUrls: ['./grid.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 /**
  * @desc GridComponent class
  * TODO:
- * appliction might need modHeader (or similar) module for fixing keycloak headers definition for firefox
+ * refine parameters
  * refine parameters storage
- * bugs:
- * when land after browser launch, the resource url is
- * http://localhost:8080/myaccount/balance?uirequest=true&orderby=&orderdir=&searchby=&search=&limit=250&offset=27
- * and the stored url is
- * ?uirequest=true&orderby=&orderdir=&searchby=&search=&limit=250&offset=27
- * the grid is empty, apparently the server request 
- * 
- *  
  */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -53,6 +45,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('paginator', { static: true }) paginator: MatPaginator
     @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>;
     @ViewChild('pipeDateShort', { static: true }) public pipeDateShort: TemplateRef<any>;
+    @ViewChild('pipeDateShortThTemplate', { static: true }) public pipeDateShortThTemplate: TemplateRef<any>;
     @ViewChild('rowActions', { static: true }) public rowActions: TemplateRef<any>;
     @ViewChild(MatSort) sort: MatSort;
 
@@ -85,7 +78,8 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.columns.forEach(el => {
             cols.push(el.key)
             if (el.hasOwnProperty("cellTemplate")) {
-                el.cellTemplate = this[el.cellTemplate]
+                // el.cellTemplateName = el.cellTemplate
+                // el.cellTemplate = this[el.cellTemplate]
             }
         })
 

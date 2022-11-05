@@ -35,8 +35,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { DateRangePicker } from './components/form-elements/date-range-picker/date-range-picker.component';
 function initializeKeycloak(keycloak: KeycloakService) {
 
 
@@ -80,7 +83,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         GridComponent,
         ButtonOverviewExampleComponent,
         ExportButtonsComponent,
-        LoaderComponent
+        LoaderComponent,
+        DateRangePicker
     ],
     exports: [AppComponent],
     imports: [
@@ -98,6 +102,9 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MatSortModule,
         MatProgressSpinnerModule,
         MatTooltipModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        FontAwesomeModule,
         AppRoutingModule,
         BrowserModule,
         FormsModule,

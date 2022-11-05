@@ -5,7 +5,7 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 @Component({
     selector: 'app-loans',
     templateUrl: './loans.page.html',
-    styleUrls: ['./loans.page.css']
+    styleUrls: ['./loans.page.scss']
 })
 export class LoansPage implements OnInit {
 

@@ -7,7 +7,7 @@ import { DashboardService } from 'src/app/services/dashboard/dashboard.service';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.page.html',
-  styleUrls: ['./contact.page.css']
+  styleUrls: ['./contact.page.scss']
 })
 export class ContactPage implements OnInit {
   model = new Contact();

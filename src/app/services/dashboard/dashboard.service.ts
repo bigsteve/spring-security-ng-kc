@@ -18,7 +18,6 @@ export class DashboardService {
         .set('Access-Control-Allow-Origin', 'https://auth.samplebank.com')
         .set('Access-Control-Allow-Origin', 'https://samplebank.com')
         .set('Access-Control-Allow-Origin', 'https://samplebank.com:8443')
-        .set('Access-Control-Allow-Origin', 'https://samplebank.com')
 
      }
 
