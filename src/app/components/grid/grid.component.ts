@@ -74,14 +74,14 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit(): void {
 
         this.displayedColumns = this.columns.map(el => el.key)
-        let cols = []
-        this.columns.forEach(el => {
-            cols.push(el.key)
-            if (el.hasOwnProperty("cellTemplate")) {
-                // el.cellTemplateName = el.cellTemplate
-                // el.cellTemplate = this[el.cellTemplate]
-            }
-        })
+        // let cols = []
+        // this.columns.forEach(el => {
+        //     cols.push(el.key)
+        //     if (el.hasOwnProperty("cellTemplate")) {
+        //         // el.cellTemplateName = el.cellTemplate
+        //         // el.cellTemplate = this[el.cellTemplate]
+        //     }
+        // })
 
         const d = new Date()
         this.exportFileName = this.seo.title.replace(" ", "-").toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
@@ -211,5 +211,12 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.p.setParam('limit', this.page.pageable.getPageSize().toString())
         this.p.setParam('offset', this.page.pageable.getPageNumber().toString())
         this.p.saveParametersString()
+    }
+
+
+    // TODO: implement and use for handling children events
+    getEventsData(data) {
+
+        return data
     }
 }

@@ -9,16 +9,16 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 })
 
 export class DateRangePicker implements OnInit {
-    events: string[] = [];
 
-    range = new FormGroup({
-        start: new FormControl(null),
-        end: new FormControl(null),
-    });
+
   constructor() { }
 
   ngOnInit(): void {
     
+  }
+
+  dateRangeChange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
+    return {dateFilter: {startDate: dateRangeStart.value, endDate: dateRangeEnd.value}}
   }
 
 }
