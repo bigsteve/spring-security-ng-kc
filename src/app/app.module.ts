@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ContactPage } from './pages/contact/contact.page';
-import { LoginPage } from './pages/login/login.page';
+import { HomePage } from './pages/home/home.page';
 import { DashboardPage } from './pages/dashboard/dashboard.page';
 import { NoticesPage } from './pages/notices/notices.page';
 import { AccountPage } from './pages/account/account.page';
@@ -73,7 +73,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         AppComponent,
         HeaderComponent,
         ContactPage,
-        LoginPage,
+        HomePage,
         DashboardPage,
         NoticesPage,
         AccountPage,

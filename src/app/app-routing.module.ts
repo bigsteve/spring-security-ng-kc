@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContactPage } from './pages/contact/contact.page';
-import { LoginPage } from './pages/login/login.page';
+import { HomePage } from './pages/home/home.page';
 import { DashboardPage } from './pages/dashboard/dashboard.page';
 import { AccountPage } from './pages/account/account.page';
 import { BalancePage } from './pages/balance/balance.page';
@@ -13,8 +13,7 @@ import { AppConstants } from './constants/app.constants';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
-  { path: 'home', component: LoginPage},
-  { path: 'login', component: LoginPage},
+  { path: 'home', component: HomePage},
   { path: 'contact', component: ContactPage},
   { path: 'notices', component: NoticesPage},
   { path: 'dashboard', component: DashboardPage, canActivate: [AuthKeyClockGuard],data: {
