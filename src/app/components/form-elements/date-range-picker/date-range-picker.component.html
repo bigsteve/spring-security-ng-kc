@@ -1,4 +1,4 @@
-<mat-form-field class="grid-filter-date-range-picker" appearance="">
+<mat-form-field class="grid-filter-date-range-picker" appearance="" >
     <!-- <mat-label>Enter a date range</mat-label> -->
     <mat-date-range-input [rangePicker]="picker">
         <input matStartDate #dateRangeStart placeholder="Start date" (dateChange)="dateRangeChange(dateRangeStart, dateRangeEnd)">
@@ -7,5 +7,4 @@
     <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>
-    
 </mat-form-field>

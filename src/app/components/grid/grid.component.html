@@ -116,5 +116,5 @@
 </ng-template>
 
 <ng-template #pipeDateShortThTemplate let-row let-column="column" let-rowIndex="rowIndex">
-    <app-date-range-picker></app-date-range-picker>
+    <app-date-range-picker [filter]="filter"  [filterHasChanged]="filterHasChanged"></app-date-range-picker>
 </ng-template>

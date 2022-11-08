@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Component, Input, OnInit } from '@angular/core';
+import { Filter } from 'src/app/model/search/filter.model';
 
 @Component({
-  selector: 'app-date-range-picker',
-  templateUrl: './date-range-picker.component.html',
-  styleUrls: ['./date-range-picker.component.scss']
+    selector: 'app-date-range-picker',
+    templateUrl: './date-range-picker.component.html',
+    styleUrls: ['./date-range-picker.component.scss']
 })
 
 export class DateRangePicker implements OnInit {
 
+    @Input() filterHasChanged: any
+    @Input() filter: Filter
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit(): void {
-    
-  }
+    ngOnInit(): void {
 
-  dateRangeChange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
-    return {dateFilter: {startDate: dateRangeStart.value, endDate: dateRangeEnd.value}}
-  }
+    }
+
+    dateRangeChange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
+        this.filter.search["startDate"] = dateRangeStart.value
+        this.filter.search["endDate"]= dateRangeEnd.value
+        this.filterHasChanged()
+    }
 
 }

@@ -10,7 +10,8 @@ import {
     ViewChild,
     isDevMode,
     HostListener,
-    EventEmitter
+    EventEmitter,
+    Output
 } from '@angular/core'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
@@ -24,6 +25,7 @@ import { FormControl } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip'
 import { Utils } from 'src/app/utils/utils.model'
 import { ParametersString } from 'src/app/model/parameters.string.model'
+import { Filter } from 'src/app/model/search/filter.model'
 
 @Component({
     selector: 'app-grid',
@@ -65,6 +67,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     private p: ParametersString
     public rowmodel = { transactionSummary: new URLSearchParams(localStorage.getItem('_myaccount_balance_balance_crud')).get("search")}
 
+    public filter: Filter = new Filter();
 
     constructor(
         private readonly cdr: ChangeDetectorRef
@@ -149,6 +152,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
+
     debugVal(v: any): any {
         if (isDevMode()) console.log('Debug val: ', v)
         return v
@@ -157,14 +161,14 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     translateEventRowClick($event: any) {
-        console.log($event)
+        if (isDevMode()) console.log($event)
     }
 
 
 
     translateEventFilter($event: any) {
 
-        console.log($event)
+        if (isDevMode()) console.log($event)
         const timeoutParseEvent = () => {
 
             this.timeouts[$event.event] = []
@@ -215,8 +219,8 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     // TODO: implement and use for handling children events
-    getEventsData(data) {
-
-        return data
+    filterHasChanged() {
+        if(isDevMode) console.log(this.filter)
     }
+
 }
