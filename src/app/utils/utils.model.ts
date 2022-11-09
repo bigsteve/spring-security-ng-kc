@@ -33,7 +33,7 @@ export class Utils {
      * @param v 
      */
     static strReplaceAll = function (from: string | string[], to: string | string[], v: string): string {
-
+        if(v === undefined) return ''
         if (Array.isArray(to) && (!Array.isArray(from) || (Array.isArray(from) && from.length !== to.length))) {
             console.error('Error: Both arguments must be strings, or if the first argument is an array, the second argument must be a string or an array with the same length as the first array argument.')
             return v
@@ -54,6 +54,19 @@ export class Utils {
         }
 
         return v
+    }
+
+    static setObjectValue(object: any, k: String, v: any) {
+
+        let obj = object
+
+        let ksplit = k.split('.')
+        for(let i = 0; i < ksplit.length - 1; i++) {
+            if( !obj[ksplit[i]] ) return
+            obj = obj[ksplit[i]]
+        }
+        
+        obj[ksplit[ksplit.length-1]] = v
     }
 
 }

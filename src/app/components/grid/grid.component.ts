@@ -52,44 +52,51 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(MatSort) sort: MatSort;
 
     @Input() crudConfig: any
-    @Input() seo: Seo = new Seo()
+    @Input() seo: Seo
     @Input() service: any
     @Input() columns: any
+
 
     public displayedColumns: []
     public page: DataPage = new DataPage()
     public search: Search = new Search()
     public exportFileName: string
+    private searchStorageName: string
+    public filter: Filter
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
     private positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public toolTipPosition = new FormControl(this.positionOptions[1])
     private p: ParametersString
-    public rowmodel = { transactionSummary: new URLSearchParams(localStorage.getItem('_myaccount_balance_balance_crud')).get("search")}
+    public rowmodel = { transactionSummary: new URLSearchParams(localStorage.getItem('_myaccount_balance_balance_crud')).get("search") }
 
-    public filter: Filter = new Filter();
+    
+
 
     constructor(
         private readonly cdr: ChangeDetectorRef
-    ) { }
+    ) {
+    }
 
 
     ngOnInit(): void {
 
+        this.searchStorageName = Utils.strReplaceAll(' ', '-', this.seo.title).toLowerCase() + '_crud_search'
+        this.filter = new Filter(this.searchStorageName);
         this.displayedColumns = this.columns.map(el => el.key)
-        // let cols = []
-        // this.columns.forEach(el => {
-        //     cols.push(el.key)
-        //     if (el.hasOwnProperty("cellTemplate")) {
-        //         // el.cellTemplateName = el.cellTemplate
-        //         // el.cellTemplate = this[el.cellTemplate]
-        //     }
-        // })
-
         const d = new Date()
-        this.exportFileName = this.seo.title.replace(" ", "-").toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
+        this.exportFileName = Utils.strReplaceAll(' ', '-', this.seo.title).toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
         this.p = new ParametersString(this.crudConfig.crudName)
         this.getData(this.p.getParametersString())
+
+
+        /**
+         * triggers getData on filter change
+         */
+        this.filter.onFilterChange.subscribe(event => {
+            console.log(event)
+        });
+        
 
     }
 
@@ -217,10 +224,5 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.p.saveParametersString()
     }
 
-
-    // TODO: implement and use for handling children events
-    filterHasChanged() {
-        if(isDevMode) console.log(this.filter)
-    }
 
 }

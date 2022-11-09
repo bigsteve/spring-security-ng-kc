@@ -19,9 +19,8 @@ export class DateRangePicker implements OnInit {
     }
 
     dateRangeChange(dateRangeStart: HTMLInputElement, dateRangeEnd: HTMLInputElement) {
-        this.filter.search["startDate"] = dateRangeStart.value
-        this.filter.search["endDate"]= dateRangeEnd.value
-        this.filterHasChanged()
+        this.filter.setValue('search.startDate', dateRangeStart.value, false)
+        this.filter.setValue('search.endDate', dateRangeEnd.value)
     }
 
 }

@@ -92,7 +92,7 @@
 </ng-template>
 
 <ng-template #pipeDateShort let-row let-column="column" let-rowIndex="rowIndex">
-    <div class="date date-cell">{{row[column.key] | date: 'yyyy-MM-dd':
+    <div class="date date-cell">{{row[column.key] | date: 'MM/dd/YYYY':
         row[column.key].substring(row[column.key].length-6)}}</div>
 </ng-template>
 
