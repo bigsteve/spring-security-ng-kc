@@ -56,7 +56,7 @@ export class Utils {
         return v
     }
 
-    static setObjectValue(object: any, k: String, v: any) {
+    static setObjectValue(object: any, k: string, v: any) {
 
         let obj = object
 
@@ -65,7 +65,10 @@ export class Utils {
             if( !obj[ksplit[i]] ) return
             obj = obj[ksplit[i]]
         }
-        
+        if(v === '') {
+            delete obj[ksplit[ksplit.length-1]]
+            return
+        }
         obj[ksplit[ksplit.length-1]] = v
     }
 

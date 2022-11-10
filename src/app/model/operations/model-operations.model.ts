@@ -3,26 +3,47 @@ import { Utils } from "src/app/utils/utils.model"
 
 export class ModelOperations {
 
-    public onFilterChange: EventEmitter<any> = new EventEmitter();
-    private storageName: string = 'modelStorage'
+    private system: {
+        storageName: string,
+        doNotStore: string[],
+        onFilterChange: EventEmitter<any>
+    } = {
+            storageName: 'modelStorage',
+            doNotStore: [],
+            onFilterChange: new EventEmitter()
+        }
 
 
-    constructor(storageName?: string) {
-        this.storageName = storageName + 'zz'
+    constructor(storageName: string, doNotStore: string[] = []) {
+        this.system.storageName = storageName
+        this.system.doNotStore = doNotStore
+        this.system.doNotStore.push('system')
+    }
+
+
+    getSystem() {
+        return this.system
     }
 
     saveToLocalStorage() {
-        localStorage.setItem(this.storageName, this.getJson());
+        localStorage.setItem(this.system.storageName, this.getJson());
     }
 
     getFromLocalStorage() {
-        return localStorage.getItem(this.storageName)
+        return localStorage.getItem(this.system.storageName)
+    }
+
+    copyFromLocalStorage(): void {
+
+        let storedObj = JSON.parse(localStorage.getItem(this.system.storageName))
+        if (!storedObj) return
+        Object.keys(storedObj).forEach(k => this[k] = storedObj[k])
     }
 
     getJson() {
 
         return JSON.stringify(this, (k, v) => {
-            if (k === 'storageName' || k === 'onFilterChange') return undefined
+            if (k === 'system' || this.system.doNotStore.includes(k)) return undefined
             return v
         })
     }
@@ -31,11 +52,11 @@ export class ModelOperations {
         return new URLSearchParams(this.getJson()).toString()
     }
 
-    getParameterAndEncodedValue(param: String = 'params', q = '?') {
+    getParameterAndEncodedValue(param: string = 'params', q = '?') {
         return q + param + '=' + this.getEncodedJson()
     }
 
-    setValue(k: String, v: any, emitEvent: boolean = true) {
+    setValue(k: string, v: any, emitEvent: boolean = true) {
 
         Utils.setObjectValue(this, k, v)
         this.saveToLocalStorage()
@@ -43,8 +64,9 @@ export class ModelOperations {
     }
 
     emitEvent() {
-        this.onFilterChange.emit(this.getJson())
+        this.system.onFilterChange.emit(this.getJson())
     }
+
 
 
 }

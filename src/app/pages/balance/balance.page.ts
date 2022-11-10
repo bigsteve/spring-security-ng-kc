@@ -39,7 +39,7 @@ export class BalancePage implements OnInit {
     ngOnInit(): void {
 
         this.columns = [
-            new Column({ key: 'accountNumber', title: 'Account Number'}),
+            new Column({ key: 'accountNumber', title: 'Account Number', sensitiveData: true}),
             new Column({ key: 'transactionId', title: 'Transaction Id', placeholder: 'Transaction Id' }),
             new Column({ key: 'transactionType', title: 'Transaction Type', placeholder: 'Transaction Type' }),
             new Column({ key: 'closingBalance', title: 'Closing Balance', placeholder: 'Balance Bigger', cellTemplate: "pipeCurrency" }),

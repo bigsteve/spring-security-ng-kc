@@ -9,9 +9,7 @@ import {
     TemplateRef,
     ViewChild,
     isDevMode,
-    HostListener,
-    EventEmitter,
-    Output
+    HostListener
 } from '@angular/core'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
@@ -57,11 +55,12 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() columns: any
 
 
-    public displayedColumns: []
+    public displayedColumns: string[] = []
+    public hiddenColumns: string[] = []
+    public sensitiveColumns: string[] = []
     public page: DataPage = new DataPage()
     public search: Search = new Search()
     public exportFileName: string
-    private searchStorageName: string
     public filter: Filter
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
@@ -70,20 +69,21 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     private p: ParametersString
     public rowmodel = { transactionSummary: new URLSearchParams(localStorage.getItem('_myaccount_balance_balance_crud')).get("search") }
 
-    
+
 
 
     constructor(
         private readonly cdr: ChangeDetectorRef
-    ) {
-    }
+    ) { }
 
 
     ngOnInit(): void {
-
-        this.searchStorageName = Utils.strReplaceAll(' ', '-', this.seo.title).toLowerCase() + '_crud_search'
-        this.filter = new Filter(this.searchStorageName);
-        this.displayedColumns = this.columns.map(el => el.key)
+        this.displayedColumns = this.columns.filter(el => !this.hiddenColumns.includes(el.key)).filter(el => {
+            if(el.sensitiveData) this.sensitiveColumns.push(el.key)
+            return true
+        }).map(el => el.key)
+        
+        this.filter = new Filter(this.crudConfig.crudName + '_filter', ['accountNumber']);
         const d = new Date()
         this.exportFileName = Utils.strReplaceAll(' ', '-', this.seo.title).toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
         this.p = new ParametersString(this.crudConfig.crudName)
@@ -93,10 +93,10 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         /**
          * triggers getData on filter change
          */
-        this.filter.onFilterChange.subscribe(event => {
+        this.filter.getSystem().onFilterChange.subscribe(event => {
             console.log(event)
         });
-        
+
 
     }
 
@@ -159,14 +159,6 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-
-    debugVal(v: any): any {
-        if (isDevMode()) console.log('Debug val: ', v)
-        return v
-    }
-
-
-
     translateEventRowClick($event: any) {
         if (isDevMode()) console.log($event)
     }
@@ -195,24 +187,28 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
-    translateEventSort($event: any) {
-
-        this.search.setOrderDir($event.direction)
-        this.search.setOrderBy($event.active)
-        this.parseEvent()
-    }
 
 
-    translateEventPagination($event: any): any {
+    // refactor below
+    // translateEventSort($event: any) {
 
-        if (!$event.hasOwnProperty("event") && $event.hasOwnProperty("pageSize") && $event.hasOwnProperty("pageIndex")) {
-            this.page.pageable.setPageSize($event.pageSize)
-            this.page.pageable.setOffset($event.pageIndex)
-            this.page.pageable.pageNumber = $event.pageIndex
-            this.parseEvent()
-        }
-    }
+    //     this.search.setOrderDir($event.direction)
+    //     this.search.setOrderBy($event.active)
+    //     this.parseEvent()
+    // }
 
+
+    // translateEventPagination($event: any): any {
+
+    //     if (!$event.hasOwnProperty("event") && $event.hasOwnProperty("pageSize") && $event.hasOwnProperty("pageIndex")) {
+    //         this.page.pageable.setPageSize($event.pageSize)
+    //         this.page.pageable.setOffset($event.pageIndex)
+    //         this.page.pageable.pageNumber = $event.pageIndex
+    //         this.parseEvent()
+    //     }
+    // }
+
+    // remove this function
     private setParameters = () => {
 
         this.p.setParam('orderby', this.search.getOrderBy())

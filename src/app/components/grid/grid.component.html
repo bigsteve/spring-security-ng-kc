@@ -28,6 +28,10 @@
                 [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>add</mat-icon>
             </button>
+            <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Reset Filters"
+                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
+                <mat-icon>undo</mat-icon>
+            </button>
         </div>
         <div class="grid-paginator grid-control-paginator column col-lg-6 col-md-12">
             <ng-container *ngTemplateOutlet="matPaginator"></ng-container>
@@ -40,7 +44,8 @@
 
     <div class="mat-elevation-z8 column col-12" style="position: relative;">
 
-        <table mat-table #table [dataSource]="page.content" matSort (matSortChange)="translateEventSort($event)"
+        <table mat-table #table [dataSource]="page.content" matSort
+            (matSortChange)="this.filter.setValue('order', $event.active); this.filter.setValue('orderdir', $event.direction)"
             matSortActive="name" matSortDirection="asc" matSortDisableClear>
 
             <!--  Column -->
@@ -101,20 +106,19 @@
 </ng-template>
 
 <ng-template #matPaginator>
-    <mat-paginator #paginator [length]="this.page.totalElements" [pageSize]="this.page.pageable.pageSize"
-        [pageIndex]="this.page.pageable.pageNumber" [pageSizeOptions]="this.page.pageable.getPageSizeOptions()"
-        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="translateEventPagination($event)">
+    <mat-paginator #paginator [length]="this.page.totalElements" [pageSize]="this.filter.limit"
+        [pageIndex]="this.filter.offset" [pageSizeOptions]="this.page.pageable.getPageSizeOptions()"
+        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="this.filter.setValue('limit', $event.pageSize); this.filter.setValue('offset', $event.pageIndex)">
     </mat-paginator>
 </ng-template>
 
 <ng-template #defaultThTemplate let-row let-column="column" let-rowIndex="rowIndex">
     <mat-form-field *ngIf="column.searchEnabled" class="table-column-search-field" appearance="standard">
-        <input matInput autocomplete="off"
-            (input)="translateEventFilter({event: 'onFilter', params:{name: column.key, value: $event.srcElement.value}})"
-            placeholder="Src {{column.title}}" #input [(ngModel)]="rowmodel[column.key]">
+        <input matInput autocomplete="off" (input)="this.filter.setValue('search.'+column.key, $event.srcElement.value)"
+            placeholder="Src {{column.title}}" #input [(ngModel)]="this.filter.search[column.key]">
     </mat-form-field>
 </ng-template>
 
 <ng-template #pipeDateShortThTemplate let-row let-column="column" let-rowIndex="rowIndex">
-    <app-date-range-picker [filter]="filter"  [filterHasChanged]="filterHasChanged"></app-date-range-picker>
+    <app-date-range-picker [filter]="filter"></app-date-range-picker>
 </ng-template>
