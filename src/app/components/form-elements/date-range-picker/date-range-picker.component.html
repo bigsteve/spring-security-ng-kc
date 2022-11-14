@@ -1,8 +1,8 @@
 <mat-form-field class="grid-filter-date-range-picker" appearance="" >
     <!-- <mat-label>Enter a date range</mat-label> -->
-    <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate #dateRangeStart placeholder="Start date" (dateChange)="this.filter.setValue('search.startDate', dateRangeStart.value)">
-        <input matEndDate #dateRangeEnd placeholder="End date" (dateChange)="this.filter.setValue('search.endDate', dateRangeEnd.value)">
+    <mat-date-range-input [rangePicker]="picker" #matRangePicker>
+        <input [(ngModel)]="this.startDate" matStartDate #dateRangeStart placeholder="Start date" (dateChange)="dateRangeChange('search.startDate', dateRangeStart.value)">
+        <input [(ngModel)]="this.endDate" matEndDate #dateRangeEnd placeholder="End date" (dateChange)="dateRangeChange('search.endDate', dateRangeEnd.value)">
     </mat-date-range-input>
     <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

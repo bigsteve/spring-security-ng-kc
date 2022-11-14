@@ -33,7 +33,7 @@ export class Utils {
      * @param v 
      */
     static strReplaceAll = function (from: string | string[], to: string | string[], v: string): string {
-        if(v === undefined) return ''
+        if (v === undefined) return ''
         if (Array.isArray(to) && (!Array.isArray(from) || (Array.isArray(from) && from.length !== to.length))) {
             console.error('Error: Both arguments must be strings, or if the first argument is an array, the second argument must be a string or an array with the same length as the first array argument.')
             return v
@@ -61,15 +61,24 @@ export class Utils {
         let obj = object
 
         let ksplit = k.split('.')
-        for(let i = 0; i < ksplit.length - 1; i++) {
-            if( !obj[ksplit[i]] ) return
+        for (let i = 0; i < ksplit.length - 1; i++) {
+            if (!obj[ksplit[i]]) return
             obj = obj[ksplit[i]]
         }
-        if(v === '') {
-            delete obj[ksplit[ksplit.length-1]]
+        if (v === '') {
+            delete obj[ksplit[ksplit.length - 1]]
             return
         }
-        obj[ksplit[ksplit.length-1]] = v
+        obj[ksplit[ksplit.length - 1]] = v
+    }
+
+
+    static stringToDate(date: string | String, format: string | String) {
+
+        let separator = format[format.search(/[^A-Za-z]/)]
+        let formatArr = format.toLowerCase().split(separator)
+        let dateArr = date.split(separator).map(el => parseInt(el))
+        return new Date(dateArr[formatArr.indexOf('yyyy')], dateArr[formatArr.indexOf('mm')] - 1, dateArr[formatArr.indexOf('dd')])
     }
 
 }

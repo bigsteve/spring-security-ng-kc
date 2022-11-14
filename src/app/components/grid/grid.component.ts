@@ -19,7 +19,7 @@ import { MatPaginator } from '@angular/material/paginator'
 import { Seo } from 'src/app/model/seo/seo.model'
 import { Search } from 'src/app/model/pageable/search.model'
 import { MatSort } from '@angular/material/sort';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip'
 import { Utils } from 'src/app/utils/utils.model'
 import { ParametersString } from 'src/app/model/parameters.string.model'
@@ -33,10 +33,7 @@ import { Filter } from 'src/app/model/search/filter.model'
 })
 
 /**
- * @desc GridComponent class
- * TODO:
- * refine parameters
- * refine parameters storage
+ * 
  */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -61,29 +58,30 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     public page: DataPage = new DataPage()
     public search: Search = new Search()
     public exportFileName: string
-    public filter: Filter
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
     private positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public toolTipPosition = new FormControl(this.positionOptions[1])
     private p: ParametersString
     public rowmodel = { transactionSummary: new URLSearchParams(localStorage.getItem('_myaccount_balance_balance_crud')).get("search") }
-
+    
 
 
 
     constructor(
-        private readonly cdr: ChangeDetectorRef
+        private readonly cdr: ChangeDetectorRef,
+        public filter: Filter
     ) { }
 
 
     ngOnInit(): void {
         this.displayedColumns = this.columns.filter(el => !this.hiddenColumns.includes(el.key)).filter(el => {
-            if(el.sensitiveData) this.sensitiveColumns.push(el.key)
+            el.sensitiveData && this.sensitiveColumns.push(el.key)
             return true
         }).map(el => el.key)
         
-        this.filter = new Filter(this.crudConfig.crudName + '_filter', ['accountNumber']);
+        this.filter.storageName = this.crudConfig.crudName + '_filter'
+        this.filter.doNotStore = this.sensitiveColumns
         const d = new Date()
         this.exportFileName = Utils.strReplaceAll(' ', '-', this.seo.title).toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
         this.p = new ParametersString(this.crudConfig.crudName)
@@ -93,7 +91,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         /**
          * triggers getData on filter change
          */
-        this.filter.getSystem().onFilterChange.subscribe(event => {
+        this.filter.system.onFilterChange.subscribe(event => {
             console.log(event)
         });
 

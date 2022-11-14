@@ -32,6 +32,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSortModule } from "@angular/material/sort";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ReactiveFormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -40,6 +41,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DateRangePicker } from './components/form-elements/date-range-picker/date-range-picker.component';
+import { HighlightDirective } from './directives/highlight.directive';
 function initializeKeycloak(keycloak: KeycloakService) {
 
 
@@ -84,7 +86,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         ButtonOverviewExampleComponent,
         ExportButtonsComponent,
         LoaderComponent,
-        DateRangePicker
+        DateRangePicker,
+        HighlightDirective
     ],
     exports: [AppComponent],
     imports: [
@@ -104,6 +107,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         MatTooltipModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        ReactiveFormsModule,
         FontAwesomeModule,
         AppRoutingModule,
         BrowserModule,
@@ -141,7 +145,7 @@ export class AppModule {
 }
 
 /*
-
  ng serve --host samplebank.com --disable-host-check
+ ng serve --host samplebank.com --ssl --port 443
 
 */

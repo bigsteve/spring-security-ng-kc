@@ -1,29 +1,43 @@
 import { EventEmitter, Output } from "@angular/core";
+import { BroadcastService } from "src/app/services/events/broadcast.service";
+import { BrowserStorageService } from "src/app/services/storage/browser-storage.service";
 import { Utils } from "src/app/utils/utils.model"
+
 
 export class ModelOperations {
 
-    private system: {
+    private _system: {
         storageName: string,
+        storageService: BrowserStorageService,
         doNotStore: string[],
-        onFilterChange: EventEmitter<any>
+        onFilterChange: EventEmitter<any>,
+        broadcast: BroadcastService
     } = {
-            storageName: 'modelStorage',
-            doNotStore: [],
-            onFilterChange: new EventEmitter()
+            storageName: 'notNameModelStorage',
+            storageService: null,
+            doNotStore: ['_system'],
+            onFilterChange: new EventEmitter(),
+            broadcast: null
         }
 
+    public set storageName(v: string) {
+        this.system.storageName = v
+        this.copyFromLocalStorage()
+    }
 
-    constructor(storageName: string, doNotStore: string[] = []) {
-        this.system.storageName = storageName
-        this.system.doNotStore = doNotStore
-        this.system.doNotStore.push('system')
+    public set storageService(v: BrowserStorageService) {
+        this.system.storageService = v
+    }
+
+    public set doNotStore(v: string[]) {
+        this.system.doNotStore = this.system.doNotStore.concat(v)
+    }
+
+    public get system() {
+        return this._system
     }
 
 
-    getSystem() {
-        return this.system
-    }
 
     saveToLocalStorage() {
         localStorage.setItem(this.system.storageName, this.getJson());
@@ -43,7 +57,8 @@ export class ModelOperations {
     getJson() {
 
         return JSON.stringify(this, (k, v) => {
-            if (k === 'system' || this.system.doNotStore.includes(k)) return undefined
+            console.log(this.system.doNotStore)
+            if (this.system.doNotStore.includes(k)) return undefined
             return v
         })
     }
@@ -63,8 +78,14 @@ export class ModelOperations {
         if (emitEvent) this.emitEvent()
     }
 
+    resetFilter(emitEvent: boolean = true) {
+        localStorage.removeItem(this.system.storageName)
+        if (emitEvent) this.emitEvent()
+    }
+
     emitEvent() {
         this.system.onFilterChange.emit(this.getJson())
+        console.log(this.system.broadcast)
     }
 
 

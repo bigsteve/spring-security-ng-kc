@@ -29,7 +29,7 @@
                 <mat-icon>add</mat-icon>
             </button>
             <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Reset Filters"
-                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
+                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.filter.resetFilter()">
                 <mat-icon>undo</mat-icon>
             </button>
         </div>
@@ -98,7 +98,7 @@
 
 <ng-template #pipeDateShort let-row let-column="column" let-rowIndex="rowIndex">
     <div class="date date-cell">{{row[column.key] | date: 'MM/dd/YYYY':
-        row[column.key].substring(row[column.key].length-6)}}</div>
+        row[column.key]}}</div>
 </ng-template>
 
 <ng-template #rowActions let-row let-column="column" let-rowIndex="rowIndex">
