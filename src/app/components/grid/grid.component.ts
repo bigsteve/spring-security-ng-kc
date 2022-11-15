@@ -91,7 +91,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         /**
          * triggers getData on filter change
          */
-        this.filter.system.onFilterChange.subscribe(event => {
+        this.filter.onFilterChange.subscribe(event => {
             console.log(event)
         });
 
