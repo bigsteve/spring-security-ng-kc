@@ -13,8 +13,6 @@ export class DateRangePicker implements OnInit {
 
     @Input() filter: Filter
     @Input() fieldName: string
-    // @ViewChild('dateRangeStart', { static: false }) public dateRangeStart: HTMLInputElement;
-
     public fieldNameStart: string
     public fieldNameEnd: string
     public startDate: Date | ''

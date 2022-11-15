@@ -24,6 +24,17 @@ export class BalancePage implements OnInit {
         massActionsEnabled: false,
         uid: "transactionId"
     }
+
+    
+    public crudConfig2 = {
+        crudName: 'balance_crud2',
+        crudEnabled: true,
+        exportEnabled: true,
+        globalSearchEnabled: false,
+        configEnabled: true,
+        massActionsEnabled: false,
+        uid: "transactionId"
+    }
     public exportFileName: string
 
     constructor(private readonly balanceService: DashboardService) {

@@ -44,9 +44,9 @@
 
     <div class="mat-elevation-z8 column col-12" style="position: relative;">
 
-        <table mat-table #table [dataSource]="page.content" matSort
+        <table mat-table #table [dataSource]="page.content" matSort 
             (matSortChange)="this.filter.setValue('order', $event.active); this.filter.setValue('orderdir', $event.direction)"
-            matSortActive="name" matSortDirection="asc" matSortDisableClear>
+             [matSortActive]="this.filter.order" [matSortDirection]="this.filter.orderdir" matSortDisableClear>
 
             <!--  Column -->
             <ng-container *ngFor="let column of columns; index as colIndex" matColumnDef="{{column.key}}">

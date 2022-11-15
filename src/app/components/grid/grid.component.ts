@@ -18,18 +18,21 @@ import { Pageable } from 'src/app/model/pageable/pageable.model'
 import { MatPaginator } from '@angular/material/paginator'
 import { Seo } from 'src/app/model/seo/seo.model'
 import { Search } from 'src/app/model/pageable/search.model'
-import { MatSort } from '@angular/material/sort';
-import { FormControl, FormGroup } from '@angular/forms';
+import { MatSort, MatSortable, Sort } from '@angular/material/sort';
+import { FormControl } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip'
 import { Utils } from 'src/app/utils/utils.model'
 import { ParametersString } from 'src/app/model/parameters.string.model'
 import { Filter } from 'src/app/model/search/filter.model'
+import { MatTable } from '@angular/material/table'
+import { faSort } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
     selector: 'app-grid',
     templateUrl: './grid.component.html',
     styleUrls: ['./grid.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [Filter]
 })
 
 /**
@@ -37,14 +40,16 @@ import { Filter } from 'src/app/model/search/filter.model'
  */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
-    @HostListener('matSortChange', ['$event'])
+    // @HostListener('matSortChange', ['$event'])
 
     @ViewChild('paginator', { static: true }) paginator: MatPaginator
-    @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>;
-    @ViewChild('pipeDateShort', { static: true }) public pipeDateShort: TemplateRef<any>;
-    @ViewChild('pipeDateShortThTemplate', { static: true }) public pipeDateShortThTemplate: TemplateRef<any>;
-    @ViewChild('rowActions', { static: true }) public rowActions: TemplateRef<any>;
-    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>
+    @ViewChild('pipeDateShort', { static: true }) public pipeDateShort: TemplateRef<any>
+    @ViewChild('pipeDateShortThTemplate', { static: true }) public pipeDateShortThTemplate: TemplateRef<any>
+    @ViewChild('rowActions', { static: true }) public rowActions: TemplateRef<any>
+    // @ViewChild(MatSort, {static: false}) public matSort: MatSort
+    // @ViewChild('table', {static: false}) public matTable: MatTable<Element>
+    @ViewChild(MatSort) public matSort: MatSort;
 
     @Input() crudConfig: any
     @Input() seo: Seo
