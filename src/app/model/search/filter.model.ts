@@ -9,8 +9,8 @@ import { ModelOperations } from "../operations/model-operations.model"
 })
 export class Filter extends ModelOperations {
 
-    search: any = {}
-    order: string = 'sortDefault'
+    search: object = new Object()
+    order: string = ''
     orderdir: 'asc' | 'desc' = 'desc'
     offset: string | Number = 0
     limit: string | Number = 50
@@ -20,8 +20,8 @@ export class Filter extends ModelOperations {
         private _storageService: BrowserStorageService
     ) {
         super()
-        this.broadcastService = _broadcastService
-        this.storageService = _storageService
+        this._system.broadcastService = _broadcastService
+        this._system.storageService = _storageService
         delete this._broadcastService
         delete this._storageService
 

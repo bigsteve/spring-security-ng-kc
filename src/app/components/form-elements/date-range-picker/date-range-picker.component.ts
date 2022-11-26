@@ -23,20 +23,20 @@ export class DateRangePicker implements OnInit {
 
     ngOnInit(): void {
         
-        this.fieldNameStart = this.fieldName+'Start'
-        this.fieldNameEnd = this.fieldName+'End'
-        if (this.filter.search.hasOwnProperty(this.fieldNameStart)) this.startDate = new Date(this.filter.search[this.fieldNameStart])
-        if (this.filter.search.hasOwnProperty(this.fieldNameEnd)) this.endDate = new Date(this.filter.search[this.fieldNameEnd])
+        if (!this.filter.search[this.fieldName]) this.filter.search[this.fieldName] = {}
+        if (this.filter.search[this.fieldName].hasOwnProperty('startDate')) this.startDate = new Date(this.filter.search[this.fieldName].startDate)
+        if (this.filter.search[this.fieldName].hasOwnProperty('endDate')) this.endDate = new Date(this.filter.search[this.fieldName].endDate)
 
-        this.filter.system.onFilterChange.subscribe(event => {
-            if (!this.filter.search[this.fieldNameStart]) this.startDate = null
-            if (!this.filter.search[this.fieldNameStart]) this.endDate = null
+        this.filter.onFilterChange.subscribe(event => {
+            if (!this.filter.search[this.fieldName]) this.startDate = null
+            if (!this.filter.search[this.fieldName]) this.endDate = null
         })
 
     }
-
+    // TODO: check if I gan use different higher level event in order to trigger less events on filer
     dateRangeChange(searchString: string, dateInputFieldValue: string) {
         this.filter.setValue(searchString, dateInputFieldValue)
+        this.filter.setValue('offset', 0)
     }
 
 }

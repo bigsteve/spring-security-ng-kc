@@ -28,7 +28,7 @@ export class ExportButtonsComponent implements OnInit {
                 .subscribe({
                     next: (response) => {
 
-                        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(<any>response.body["content"]);
+                        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(<any>response.body['message']['content']);
                         const wb: XLSX.WorkBook = XLSX.utils.book_new();
                         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
                         XLSX.writeFile(wb, this.filename + '.xlsx');
@@ -63,7 +63,7 @@ export class ExportButtonsComponent implements OnInit {
             this.observable.pipe(takeUntil(this.ngUnsubscribe))
                 .subscribe({
                     next: (response) => {
-                        csvExporter.generateCsv(<any>response.body["content"])
+                        csvExporter.generateCsv(<any>response.body['message']['content'])
                     },
                     error: (error: any) => {
                         console.error('Error: ', error.message)

@@ -18,15 +18,15 @@ export class LoaderInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         
-        let uiRequest = false
-        if(request.urlWithParams.includes('uirequest')) uiRequest = true
+        let showLoader = true
+        if(request.urlWithParams.includes('export')) showLoader = false
 
-        if(uiRequest) this.loaderService.show();
+        if(showLoader) this.loaderService.show();
 
         return next.handle(request).pipe(
             
             finalize(() => {
-                if(uiRequest) this.loaderService.hide()
+                if(showLoader) this.loaderService.hide()
             })
         )
     }

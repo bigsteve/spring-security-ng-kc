@@ -56,19 +56,38 @@ export class Utils {
         return v
     }
 
+
+    /**
+     * 
+     * @param target 
+     * @param source 
+     */
+    static deepCopyObjectWhereTargetKeysExist(target: object, source: object) {
+        Object.keys(target).forEach(k => {
+            if (typeof target[k] === 'object' && typeof source[k] === 'object' && source[k] !== null) {
+                Utils.deepCopyObjectWhereTargetKeysExist(target[k], source[k])
+            } else if (source.hasOwnProperty(k)) {
+                target[k] = source[k]
+            }
+        })
+    }
+
+
+
+
     static setObjectValue(object: any, k: string, v: any) {
 
         let obj = object
 
         let ksplit = k.split('.')
         for (let i = 0; i < ksplit.length - 1; i++) {
-            if (!obj[ksplit[i]]) return
+            if (!obj[ksplit[i]]) obj[ksplit[i]] = {}
             obj = obj[ksplit[i]]
         }
-        if (v === '') {
-            delete obj[ksplit[ksplit.length - 1]]
-            return
-        }
+        // if (v === '') {
+        //     delete obj[ksplit[ksplit.length - 1]]
+        //     return
+        // }
         obj[ksplit[ksplit.length - 1]] = v
     }
 

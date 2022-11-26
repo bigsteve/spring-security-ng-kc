@@ -4,7 +4,7 @@
             <h1>{{ seo.title }}</h1>
         </div>
         <div class="grid-export col-sm-6">
-            <export-buttons *ngIf="this.crudConfig.exportEnabled" [filename]="exportFileName" [columns]="columns"
+            <export-buttons *ngIf="this.crudConfig.exportEnabled" [filename]="exportFileName" [columns]="this.filter.activeColumns"
                 [observable]="exportData()">
             </export-buttons>
         </div>
@@ -31,6 +31,10 @@
             <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Reset Filters"
                 [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.filter.resetFilter()">
                 <mat-icon>undo</mat-icon>
+            </button>
+            <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Test" matTooltip=""
+                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.testCols()">
+                <mat-icon>refresh</mat-icon>
             </button>
         </div>
         <div class="grid-paginator grid-control-paginator column col-lg-6 col-md-12">
@@ -72,12 +76,12 @@
                 </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsArray(displayedColumns)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsArray(displayedColumns)"></tr>
 
             <!-- Row shown if dataset is empty -->
             <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                <td class="mat-cell" colspan="4">No data matching the search criteria."</td>
             </tr>
         </table>
     </div>
@@ -88,8 +92,8 @@
 </div>
 
 
-<ng-template #defaultCellTemplate let-row , let-column="column" , let-colIndex="colIndex" , let-rowIndex="rowIndex">
-    {{row[column.key]}}
+<ng-template #defaultCellTemplate let-row , let-column="column">
+    <div class="default default-cell">{{row[column.key]}}</div>
 </ng-template>
 
 <ng-template #pipeCurrency let-row let-column="column">
@@ -108,13 +112,13 @@
 <ng-template #matPaginator>
     <mat-paginator #paginator [length]="this.page.totalElements" [pageSize]="this.filter.limit"
         [pageIndex]="this.filter.offset" [pageSizeOptions]="this.page.pageable.getPageSizeOptions()"
-        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="this.filter.setValue('limit', $event.pageSize); this.filter.setValue('offset', $event.pageIndex)">
+        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="this.filter.setValue('limit', $event.pageSize, false); this.filter.setValue('offset', $event.pageIndex)">
     </mat-paginator>
 </ng-template>
 
 <ng-template #defaultThTemplate let-row let-column="column" let-rowIndex="rowIndex">
     <mat-form-field *ngIf="column.searchEnabled" class="table-column-search-field" appearance="standard">
-        <input matInput autocomplete="off" (input)="this.filter.setValue('search.'+column.key, $event.srcElement.value)"
+        <input matInput autocomplete="off" (input)="this.filter.setValue('search.'+column.key, $event.srcElement.value); this.filter.setValue('offset', 0)"
             placeholder="Src {{column.title}}" #input [(ngModel)]="this.filter.search[column.key]">
     </mat-form-field>
 </ng-template>

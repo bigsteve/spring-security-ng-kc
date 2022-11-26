@@ -8,8 +8,7 @@ import {
     OnInit,
     TemplateRef,
     ViewChild,
-    isDevMode,
-    HostListener
+    isDevMode
 } from '@angular/core'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
@@ -17,15 +16,10 @@ import { DataPage } from 'src/app/model/data.page.model'
 import { Pageable } from 'src/app/model/pageable/pageable.model'
 import { MatPaginator } from '@angular/material/paginator'
 import { Seo } from 'src/app/model/seo/seo.model'
-import { Search } from 'src/app/model/pageable/search.model'
-import { MatSort, MatSortable, Sort } from '@angular/material/sort';
 import { FormControl } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip'
 import { Utils } from 'src/app/utils/utils.model'
-import { ParametersString } from 'src/app/model/parameters.string.model'
 import { Filter } from 'src/app/model/search/filter.model'
-import { MatTable } from '@angular/material/table'
-import { faSort } from '@fortawesome/free-solid-svg-icons'
 
 @Component({
     selector: 'app-grid',
@@ -40,16 +34,11 @@ import { faSort } from '@fortawesome/free-solid-svg-icons'
  */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
-    // @HostListener('matSortChange', ['$event'])
-
     @ViewChild('paginator', { static: true }) paginator: MatPaginator
     @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>
     @ViewChild('pipeDateShort', { static: true }) public pipeDateShort: TemplateRef<any>
     @ViewChild('pipeDateShortThTemplate', { static: true }) public pipeDateShortThTemplate: TemplateRef<any>
     @ViewChild('rowActions', { static: true }) public rowActions: TemplateRef<any>
-    // @ViewChild(MatSort, {static: false}) public matSort: MatSort
-    // @ViewChild('table', {static: false}) public matTable: MatTable<Element>
-    @ViewChild(MatSort) public matSort: MatSort;
 
     @Input() crudConfig: any
     @Input() seo: Seo
@@ -57,49 +46,60 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() columns: any
 
 
-    public displayedColumns: string[] = []
+    public displayedColumns: object
+    public actionColumns: string[] = []
     public hiddenColumns: string[] = []
     public sensitiveColumns: string[] = []
     public page: DataPage = new DataPage()
-    public search: Search = new Search()
+    // public search: Search = new Search()
     public exportFileName: string
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
     private positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public toolTipPosition = new FormControl(this.positionOptions[1])
-    private p: ParametersString
-    public rowmodel = { transactionSummary: new URLSearchParams(localStorage.getItem('_myaccount_balance_balance_crud')).get("search") }
-    
-
-
 
     constructor(
         private readonly cdr: ChangeDetectorRef,
         public filter: Filter
     ) { }
 
+    displayedColumnsArray(v: object) {
+        return Object.keys(v).concat(this.actionColumns)
+    }
+
+    testCols() {
+        delete this.displayedColumns[Object.keys(this.displayedColumns).pop()]
+        // this.displayedColumns['transactionSummary'] = ''
+        // this.filter.initialize(this.crudConfig.crudName + '_filter', this.displayedColumns, [])
+        console.log(this.filter)
+        console.log(this.filter.getFromLocalStorage())
+    }
 
     ngOnInit(): void {
+
         this.displayedColumns = this.columns.filter(el => !this.hiddenColumns.includes(el.key)).filter(el => {
             el.sensitiveData && this.sensitiveColumns.push(el.key)
+            if (el.cellTemplate.includes('Actions')) {
+                this.actionColumns.push(el.key)
+                return false
+            }
             return true
-        }).map(el => el.key)
-        
-        this.filter.storageName = this.crudConfig.crudName + '_filter'
+        }).map(el => el.key).reduce((a, v) => ({ ...a, [v]: '' }), {})
+
+        // delete this.displayedColumns['transactionSummary']
+        // this.displayedColumns = {accountNumber:'', transactionId: '', createDt:''}
+
+        this.filter.search = this.displayedColumns
         this.filter.doNotStore = this.sensitiveColumns
+        this.filter.storageName = this.crudConfig.crudName + '_filter'
+
+
+        // this.filter.initialize(this.crudConfig.crudName + '_filter', this.displayedColumns, this.sensitiveColumns)
+
         const d = new Date()
         this.exportFileName = Utils.strReplaceAll(' ', '-', this.seo.title).toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
-        this.p = new ParametersString(this.crudConfig.crudName)
-        this.getData(this.p.getParametersString())
-
-
-        /**
-         * triggers getData on filter change
-         */
-        this.filter.onFilterChange.subscribe(event => {
-            console.log(event)
-        });
-
+        this.getData(this.filter.getParameterAndEncodedValue())
+        this.filter.onFilterChange.subscribe(event => this.translateEventFilter(event))
 
     }
 
@@ -120,7 +120,11 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     exportData() {
-        let paramsExport = "?uirequest=true&limit=" + this.page.totalElements + "&" + this.search.getRequestParameters()
+        // TODO: set correct limit and offset parameters or better remove them
+        let filterNewObj = JSON.parse(this.filter.getJson())
+        filterNewObj.limit = this.page.totalElements
+        filterNewObj.offset = 0
+        let paramsExport = '?export=true&params=' + new URLSearchParams(JSON.stringify(filterNewObj)).toString()
         return this.service
             .getData(paramsExport)
             .pipe(takeUntil(this.ngUnsubscribe))
@@ -131,9 +135,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     private parseEvent(): void {
-        this.setParameters()
-        this.p.saveParametersString()
-        this.getData(this.p.getParametersString())
+        this.getData(this.filter.getParameterAndEncodedValue())
     }
 
 
@@ -146,7 +148,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe({
                 next: (response: any) => {
-                    this.page = <any>response.body
+                    this.page = <any>response.body.message
                     if (isDevMode()) console.log(this.page)
                     this.page.pageable = new Pageable(this.page.pageable)
 
@@ -174,14 +176,11 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         const timeoutParseEvent = () => {
 
             this.timeouts[$event.event] = []
-            this.search.setSearch($event.params.value)
-            this.search.setSearchBy($event.params.name)
-            this.page.pageable.pageNumber = 0
             this.parseEvent()
         }
 
         if (!this.timeouts.hasOwnProperty($event.event)) this.timeouts[$event.event] = []
-        this.timeouts[$event.event].push(setTimeout(timeoutParseEvent, 600))
+        this.timeouts[$event.event].push(setTimeout(timeoutParseEvent, 500))
 
         while (this.timeouts[$event.event].length > 1) {
             clearTimeout(this.timeouts[$event.event][0])
@@ -189,39 +188,6 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-
-
-
-    // refactor below
-    // translateEventSort($event: any) {
-
-    //     this.search.setOrderDir($event.direction)
-    //     this.search.setOrderBy($event.active)
-    //     this.parseEvent()
-    // }
-
-
-    // translateEventPagination($event: any): any {
-
-    //     if (!$event.hasOwnProperty("event") && $event.hasOwnProperty("pageSize") && $event.hasOwnProperty("pageIndex")) {
-    //         this.page.pageable.setPageSize($event.pageSize)
-    //         this.page.pageable.setOffset($event.pageIndex)
-    //         this.page.pageable.pageNumber = $event.pageIndex
-    //         this.parseEvent()
-    //     }
-    // }
-
-    // remove this function
-    private setParameters = () => {
-
-        this.p.setParam('orderby', this.search.getOrderBy())
-        this.p.setParam('orderdir', this.search.getOrderDir())
-        this.p.setParam('searchby', this.search.getSearchBy())
-        this.p.setParam('search', this.search.getSearch())
-        this.p.setParam('limit', this.page.pageable.getPageSize().toString())
-        this.p.setParam('offset', this.page.pageable.getPageNumber().toString())
-        this.p.saveParametersString()
-    }
 
 
 }

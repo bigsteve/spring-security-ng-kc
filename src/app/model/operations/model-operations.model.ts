@@ -4,7 +4,7 @@ import { BrowserStorageService } from "src/app/services/storage/browser-storage.
 import { Utils } from "src/app/utils/utils.model"
 
 /**
- * Provides methods to observe and use model properties changes
+ * Provides methods to manage and use grid filter properties
  */
 export class ModelOperations {
 
@@ -38,10 +38,6 @@ export class ModelOperations {
         return this.system.storageName
     }
 
-    public set storageService(v: BrowserStorageService) {
-        this.system.storageService = v
-    }
-
     public get storageService(): BrowserStorageService {
         return this.system.storageService
     }
@@ -58,10 +54,6 @@ export class ModelOperations {
         return this.system.onFilterChange
     }
 
-    public set broadcastService(v: BroadcastService) {
-        this.system.broadcastService = v
-    }
-
     public get broadcastService(): BroadcastService {
         return this.system.broadcastService
     }
@@ -76,15 +68,15 @@ export class ModelOperations {
 
     copyFromLocalStorage(): void {
 
-        let storedObj = JSON.parse(this.storageService.get(this.storageName))
+        let storedObj = JSON.parse(this.getFromLocalStorage())
         if (!storedObj) return
-        Object.keys(storedObj).forEach(k => this[k] = storedObj[k])
+        Utils.deepCopyObjectWhereTargetKeysExist(this, storedObj)
     }
 
     getJsonAllowedToStore() {
 
         return JSON.stringify(this, (k, v) => {
-            if (this.doNotStore.includes(k)) return undefined
+            if (this.doNotStore.includes(k)) return (k === '_system') ? undefined : ''
             return v
         })
     }
@@ -97,13 +89,14 @@ export class ModelOperations {
     getEncodedJson() {
         return new URLSearchParams(this.getJson()).toString()
     }
+    
     /**
      * Returns all filter parameters as encoded json to be passed on request
      * @param param 
      * @param q 
      * @returns 
      */
-    getParameterAndEncodedValue(param: string = 'params', q = '?') {
+    getParameterAndEncodedValue(q: string = '?', param: string = 'params') {
         return q + param + '=' + this.getEncodedJson()
     }
 
@@ -114,13 +107,12 @@ export class ModelOperations {
     }
 
     resetFilter(emitEvent: boolean = true) {
-        let obj = JSON.parse(this.system.initialValues)
-        Object.keys(obj).forEach(k => this[k] = obj[k])
+        Utils.deepCopyObjectWhereTargetKeysExist(this, JSON.parse(this.system.initialValues))
         this.storageService.set(this.storageName, this.system.initialValues);
         if (emitEvent) this.emitEvent()
     }
 
     emitEvent() {
-        this.onFilterChange.emit(this.getJson())
+        this.onFilterChange.emit({name: 'filter', event: JSON.parse(this.getJson())})
     }
 }
