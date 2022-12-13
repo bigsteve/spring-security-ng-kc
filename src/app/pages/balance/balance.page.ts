@@ -50,15 +50,15 @@ export class BalancePage implements OnInit {
     ngOnInit(): void {
 
         this.columns = [
-            new Column({ key: 'accountNumber', title: 'Account Number', sensitiveData: true }),
-            new Column({ key: 'transactionId', title: 'Transaction Id', placeholder: 'Transaction Id' }),
-            new Column({ key: 'transactionType', title: 'Transaction Type', placeholder: 'Transaction Type' }),
-            new Column({ key: 'closingBalance', title: 'Closing Balance', placeholder: 'Balance Bigger', cellTemplate: "pipeCurrency" }),
-            new Column({ key: 'createDt', title: 'Date', placeholder: 'Date', cellTemplate: "pipeDateShort" }),
-            new Column({ key: 'status', title: 'Status', placeholder: 'Status' }),
-            new Column({ key: 'transactionAmt', title: 'Amount', cellTemplate: "pipeCurrency" }),
-            new Column({ key: 'transactionSummary', title: 'Summary', placeHolder: 'Summary' }),
-            new Column({ key: 'gridActionsCell', title: 'Actions', searchEnabled: false, orderEnabled: false, cellTemplate: "rowActions" })
+            new Column({ key: 't___accountNumber', title: 'Account Number', sensitiveData: true }),
+            new Column({ key: 't___transactionId', title: 'Transaction Id', placeholder: 'Transaction Id' }),
+            new Column({ key: 't___transactionType', title: 'Transaction Type', placeholder: 'Transaction Type' }),
+            new Column({ key: 't___closingBalance', title: 'Closing Balance', placeholder: 'Balance Bigger', cellTemplate: "pipeCurrency" }),
+            new Column({ key: 't___createDt', title: 'Date', placeholder: 'Date', cellTemplate: "pipeDateShort" }),
+            new Column({ key: 't___status', title: 'Status', placeholder: 'Status' }),
+            new Column({ key: 't___transactionAmt', title: 'Amount', cellTemplate: "pipeCurrency" }),
+            new Column({ key: 't___transactionSummary', title: 'Summary', placeHolder: 'Summary' }),
+            new Column({ key: 't___gridActionsCell', title: 'Actions', searchEnabled: false, orderEnabled: false, cellTemplate: "rowActions" })
         ]
     }
 
