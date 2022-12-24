@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { User } from '../../model/user.model';
 import { Contact } from '../../model/contact.model';
 import { DataPage } from '../../model/data.page.model'
-import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'

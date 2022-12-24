@@ -23,7 +23,7 @@ export class AccountPage implements OnInit {
                 error: error => {
                     console.log(error);
                 },
-                complete: () => console.info('complete')
+                complete: () => {}
             });
         }
 

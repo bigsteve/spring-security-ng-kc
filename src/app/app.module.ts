@@ -44,7 +44,16 @@ import { DateRangePicker } from './components/form-elements/date-range-picker/da
 import { HighlightDirective } from './directives/highlight.directive';
 function initializeKeycloak(keycloak: KeycloakService) {
 
-
+// // load previous tokens, saved after successful login of keycloak success callback
+// const token = localStorage.getItem('kc_token');
+// const refreshToken = localStorage.getItem('kc_refreshToken');
+// // pass to keycloak init
+// keycloak.init({ onLoad: 'login-required', token, refreshToken }).then(
+// success=>{
+//   localStorage.setItem('kc_token', keycloak.token);
+//   localStorage.setItem('kc_refreshToken', keycloak.refreshToken);
+//   //load your app from here
+// });
 
     return () =>
         keycloak.init({
