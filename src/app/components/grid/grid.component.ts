@@ -45,7 +45,6 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() service: any
     @Input() columns: any
 
-
     public displayedColumns: object
     public actionColumns: string[] = []
     public hiddenColumns: string[] = []
@@ -57,11 +56,17 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     private ngUnsubscribe: Subject<void> = new Subject<void>()
     private positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
     public toolTipPosition = new FormControl(this.positionOptions[1])
-
     constructor(
         private readonly cdr: ChangeDetectorRef,
         public filter: Filter
     ) { }
+
+    test(v) {
+        return v+" blabla";
+    }
+    getObjectValue(object: any, k: string) {
+        return Utils.getObjectValue(object, k)
+    }
 
     displayedColumnsArray(v: object) {
         return Object.keys(v).concat(this.actionColumns)

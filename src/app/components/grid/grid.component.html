@@ -93,16 +93,16 @@
 
 
 <ng-template #defaultCellTemplate let-row , let-column="column">
-    <div class="default default-cell">{{row[column.key]}}</div>
+    <div class="default default-cell">{{this.getObjectValue(row, column.key)}}</div>
 </ng-template>
 
 <ng-template #pipeCurrency let-row let-column="column">
-    <div class="currency currency-cell">{{row[column.key] | currency}}</div>
+    <div class="currency currency-cell">{{this.getObjectValue(row, column.key) | currency}}</div>
 </ng-template>
 
 <ng-template #pipeDateShort let-row let-column="column" let-rowIndex="rowIndex">
-    <div class="date date-cell">{{row[column.key] | date: 'MM/dd/YYYY':
-        row[column.key]}}</div>
+    <div class="date date-cell">{{this.getObjectValue(row, column.key) | date: 'MM/dd/YYYY':
+        this.getObjectValue(row, column.key)}}</div>
 </ng-template>
 
 <ng-template #rowActions let-row let-column="column" let-rowIndex="rowIndex">
