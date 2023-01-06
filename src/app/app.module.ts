@@ -42,6 +42,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DateRangePicker } from './components/form-elements/date-range-picker/date-range-picker.component';
 import { HighlightDirective } from './directives/highlight.directive';
+import { LoadsComponent } from './pages/loads/loads.component';
 function initializeKeycloak(keycloak: KeycloakService) {
 
 // // load previous tokens, saved after successful login of keycloak success callback
@@ -73,10 +74,6 @@ function initializeKeycloak(keycloak: KeycloakService) {
                 checkLoginIframeInterval: 1000
             }, loadUserProfileAtStartUp: false,
         });
-
-        
-
-
 }
 
 @NgModule({
@@ -96,7 +93,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         ExportButtonsComponent,
         LoaderComponent,
         DateRangePicker,
-        HighlightDirective
+        HighlightDirective,
+        LoadsComponent
     ],
     exports: [AppComponent],
     imports: [

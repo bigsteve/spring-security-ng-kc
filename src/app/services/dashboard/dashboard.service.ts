@@ -1,28 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConstants } from "../../constants/app.constants";
 import { environment } from '../../../environments/environment';
 import { User } from '../../model/user.model';
 import { Contact } from '../../model/contact.model';
 import { DataPage } from '../../model/data.page.model'
+import { AuthorizedService } from '../authorized.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class DashboardService {
-    headers: HttpHeaders = new HttpHeaders()
-
-    constructor(private http: HttpClient) {
-        this.headers.set('Content-Type', 'application/json; charset=utf-8')
-        .set('Access-Control-Allow-Origin', 'https://auth.samplebank.com')
-        .set('Access-Control-Allow-Origin', 'https://samplebank.com')
-        .set('Access-Control-Allow-Origin', 'https://samplebank.com:8443')
-
-     }
-
-    getAccountDetails(user: User) {
-        return this.http.post(environment.rooturl + AppConstants.ACCOUNT_API_URL, user, { observe: 'response', withCredentials: true });
-    }
+export class DashboardService extends AuthorizedService {
 
     getData(params: string) {
         return this.http.post<DataPage>(environment.rooturl + AppConstants.BALANCE_API_URL + params, null, { observe: 'response', withCredentials: true });

@@ -26,9 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
             this.kcs.login({ redirectUri: window.location.href })
         }
 
-        return next.handle(request).pipe(map((event: HttpEvent<any>) => {
-            return event
-        }))
+        return next.handle(request).pipe(map((event: HttpEvent<any>) => event))
     }
 
     public async isLoggedIn() {

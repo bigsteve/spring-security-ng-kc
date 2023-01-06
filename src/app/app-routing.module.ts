@@ -10,9 +10,11 @@ import { LoansPage } from './pages/loans/loans.page';
 import { CardsPage } from './pages/cards/cards.page';
 import { AuthGuard } from './routeguards/auth.route';
 import { AppConstants } from './constants/app.constants';
+import { LoadsComponent } from './pages/loads/loads.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '/', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: HomePage },
     { path: 'contact', component: ContactPage },
     { path: 'notices', component: NoticesPage },
@@ -38,6 +40,11 @@ const routes: Routes = [
     },
     {
         path: AppConstants.CARDS_API_URL, component: CardsPage, canActivate: [AuthGuard], data: {
+            roles: ['USER', 'ADMIN']
+        }
+    },
+    {
+        path: AppConstants.LOADS_API_URL, component: LoadsComponent, canActivate: [AuthGuard], data: {
             roles: ['USER', 'ADMIN']
         }
     }

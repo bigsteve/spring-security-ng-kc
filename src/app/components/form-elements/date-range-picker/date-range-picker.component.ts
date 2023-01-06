@@ -18,22 +18,25 @@ export class DateRangePicker implements OnInit {
     public startDate: Date | ''
     public endDate: Date | ''
 
-    constructor() { 
+    constructor() {
     }
 
     ngOnInit(): void {
-        
-        if (!this.filter.search[this.fieldName]) this.filter.search[this.fieldName] = {}
-        if (this.filter.search[this.fieldName].hasOwnProperty('startDate')) this.startDate = new Date(this.filter.search[this.fieldName].startDate)
-        if (this.filter.search[this.fieldName].hasOwnProperty('endDate')) this.endDate = new Date(this.filter.search[this.fieldName].endDate)
+
+        let startD = this.filter.getValue('search.' + this.fieldName + '.startDate')
+        let endD = this.filter.getValue('search.' + this.fieldName + '.endDate')
+        if (startD) this.startDate = new Date(startD)
+        if (endD) this.endDate = new Date(endD)
 
         this.filter.onFilterChange.subscribe(event => {
-            if (!this.filter.search[this.fieldName]) this.startDate = null
-            if (!this.filter.search[this.fieldName]) this.endDate = null
+            let startD = this.filter.getValue('search.' + this.fieldName + '.startDate')
+            let endD = this.filter.getValue('search.' + this.fieldName + '.endDate')
+            if (!startD) this.startDate = startD
+            if (!endD) this.endDate = endD
         })
 
     }
-    // TODO: check if I gan use different higher level event in order to trigger less events on filer
+    // TODO: check if a different higher level event can be used in order to reduce events
     dateRangeChange(searchString: string, dateInputFieldValue: string) {
         this.filter.setValue(searchString, dateInputFieldValue)
         this.filter.setValue('offset', 0)

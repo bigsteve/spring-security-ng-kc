@@ -11,7 +11,7 @@ export class DataPage {
     pageable: Pageable = new Pageable()
     size: 50
     sort: { sorted: true, unsorted: false, empty: false }
-    totalElements: 0
+    totalElements: number
     totalPages: 0
     
     public setPageable(v: Pageable) {

@@ -6,6 +6,7 @@ export class Column {
     cellTemplate: string = "defaultCellTemplate"
     orderEnabled: boolean = true
     searchEnabled: boolean = true
+    activeEnabled: boolean = true
 
     constructor (obj: Object) {
         Object.keys(obj).forEach(key => this[key] = obj[key])

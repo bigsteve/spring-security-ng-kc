@@ -48,7 +48,7 @@
 
     <div class="mat-elevation-z8 column col-12" style="position: relative;">
 
-        <table mat-table #table [dataSource]="page.content" matSort 
+        <table mat-table #table [dataSource]="page" matSort 
             (matSortChange)="this.filter.setValue('order', $event.active); this.filter.setValue('orderdir', $event.direction)"
              [matSortActive]="this.filter.order" [matSortDirection]="this.filter.orderdir" matSortDisableClear>
 
@@ -119,10 +119,10 @@
 <ng-template #defaultThTemplate let-row let-column="column" let-rowIndex="rowIndex">
     <mat-form-field *ngIf="column.searchEnabled" class="table-column-search-field" appearance="standard">
         <input matInput autocomplete="off" (input)="this.filter.setValue('search.'+column.key, $event.srcElement.value); this.filter.setValue('offset', 0)"
-            placeholder="Src {{column.title}}" #input [(ngModel)]="this.filter.search[column.key]">
+            placeholder="Src {{column.title}}" #input [ngModel]="this.filter.getValue('search.'+column.key)">
     </mat-form-field>
 </ng-template>
 
 <ng-template #pipeDateShortThTemplate let-row let-column="column" let-rowIndex="rowIndex">
-    <app-date-range-picker [filter]="filter" [fieldName]="column.key"></app-date-range-picker>
+    <app-date-range-picker [filter]="filter" [fieldName]="column.key" ></app-date-range-picker>
 </ng-template>

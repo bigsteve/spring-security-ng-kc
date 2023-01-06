@@ -84,11 +84,20 @@ export class Utils {
             if (!obj[ksplit[i]]) obj[ksplit[i]] = {}
             obj = obj[ksplit[i]]
         }
-        // if (v === '') {
-        //     delete obj[ksplit[ksplit.length - 1]]
-        //     return
-        // }
         obj[ksplit[ksplit.length - 1]] = v
+    }
+
+
+    static getObjectValue(object: any, k: string) {
+        let obj = object
+        let kk = new String(k)
+        let ksplit = kk.split('.')
+        if(ksplit.length === 1) return null
+        for (let i = 0; i < ksplit.length; i++) {
+            if (!obj.hasOwnProperty(ksplit[i])) return null
+            obj = obj[ksplit[i]]
+        }
+        return obj;
     }
 
 

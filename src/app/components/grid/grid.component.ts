@@ -69,13 +69,13 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     testCols() {
         delete this.displayedColumns[Object.keys(this.displayedColumns).pop()]
-        // this.displayedColumns['transactionSummary'] = ''
-        // this.filter.initialize(this.crudConfig.crudName + '_filter', this.displayedColumns, [])
+
         console.log(this.filter)
         console.log(this.filter.getFromLocalStorage())
     }
 
     ngOnInit(): void {
+
 
         this.displayedColumns = this.columns.filter(el => !this.hiddenColumns.includes(el.key)).filter(el => {
             el.sensitiveData && this.sensitiveColumns.push(el.key)
@@ -86,15 +86,11 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             return true
         }).map(el => el.key).reduce((a, v) => ({ ...a, [v]: '' }), {})
 
-        // delete this.displayedColumns['transactionSummary']
-        // this.displayedColumns = {accountNumber:'', transactionId: '', createDt:''}
-
-        this.filter.search = this.displayedColumns
+        Object.keys(this.displayedColumns).forEach(k => this.filter.setInitialValue("search." + k, this.displayedColumns[k]))
         this.filter.doNotStore = this.sensitiveColumns
         this.filter.storageName = this.crudConfig.crudName + '_filter'
 
 
-        // this.filter.initialize(this.crudConfig.crudName + '_filter', this.displayedColumns, this.sensitiveColumns)
 
         const d = new Date()
         this.exportFileName = Utils.strReplaceAll(' ', '-', this.seo.title).toLowerCase() + "-" + d.getFullYear() + "-" + Utils.zeroPrefix(d.getMonth()) + "-" + Utils.zeroPrefix(d.getDate()) + "-" + Utils.zeroPrefix(d.getHours())
@@ -111,6 +107,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     ngAfterViewInit() {
+
     }
 
 
@@ -148,9 +145,11 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe({
                 next: (response: any) => {
-                    this.page = <any>response.body.message
+                    console.log(response)
+                    this.page = <any>response.body
                     if (isDevMode()) console.log(this.page)
                     this.page.pageable = new Pageable(this.page.pageable)
+                    this.page.totalElements = 99999999
 
                 },
                 error: (error: any) => {

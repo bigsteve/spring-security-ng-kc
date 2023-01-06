@@ -106,6 +106,14 @@ export class ModelOperations {
         if (emitEvent) this.emitEvent()
     }
 
+    getValue(k: string) {
+        return Utils.getObjectValue(this, k)
+    }
+
+    setInitialValue(k: string, v: any, emitEvent: boolean = true) {
+        Utils.setObjectValue(this, k, v)
+    }
+
     resetFilter(emitEvent: boolean = true) {
         Utils.deepCopyObjectWhereTargetKeysExist(this, JSON.parse(this.system.initialValues))
         this.storageService.set(this.storageName, this.system.initialValues);
