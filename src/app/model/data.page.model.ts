@@ -2,7 +2,7 @@ import { Pageable } from './pageable/pageable.model'
 
 export class DataPage {
 
-    content: []
+    data: []
     empty: false
     first: false
     last: false

@@ -12,8 +12,8 @@ export class Filter extends ModelOperations {
     search: object = new Object()
     order: string = ''
     orderdir: 'asc' | 'desc' = 'desc'
-    offset: string | Number = 0
-    limit: string | Number = 50
+    offset: string | number = 0
+    limit: string | number = 50
 
     constructor(
         private _broadcastService: BroadcastService,

@@ -72,9 +72,9 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         return Object.keys(v).concat(this.actionColumns)
     }
 
-    testCols() {
+    removeColumn() {
         delete this.displayedColumns[Object.keys(this.displayedColumns).pop()]
-
+        console.log(this.displayedColumns)
         console.log(this.filter)
         console.log(this.filter.getFromLocalStorage())
     }
@@ -151,10 +151,13 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             .subscribe({
                 next: (response: any) => {
                     console.log(response)
-                    this.page = <any>response.body
+                    this.page.data = <any>response.body
                     if (isDevMode()) console.log(this.page)
                     this.page.pageable = new Pageable(this.page.pageable)
+                    console.log(this.page)
                     this.page.totalElements = 99999999
+                    if (this.filter.limit > response.body.length) this.page.totalElements = (this.page.pageable.getOffset() * +this.filter.limit) + 2*+this.filter.limit
+
 
                 },
                 error: (error: any) => {

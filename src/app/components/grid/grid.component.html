@@ -33,7 +33,7 @@
                 <mat-icon>undo</mat-icon>
             </button>
             <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Test" matTooltip=""
-                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.testCols()">
+                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.removeColumn()">
                 <mat-icon>refresh</mat-icon>
             </button>
         </div>
@@ -48,7 +48,7 @@
 
     <div class="mat-elevation-z8 column col-12" style="position: relative;">
 
-        <table mat-table #table [dataSource]="page" matSort 
+        <table mat-table #table [dataSource]="page.data" matSort 
             (matSortChange)="this.filter.setValue('order', $event.active); this.filter.setValue('orderdir', $event.direction)"
              [matSortActive]="this.filter.order" [matSortDirection]="this.filter.orderdir" matSortDisableClear>
 
