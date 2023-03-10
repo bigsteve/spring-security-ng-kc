@@ -26,5 +26,15 @@ export class NoticesPage implements OnInit {
                 complete: null
             })
     }
-
 }
+
+/**
+ * 
+ * 
+ * add edit action button
+ * add record delete button and confirmation dialog
+ * add add/edit form with validation messages and auto populate functionality
+ * 
+ * 
+ * 
+ */

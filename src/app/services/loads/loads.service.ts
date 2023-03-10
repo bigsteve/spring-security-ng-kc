@@ -15,6 +15,6 @@ export class LoadsService extends AuthorizedService{
 
     
     getData(params: string) {
-        return this.http.post<DataPage>(environment.rooturl + AppConstants.LOADS_API_URL + params, null, { observe: 'response', withCredentials: true });
+        return this.http.get<DataPage>(environment.rooturl + AppConstants.LOADS_API_URL + params, { observe: 'response', withCredentials: true });
     }
 }

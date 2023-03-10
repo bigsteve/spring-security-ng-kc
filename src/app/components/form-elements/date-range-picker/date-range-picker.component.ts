@@ -15,24 +15,24 @@ export class DateRangePicker implements OnInit {
     @Input() fieldName: string
     public fieldNameStart: string
     public fieldNameEnd: string
-    public startDate: Date | ''
-    public endDate: Date | ''
+    public startRange: Date | ''
+    public endRange: Date | ''
 
     constructor() {
     }
 
     ngOnInit(): void {
 
-        let startD = this.filter.getValue('search.' + this.fieldName + '.startDate')
-        let endD = this.filter.getValue('search.' + this.fieldName + '.endDate')
-        if (startD) this.startDate = new Date(startD)
-        if (endD) this.endDate = new Date(endD)
+        let startD = this.filter.getValue('search.' + this.fieldName + '.startRange')
+        let endD = this.filter.getValue('search.' + this.fieldName + '.endRange')
+        if (startD) this.startRange = new Date(startD)
+        if (endD) this.endRange = new Date(endD)
 
         this.filter.onFilterChange.subscribe(event => {
-            let startD = this.filter.getValue('search.' + this.fieldName + '.startDate')
-            let endD = this.filter.getValue('search.' + this.fieldName + '.endDate')
-            if (!startD) this.startDate = startD
-            if (!endD) this.endDate = endD
+            let startD = this.filter.getValue('search.' + this.fieldName + '.startRange')
+            let endD = this.filter.getValue('search.' + this.fieldName + '.endRange')
+            if (!startD) this.startRange = startD
+            if (!endD) this.endRange = endD
         })
 
     }

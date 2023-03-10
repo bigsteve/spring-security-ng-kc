@@ -49,8 +49,8 @@
     <div class="mat-elevation-z8 column col-12" style="position: relative;">
 
         <table mat-table #table [dataSource]="page.data" matSort 
-            (matSortChange)="this.filter.setValue('order', $event.active); this.filter.setValue('orderdir', $event.direction)"
-             [matSortActive]="this.filter.order" [matSortDirection]="this.filter.orderdir" matSortDisableClear>
+            (matSortChange)="this.filter.setOneSort($event.active, $event.direction);"
+             [matSortActive]="this.filter.getLastSort().by" [matSortDirection]="this.filter.getLastSort().dir" matSortDisableClear="false">
 
             <!--  Column -->
             <ng-container *ngFor="let column of columns; index as colIndex" matColumnDef="{{column.key}}">
@@ -110,9 +110,9 @@
 </ng-template>
 
 <ng-template #matPaginator>
-    <mat-paginator #paginator [length]="this.page.totalElements" [pageSize]="this.filter.limit"
+    <mat-paginator paginatorDirective #paginator [length]="this.page.totalElements" [pageSize]="this.filter.limit"
         [pageIndex]="this.filter.offset" [pageSizeOptions]="this.page.pageable.getPageSizeOptions()"
-        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="this.filter.setValue('limit', $event.pageSize, false); this.filter.setValue('offset', $event.pageIndex)">
+        aria-label="this.ariaLabel" [showFirstLastButtons]="true" (page)="translatePaginatorEvent($event)">
     </mat-paginator>
 </ng-template>
 

@@ -57,6 +57,7 @@ export class Utils {
     }
 
 
+
     /**
      * 
      * @param target 
@@ -64,12 +65,27 @@ export class Utils {
      */
     static deepCopyObjectWhereTargetKeysExist(target: object, source: object) {
         Object.keys(target).forEach(k => {
+
             if (typeof target[k] === 'object' && typeof source[k] === 'object' && source[k] !== null) {
                 Utils.deepCopyObjectWhereTargetKeysExist(target[k], source[k])
             } else if (source.hasOwnProperty(k)) {
                 target[k] = source[k]
             }
         })
+
+    }
+
+
+
+
+    /**
+     * 
+     * @param target 
+     * @param source 
+     */
+    static deepCopyObjectWhereTargetKeysExistPlusExtraKeys(target: object, source: object, extraKeys: string[]) {
+        extraKeys.forEach(k => target[k] = source[k])
+        Utils.deepCopyObjectWhereTargetKeysExist(target, source)
     }
 
 

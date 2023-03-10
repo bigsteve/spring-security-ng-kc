@@ -70,7 +70,7 @@ export class ModelOperations {
 
         let storedObj = JSON.parse(this.getFromLocalStorage())
         if (!storedObj) return
-        Utils.deepCopyObjectWhereTargetKeysExist(this, storedObj)
+        Utils.deepCopyObjectWhereTargetKeysExistPlusExtraKeys(this, storedObj, ['order'])
     }
 
     getJsonAllowedToStore() {
@@ -110,12 +110,13 @@ export class ModelOperations {
         return Utils.getObjectValue(this, k)
     }
 
+
     setInitialValue(k: string, v: any, emitEvent: boolean = true) {
         Utils.setObjectValue(this, k, v)
     }
 
     resetFilter(emitEvent: boolean = true) {
-        Utils.deepCopyObjectWhereTargetKeysExist(this, JSON.parse(this.system.initialValues))
+        Utils.deepCopyObjectWhereTargetKeysExistPlusExtraKeys(this, JSON.parse(this.system.initialValues), ['order'])
         this.storageService.set(this.storageName, this.system.initialValues);
         if (emitEvent) this.emitEvent()
     }

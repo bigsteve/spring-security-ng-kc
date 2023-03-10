@@ -8,7 +8,9 @@ import {
     OnInit,
     TemplateRef,
     ViewChild,
-    isDevMode
+    isDevMode,
+    ViewContainerRef,
+    Renderer2
 } from '@angular/core'
 import { takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
@@ -20,6 +22,7 @@ import { FormControl } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip'
 import { Utils } from 'src/app/utils/utils.model'
 import { Filter } from 'src/app/model/search/filter.model'
+import { PaginatorDirective } from 'src/app/directives/paginator.directive'
 
 @Component({
     selector: 'app-grid',
@@ -34,7 +37,8 @@ import { Filter } from 'src/app/model/search/filter.model'
  */
 export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
-    @ViewChild('paginator', { static: true }) paginator: MatPaginator
+    @ViewChild('paginator', { static: false }) paginator: MatPaginator
+    @ViewChild('paginator', { static: false }) paginatorEl: TemplateRef<any>
     @ViewChild('pipeCurrency', { static: true }) pipeCurrency: TemplateRef<any>
     @ViewChild('pipeDateShort', { static: true }) public pipeDateShort: TemplateRef<any>
     @ViewChild('pipeDateShortThTemplate', { static: true }) public pipeDateShortThTemplate: TemplateRef<any>
@@ -50,7 +54,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     public hiddenColumns: string[] = []
     public sensitiveColumns: string[] = []
     public page: DataPage = new DataPage()
-    // public search: Search = new Search()
+    public multiOrder = false
     public exportFileName: string
     private timeouts = {}
     private ngUnsubscribe: Subject<void> = new Subject<void>()
@@ -58,7 +62,9 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     public toolTipPosition = new FormControl(this.positionOptions[1])
     constructor(
         private readonly cdr: ChangeDetectorRef,
-        public filter: Filter
+        public filter: Filter,
+        private viewContainerRef: ViewContainerRef,
+        private renderer: Renderer2
     ) { }
 
     test(v) {
@@ -81,6 +87,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
 
+        
 
         this.displayedColumns = this.columns.filter(el => !this.hiddenColumns.includes(el.key)).filter(el => {
             el.sensitiveData && this.sensitiveColumns.push(el.key)
@@ -110,14 +117,11 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
         this.ngUnsubscribe.complete()
     }
 
-
     ngAfterViewInit() {
-
+        
     }
 
-
     ngAfterViewChecked() {
-
     }
 
 
@@ -134,9 +138,10 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-
-
     private parseEvent(): void {
+        this.getObjectValue(this, 'paginator').__ngContext__
+        .filter(n => n != null && n.hasOwnProperty('setLabelPage'))
+        .forEach(el =>  el.setLabelPage(+this.filter.offset + 1))
         this.getData(this.filter.getParameterAndEncodedValue())
     }
 
@@ -144,24 +149,29 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private getData(params: string): void {
 
+        // let bb = {}
+        // bb["id"]="d630b8be-a9cf-11ed-9e6f-27579a6933ce",
+        // bb["companyName"]="Coman & compan"
+        // bb["load"]= "Bricks and irons"
+        // bb["weight"]= 222.45
+        // let s = {}
+        // s["search"] = bb
+        // console.log(new URLSearchParams(JSON.stringify(bb)).toString())
+        
 
         this.service
             .getData(params)
             .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe({
                 next: (response: any) => {
-                    console.log(response)
                     this.page.data = <any>response.body
                     if (isDevMode()) console.log(this.page)
                     this.page.pageable = new Pageable(this.page.pageable)
-                    console.log(this.page)
-                    this.page.totalElements = 99999999
-                    if (this.filter.limit > response.body.length) this.page.totalElements = (this.page.pageable.getOffset() * +this.filter.limit) + 2*+this.filter.limit
-
-
+                    this.page.totalElements = (this.page.data.length > 0) ? Infinity : 0
+                    if (this.filter.limit > response.body.length) this.page.totalElements = (this.page.pageable.getOffset() * +this.filter.limit) + +this.filter.limit
                 },
-                error: (error: any) => {
-                    console.error('Error: ', error.message)
+                error: (response: any) => {
+                    // console.log(<any>response)
                 },
                 complete: () => {
                     this.cdr.detectChanges()
@@ -193,6 +203,13 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
             clearTimeout(this.timeouts[$event.event][0])
             this.timeouts[$event.event].shift()
         }
+    }
+
+
+    translatePaginatorEvent($event) {
+        this.filter.setValue('limit', $event.pageSize, false)
+        this.filter.setValue('offset', $event.pageIndex, false)
+        this.parseEvent()
     }
 
 

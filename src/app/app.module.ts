@@ -23,7 +23,7 @@ import { ButtonOverviewExampleComponent } from './components/buttons/button-over
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -42,6 +42,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DateRangePicker } from './components/form-elements/date-range-picker/date-range-picker.component';
 import { HighlightDirective } from './directives/highlight.directive';
+import { PaginatorDirective } from './directives/paginator.directive';
 import { LoadsComponent } from './pages/loads/loads.component';
 function initializeKeycloak(keycloak: KeycloakService) {
 
@@ -94,9 +95,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
         LoaderComponent,
         DateRangePicker,
         HighlightDirective,
+        PaginatorDirective,
         LoadsComponent
     ],
-    exports: [AppComponent],
+    exports: [
+        AppComponent,
+        PaginatorDirective],
     imports: [
         CommonModule,
         MatGridListModule,
