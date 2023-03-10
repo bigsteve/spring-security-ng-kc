@@ -22,7 +22,6 @@ import { FormControl } from '@angular/forms';
 import { TooltipPosition } from '@angular/material/tooltip'
 import { Utils } from 'src/app/utils/utils.model'
 import { Filter } from 'src/app/model/search/filter.model'
-import { PaginatorDirective } from 'src/app/directives/paginator.directive'
 
 @Component({
     selector: 'app-grid',
@@ -44,6 +43,7 @@ export class GridComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('pipeDateShortThTemplate', { static: true }) public pipeDateShortThTemplate: TemplateRef<any>
     @ViewChild('rowActions', { static: true }) public rowActions: TemplateRef<any>
 
+    
     @Input() crudConfig: any
     @Input() seo: Seo
     @Input() service: any

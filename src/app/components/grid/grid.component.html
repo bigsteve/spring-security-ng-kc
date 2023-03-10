@@ -24,7 +24,7 @@
                 matTooltip="Configuration" [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>menu</mat-icon>
             </button>
-            <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Add"
+            <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Add Record"
                 [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz">
                 <mat-icon>add</mat-icon>
             </button>
@@ -55,11 +55,11 @@
             <!--  Column -->
             <ng-container *ngFor="let column of columns; index as colIndex" matColumnDef="{{column.key}}">
                 <th mat-header-cell *matHeaderCellDef>
-                    <div *ngIf="column.orderEnabled" mat-sort-header> {{column.title}}</div>
-                    <div *ngIf="!column.orderEnabled"> {{column.title}}</div>
-                    <div class="search-field-holder">
+                    <div *ngIf="column.orderEnabled && crudConfig.orderEnabled" mat-sort-header> {{column.title}}</div>
+                    <div *ngIf="!column.orderEnabled || !crudConfig.orderEnabled"> {{column.title}}</div>
+                    <div  *ngIf="column.searchEnabled && crudConfig.searchEnabled" class="search-field-holder">
 
-                        <div *ngIf="column.searchEnabled">
+                        <div>
                             <ng-tempate
                                 *ngTemplateOutlet="this[column.cellTemplate+'ThTemplate'] || defaultThTemplate, context:{ $implicit: row, column: column, colIndex: colIndex, rowIndex: rowIndex }">
                             </ng-tempate>

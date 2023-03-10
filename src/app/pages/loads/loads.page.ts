@@ -5,12 +5,12 @@ import { Column } from 'src/app/model/crud/column.model'
 import { LoadsService } from 'src/app/services/loads/loads.service'
 
 @Component({
-    selector: 'loads-component',
-    templateUrl: './loads.component.html',
-    styleUrls: ['./loads.component.scss']
+    selector: 'loads-page',
+    templateUrl: './loads.page.html',
+    styleUrls: ['./loads.page.scss']
 })
 
-export class LoadsComponent implements OnInit {
+export class LoadsPage implements OnInit {
 
     user = new User()
     columns: Column[]
@@ -20,6 +20,8 @@ export class LoadsComponent implements OnInit {
         crudEnabled: true,
         exportEnabled: true,
         globalSearchEnabled: false,
+        searchEnabled: true,
+        orderEnabled: true,
         configEnabled: true,
         massActionsEnabled: false,
         uid: "id"

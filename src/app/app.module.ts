@@ -43,7 +43,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DateRangePicker } from './components/form-elements/date-range-picker/date-range-picker.component';
 import { HighlightDirective } from './directives/highlight.directive';
 import { PaginatorDirective } from './directives/paginator.directive';
-import { LoadsComponent } from './pages/loads/loads.component';
+import { LoadsPage } from './pages/loads/loads.page';
+import { CrudComponent } from './components/crud/crud/crud.component';
 function initializeKeycloak(keycloak: KeycloakService) {
 
 // // load previous tokens, saved after successful login of keycloak success callback
@@ -96,7 +97,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
         DateRangePicker,
         HighlightDirective,
         PaginatorDirective,
-        LoadsComponent
+        LoadsPage,
+        CrudComponent
     ],
     exports: [
         AppComponent,

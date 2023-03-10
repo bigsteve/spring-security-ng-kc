@@ -10,7 +10,7 @@ import { LoansPage } from './pages/loans/loans.page';
 import { CardsPage } from './pages/cards/cards.page';
 import { AuthGuard } from './routeguards/auth.route';
 import { AppConstants } from './constants/app.constants';
-import { LoadsComponent } from './pages/loads/loads.component';
+import { LoadsPage } from './pages/loads/loads.page';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -44,7 +44,7 @@ const routes: Routes = [
         }
     },
     {
-        path: AppConstants.LOADS_API_URL, component: LoadsComponent, canActivate: [AuthGuard], data: {
+        path: AppConstants.LOADS_API_URL, component: LoadsPage, canActivate: [AuthGuard], data: {
             roles: ['USER', 'ADMIN']
         }
     }
