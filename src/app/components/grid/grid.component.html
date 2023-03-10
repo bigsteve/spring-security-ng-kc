@@ -30,11 +30,11 @@
             </button>
             <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Add" matTooltip="Reset Filters"
                 [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.filter.resetFilter()">
-                <mat-icon>undo</mat-icon>
-            </button>
-            <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Test" matTooltip=""
-                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.removeColumn()">
                 <mat-icon>refresh</mat-icon>
+            </button>
+            <button *ngIf="this.crudConfig.crudEnabled" mat-mini-fab color="primary" aria-label="Test" matTooltip="Remove Right Column"
+                [matTooltipPosition]="toolTipPosition.value" class="fab-btn-horiz" (click)="this.removeColumn()">
+                <mat-icon>undo</mat-icon>
             </button>
         </div>
         <div class="grid-paginator grid-control-paginator column col-lg-6 col-md-12">

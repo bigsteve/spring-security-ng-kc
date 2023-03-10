@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,19 +32,21 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSortModule } from "@angular/material/sort";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ReactiveFormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+  import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+
 
 import { DateRangePicker } from './components/form-elements/date-range-picker/date-range-picker.component';
 import { HighlightDirective } from './directives/highlight.directive';
 import { PaginatorDirective } from './directives/paginator.directive';
 import { LoadsPage } from './pages/loads/loads.page';
 import { CrudComponent } from './components/crud/crud/crud.component';
+import { FormComponent } from './components/crud/form/form.component';
 function initializeKeycloak(keycloak: KeycloakService) {
 
 // // load previous tokens, saved after successful login of keycloak success callback
@@ -98,11 +100,13 @@ function initializeKeycloak(keycloak: KeycloakService) {
         HighlightDirective,
         PaginatorDirective,
         LoadsPage,
-        CrudComponent
+        CrudComponent,
+        FormComponent
     ],
     exports: [
         AppComponent,
-        PaginatorDirective],
+        PaginatorDirective,
+        MatDialogModule],
     imports: [
         CommonModule,
         MatGridListModule,
@@ -125,6 +129,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         AppRoutingModule,
         BrowserModule,
         FormsModule,
+        MatDialogRef,
         KeycloakAngularModule,
         HttpClientModule,
         HttpClientXsrfModule.withOptions({
