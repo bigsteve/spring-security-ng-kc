@@ -4,7 +4,12 @@
 
 export const environment = {
   production: false,
-  rooturl : 'https://samplebank.com:8443/'
+  frontEndUrl: 'https://samplebank.com',
+  resourcesUrl : 'https://samplebank.com:8443/',
+  accessConttrolAllowOrigin: ['https://auth.samplebank.com', 'https://samplebank.com', 'https://samplebank.com:8443'],
+  authUrl: 'https://auth.samplebank.com/auth',
+  authRealm: 'samplebankdev',
+  authClientId: 'samplebankpub_ui',
 };
 
 /*

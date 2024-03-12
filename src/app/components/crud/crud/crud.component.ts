@@ -1,26 +1,24 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { Seo } from 'src/app/model/seo/seo.model';
-import { GridComponent } from '../../grid/grid.component';
+import { Component} from '@angular/core';
 import { FormComponent } from '../form/form.component';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GridmasterComponent } from '../../grid/gridmaster.component';
 
 @Component({
     selector: 'app-crud',
-    templateUrl: './crud.component.html',
-    styleUrls: ['./crud.component.scss']
+    templateUrl: './../../grid/grid.component.html',
+    styleUrls: ['./../../grid/grid.component.scss']
 })
-export class CrudComponent extends GridComponent implements OnInit {
+export class CrudComponent extends GridmasterComponent {
 
-    @Inject(MatDialog) public dialog: MatDialog
-
-    openDialog() {
+    public openDialog(v: any) {
         this.dialog.open(FormComponent, {
-          data: {
-            animal: 'panda',
-          },
+            width: '100%', height: '100%', maxWidth: '100%', maxHeight: '100%',
+            data: this.page.data[v.params.row],
+            disableClose: true
         });
-      }
-    ngOnInit(): void {
     }
 
+    ngOnInit(){
+        super.ngOnInit()
+    }
 }
+

@@ -9,6 +9,9 @@ body {
     background-color: #fff;
     overflow-y: scroll;
 }
+.cdk-global-scrollblock body {
+    overflow-y: initial;
+}
 
 a {
     cursor: pointer;

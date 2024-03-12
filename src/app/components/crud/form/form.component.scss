@@ -1,0 +1,75 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+:host .cdk-overlay-container, .cdk-global-overlay-wrapper {
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 80%;
+}
+
+:host mat-form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px;
+}
+
+::ng-deep .mat-form-field-infix {
+    display: block;
+    position: relative;
+    flex: auto;
+    min-width: 0;
+    width: 200px;
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-infix {
+    padding: .15em 0 .45em 0;
+}
+
+::ng-deep .mat-dialog-actions {
+    max-width: 90%;
+}
+
+:host div.form-row {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+}
+
+:host div.form-row {
+    h1, h2, h3, h4, h5, h6 {
+        padding: 0 0 0 12px !important;
+        margin: 0;
+    }
+}
+
+:host div.form-row div.form-column {
+    border-right: 1px solid #ccc;
+    width: 200px;
+    min-width: 240px;
+    display: block;
+    float: left;
+    box-sizing: border-box;
+}
+
+:host div.form-row div.form-column-wide {
+    width: 100%;
+}
+
+::ng-deep div.form-row div.form-column-wide .mat-form-field-infix {
+    width: 920px !important;
+    max-width: 100%;
+}
+
+:host div.form-row div.form-column:last-of-type {
+    border-right: none;
+}
+
+:host div.form-column>* {
+    margin: 10px;
+}

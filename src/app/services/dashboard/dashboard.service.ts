@@ -12,23 +12,23 @@ import { AuthorizedService } from '../authorized.service';
 export class DashboardService extends AuthorizedService {
 
     getData(params: string) {
-        return this.http.post<DataPage>(environment.rooturl + AppConstants.BALANCE_API_URL + params, null, { observe: 'response', withCredentials: true });
+        return this.http.post<DataPage>(environment.resourcesUrl + AppConstants.BALANCE_API_URL + params, null, { observe: 'response', withCredentials: true });
     }
 
     getLoansDetails(user: User) {
-        return this.http.post(environment.rooturl + AppConstants.LOANS_API_URL, user, { observe: 'response', withCredentials: true });
+        return this.http.post(environment.resourcesUrl + AppConstants.LOANS_API_URL, user, { observe: 'response', withCredentials: true });
     }
 
     getCardsDetails(user: User) {
-        return this.http.post(environment.rooturl + AppConstants.CARDS_API_URL, user, { observe: 'response', withCredentials: true });
+        return this.http.post(environment.resourcesUrl + AppConstants.CARDS_API_URL, user, { observe: 'response', withCredentials: true });
     }
 
     getNoticeDetails() {
-        return this.http.get(environment.rooturl + AppConstants.NOTICES_API_URL, { observe: 'response' });
+        return this.http.get(environment.resourcesUrl + AppConstants.NOTICES_API_URL+'/?angular', { observe: 'response' });
     }
 
     saveMessage(contact: Contact) {
-        return this.http.post(environment.rooturl + AppConstants.CONTACT_API_URL, contact, { observe: 'response' });
+        return this.http.post(environment.resourcesUrl + AppConstants.CONTACT_API_URL, contact, { observe: 'response' });
     }
 
 }

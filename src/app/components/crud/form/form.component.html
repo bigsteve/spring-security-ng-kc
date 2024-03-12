@@ -1,0 +1,103 @@
+<div class="crud-grid container">
+    <div id="grid-page-head" class="page-head row">
+        <div class="grid-title col-sm-6">
+        </div>
+        <h1 mat-dialog-title>Edit load {{data.id}}</h1>
+        <mat-dialog-content>
+            <ul>
+                <li>
+                    <span>&#10003;</span> {{data.createdAt}}
+                </li>
+                <li>
+                    <span>&#10003;</span> {{data.load}}
+                </li>
+                <li>
+                    <span>&#10003;</span> {{data.contact.fname}}
+                </li>
+                <li>
+                    <span>&#10003;</span> {{data.contact.lname}}
+                </li>
+            </ul>
+
+            <form>
+                <div class="form-row">
+                    <h2>Form Column Title</h2>
+                    <div class="form-column">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Input</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select</mat-label>
+                            <mat-select>
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-column">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Input</mat-label>
+                            <input matInput>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select</mat-label>
+                            <mat-select>
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-column">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Input</mat-label>
+                            <input matInput>
+                            <mat-error>
+                                Errors here
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select</mat-label>
+                            <mat-select>
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-column">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Last Input</mat-label>
+                            <input matInput>
+                            <mat-error>
+                                Errors here
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select</mat-label>
+                            <mat-select>
+                                <mat-option value="one">First option</mat-option>
+                                <mat-option value="two">Second option</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-column form-column-wide">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Textarea</mat-label>
+                            <textarea matInput [rows]="5"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button mat-flat-button [mat-dialog-close]="true" color="primary" cdkFocusInitial>Save</button>
+        </mat-dialog-actions>
+    </div>
+</div>

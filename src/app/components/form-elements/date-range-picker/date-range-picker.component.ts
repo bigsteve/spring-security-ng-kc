@@ -11,7 +11,7 @@ import { Filter } from 'src/app/model/search/filter.model';
 
 export class DateRangePicker implements OnInit {
 
-    @Input() filter: Filter
+    @Input() searchFilter: Filter
     @Input() fieldName: string
     public fieldNameStart: string
     public fieldNameEnd: string
@@ -23,14 +23,14 @@ export class DateRangePicker implements OnInit {
 
     ngOnInit(): void {
 
-        let startD = this.filter.getValue('search.' + this.fieldName + '.startRange')
-        let endD = this.filter.getValue('search.' + this.fieldName + '.endRange')
+        let startD = this.searchFilter.getValue('search.' + this.fieldName + '.startRange')
+        let endD = this.searchFilter.getValue('search.' + this.fieldName + '.endRange')
         if (startD) this.startRange = new Date(startD)
         if (endD) this.endRange = new Date(endD)
 
-        this.filter.onFilterChange.subscribe(event => {
-            let startD = this.filter.getValue('search.' + this.fieldName + '.startRange')
-            let endD = this.filter.getValue('search.' + this.fieldName + '.endRange')
+        this.searchFilter.onFilterChange.subscribe(event => {
+            let startD = this.searchFilter.getValue('search.' + this.fieldName + '.startRange')
+            let endD = this.searchFilter.getValue('search.' + this.fieldName + '.endRange')
             if (!startD) this.startRange = startD
             if (!endD) this.endRange = endD
         })
@@ -38,8 +38,8 @@ export class DateRangePicker implements OnInit {
     }
     // TODO: check if a different higher level event can be used in order to reduce events
     dateRangeChange(searchString: string, dateInputFieldValue: string) {
-        this.filter.setValue(searchString, dateInputFieldValue)
-        this.filter.setValue('offset', 0)
+        this.searchFilter.setValue(searchString, dateInputFieldValue)
+        this.searchFilter.setValue('offset', 0)
     }
 
 }

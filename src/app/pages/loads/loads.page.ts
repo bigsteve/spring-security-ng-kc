@@ -49,7 +49,7 @@ export class LoadsPage implements OnInit {
 
 
         this.columns = [
-            new Column({ key: 'id', title: 'Load Id', placeholder: 'Load Id' }),
+            new Column({ key: 'id', title: 'Load Id', placeholder: 'Load Id', sensitiveData: true }),
             new Column({ key: 'createdAt', title: 'Created At', placeholder: 'Created At', cellTemplate: "pipeDateShort" }),
             // new Column({ key: 'status', title: 'Status', placeholder: 'Status' }),
             new Column({ key: "contact.fname", data: contact, title: 'First Name', placeholder: 'First Name', activeEnabled: false }),

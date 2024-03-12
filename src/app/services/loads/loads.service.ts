@@ -13,8 +13,9 @@ import { Observable } from 'rxjs';
 })
 export class LoadsService extends AuthorizedService{
 
-    
+
+
     getData(params: string) {
-        return this.http.get<DataPage>(environment.rooturl + AppConstants.LOADS_API_URL + params, { observe: 'response', withCredentials: true });
+        return this.http.get<DataPage>(environment.resourcesUrl + AppConstants.LOADS_API_URL + params, {headers: this.headers, observe: 'response', withCredentials: true });
     }
 }

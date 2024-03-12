@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatSelectModule } from "@angular/material/select";
 import { MatInputModule } from "@angular/material/input";
 import { MatSortModule } from "@angular/material/sort";
@@ -38,7 +38,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-  import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 
 import { DateRangePicker } from './components/form-elements/date-range-picker/date-range-picker.component';
@@ -47,6 +47,7 @@ import { PaginatorDirective } from './directives/paginator.directive';
 import { LoadsPage } from './pages/loads/loads.page';
 import { CrudComponent } from './components/crud/crud/crud.component';
 import { FormComponent } from './components/crud/form/form.component';
+import { environment } from 'src/environments/environment';
 function initializeKeycloak(keycloak: KeycloakService) {
 
 // // load previous tokens, saved after successful login of keycloak success callback
@@ -63,14 +64,14 @@ function initializeKeycloak(keycloak: KeycloakService) {
     return () =>
         keycloak.init({
             config: {
-                url: 'https://auth.samplebank.com/auth',
-                realm: 'samplebankdev',
-                clientId: 'samplebankpub_ui',
+                url: environment.authUrl,
+                realm: environment.authRealm,
+                clientId: environment.authClientId,
             },
             bearerPrefix: 'Bearer',
             initOptions: {
                 pkceMethod: 'S256',
-                redirectUri: 'https://samplebank.com/myaccount/details',
+                redirectUri: environment.frontEndUrl + '/myaccount/details',
                 onLoad: 'check-sso',
                 silentCheckSsoRedirectUri:
                     window.location.origin + '/assets/silent-check-sso.html',
@@ -129,7 +130,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         AppRoutingModule,
         BrowserModule,
         FormsModule,
-        MatDialogRef,
+        MatDialogModule,
         KeycloakAngularModule,
         HttpClientModule,
         HttpClientXsrfModule.withOptions({
@@ -143,7 +144,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
             provide: APP_INITIALIZER,
             useFactory: initializeKeycloak,
             multi: true,
-            deps: [KeycloakService],
+            deps: [KeycloakService]
         },
         {
             provide: HTTP_INTERCEPTORS,
@@ -163,7 +164,7 @@ export class AppModule {
 }
 
 /*
- ng serve --host samplebank.com --disable-host-check
  ng serve --host samplebank.com --ssl --port 443
-
+ ng serve --host samplebank.com --disable-host-check --ssl --port 443
+ ng serve --configuration production --host samplebank.com --disable-host-check --ssl --port 443
 */

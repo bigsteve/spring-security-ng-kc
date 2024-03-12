@@ -20,6 +20,8 @@ export class BalancePage implements OnInit {
         crudEnabled: true,
         exportEnabled: true,
         globalSearchEnabled: false,
+        searchEnabled: true,
+        orderEnabled: true,
         configEnabled: true,
         massActionsEnabled: false,
         uid: "transactionId"

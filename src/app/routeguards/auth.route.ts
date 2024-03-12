@@ -19,7 +19,6 @@ export class AuthGuard extends KeycloakAuthGuard {
         protected readonly keycloak: KeycloakService
     ) {
         super(router, keycloak);
-        console.log("KeycloakAuthGuard created")
     }
 
     public async isAccessAllowed(

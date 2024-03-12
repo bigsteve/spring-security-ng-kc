@@ -13,34 +13,39 @@ table {
 .grid-control-bar-top {
     height:auto;
 }
-::ng-deep table .mat-sort-header {
+::ng-deep mat-table .mat-sort-header {
     padding-top: 4px;
 }
 
-::ng-deep table .mat-form-field-appearance-standard .mat-form-field-flex {
+::ng-deep mat-table .mat-form-field-appearance-standard .mat-form-field-flex {
     padding-top: 0em;
 }
 
-::ng-deep table .mat-form-field {
+::ng-deep mat-table .mat-form-field {
     width: 100%;
     padding: 0 4px 0 0;
 }
 
-::ng-deep table .mat-form-field-wrapper {
+::ng-deep mat-table .mat-form-field-wrapper {
     font-size: 14px;
     width: 100%;
     padding: 1px !important;
 }
 
-::ng-deep table .mat-form-field-underline,
-::ng-deep table .mat-form-field-appearance-legacy .mat-form-field-underline {
+::ng-deep mat-table .mat-form-field-underline,
+::ng-deep mat-table .mat-form-field-appearance-legacy .mat-form-field-underline {
     position: absolute;
     width: 100%;
     bottom: 0;
 }
 
-::ng-deep table .mat-form-field-infix,
-::ng-deep table .mat-form-field-appearance-legacy .mat-form-field-infix {
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    border-bottom-width: 0.1px;
+    vertical-align: middle;
+}
+
+::ng-deep mat-table .mat-form-field-infix,
+::ng-deep mat-table .mat-form-field-appearance-legacy .mat-form-field-infix {
     display: block;
     position: relative;
     flex: auto;
@@ -49,8 +54,8 @@ table {
     padding-top: 0;
 }
 
-::ng-deep table .table-column-search-field input::placeholder,
-::ng-deep table .table-column-search-field label {
+::ng-deep mat-table .table-column-search-field input::placeholder,
+::ng-deep mat-table .table-column-search-field label {
     font-size: 10px;
 }
 
@@ -63,9 +68,9 @@ table {
     padding-bottom: 1px;
 }
 
-td.mat-cell {
-    padding: 0 10px 0 0;
-}
+// td.mat-cell {
+//     padding: 0 10px 0 0;
+// }
 
 ::ng-deep .mat-sort-header-arrow[style] .mat-sort-header-stem {
     display: none;

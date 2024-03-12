@@ -13,10 +13,10 @@ export abstract class AuthorizedService implements AuthorizedServiceInterface {
     headers: HttpHeaders = new HttpHeaders()
 
     constructor( private zone_: NgZone, private http_: HttpClient) {
-        this.headers.set('Content-Type', 'application/json; charset=utf-8')
-        .set('Access-Control-Allow-Origin', 'https://auth.samplebank.com')
-        .set('Access-Control-Allow-Origin', 'https://samplebank.com')
-        .set('Access-Control-Allow-Origin', 'https://samplebank.com:8443')
+        this.headers = this.headers.set('Content-Type', 'application/octet-stream')
+        .set('Access-Control-Allow-Origin', environment.accessConttrolAllowOrigin)
+        .set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE')
+        .set('Access-Control-Allow-Headers', 'X-Requested-With, content-type')
      }
 
      get http(): HttpClient {
@@ -28,7 +28,7 @@ export abstract class AuthorizedService implements AuthorizedServiceInterface {
      }
 
     getAccountDetails(user: User) {
-        return this.http.post(environment.rooturl + AppConstants.ACCOUNT_API_URL, user, { observe: 'response', withCredentials: true });
+        return this.http.post(environment.resourcesUrl + AppConstants.ACCOUNT_API_URL, user, { observe: 'response', withCredentials: true });
     }
 
     abstract getData(v: string)
