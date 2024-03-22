@@ -24,7 +24,7 @@ export class DashboardService extends AuthorizedService {
     }
 
     getNoticeDetails() {
-        return this.http.get(environment.resourcesUrl + AppConstants.NOTICES_API_URL+'/?angular', { observe: 'response' });
+        return this.http.get(environment.resourcesUrl + AppConstants.NOTICES_API_URL+'?angular', { observe: 'response' });
     }
 
     saveMessage(contact: Contact) {
